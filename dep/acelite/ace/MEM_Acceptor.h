@@ -88,7 +88,7 @@ public:
 
   /// Perform operations that must occur after <ACE_OS::accept> is
   /// called.
-  int commun_accept_finish (ACE_MEM_Stream new_stream,
+  int shared_accept_finish (ACE_MEM_Stream new_stream,
                             int in_blocking_mode,
                             bool reset_new_handle) const;
 
@@ -168,7 +168,7 @@ private:
   /// contains the absolute path name of the file.
   ACE_TCHAR *mmap_prefix_;
 
-  /// A cached MALLOC_OPTIONS.  MEM_Accaptor use it to create the commun
+  /// A cached MALLOC_OPTIONS.  MEM_Accaptor use it to create the shared
   /// mamory malloc upon every incoming connection.
   ACE_MEM_SAP::MALLOC_OPTIONS malloc_options_;
 

@@ -29,11 +29,11 @@ ACE_SOCK_SEQPACK_Acceptor::ACE_SOCK_SEQPACK_Acceptor (void)
 // Performs the timed accept operation.
 
 int
-ACE_SOCK_SEQPACK_Acceptor::commun_accept_start (ACE_Time_Value *timeout,
+ACE_SOCK_SEQPACK_Acceptor::shared_accept_start (ACE_Time_Value *timeout,
                                         bool restart,
                                         int &in_blocking_mode) const
 {
-  ACE_TRACE ("ACE_SOCK_SEQPACK_Acceptor::commun_accept_start");
+  ACE_TRACE ("ACE_SOCK_SEQPACK_Acceptor::shared_accept_start");
 
   ACE_HANDLE handle = this->get_handle ();
 
@@ -61,11 +61,11 @@ ACE_SOCK_SEQPACK_Acceptor::commun_accept_start (ACE_Time_Value *timeout,
 }
 
 int
-ACE_SOCK_SEQPACK_Acceptor::commun_accept_finish (ACE_SOCK_SEQPACK_Association new_association,
+ACE_SOCK_SEQPACK_Acceptor::shared_accept_finish (ACE_SOCK_SEQPACK_Association new_association,
                                          int in_blocking_mode,
                                          bool reset_new_handle) const
 {
-  ACE_TRACE ("ACE_SOCK_SEQPACK_Acceptor::commun_accept_finish ()");
+  ACE_TRACE ("ACE_SOCK_SEQPACK_Acceptor::shared_accept_finish ()");
 
   ACE_HANDLE new_handle = new_association.get_handle ();
 
@@ -108,7 +108,7 @@ ACE_SOCK_SEQPACK_Acceptor::accept (ACE_SOCK_SEQPACK_Association &new_association
   ACE_TRACE ("ACE_SOCK_SEQPACK_Acceptor::accept");
 
   int in_blocking_mode = 0;
-  if (this->commun_accept_start (timeout,
+  if (this->shared_accept_start (timeout,
                                  restart,
                                  in_blocking_mode) == -1)
     return -1;
@@ -146,7 +146,7 @@ ACE_SOCK_SEQPACK_Acceptor::accept (ACE_SOCK_SEQPACK_Association &new_association
         }
     }
 
-  return this->commun_accept_finish (new_association,
+  return this->shared_accept_finish (new_association,
                                      in_blocking_mode,
                                      reset_new_handle);
 }
@@ -160,11 +160,11 @@ ACE_SOCK_SEQPACK_Acceptor::dump (void) const
 }
 
 int
-ACE_SOCK_SEQPACK_Acceptor::commun_open (const ACE_Addr &local_sap,
+ACE_SOCK_SEQPACK_Acceptor::shared_open (const ACE_Addr &local_sap,
                                 int protocol_family,
                                 int backlog)
 {
-  ACE_TRACE ("ACE_SOCK_SEQPACK_Acceptor::commun_open");
+  ACE_TRACE ("ACE_SOCK_SEQPACK_Acceptor::shared_open");
   int error = 0;
 
 #if defined (ACE_HAS_IPV6)
@@ -238,11 +238,11 @@ ACE_SOCK_SEQPACK_Acceptor::commun_open (const ACE_Addr &local_sap,
 // Multihomed version of same.
 
 int
-ACE_SOCK_SEQPACK_Acceptor::commun_open (const ACE_Multihomed_INET_Addr &local_sap,
+ACE_SOCK_SEQPACK_Acceptor::shared_open (const ACE_Multihomed_INET_Addr &local_sap,
                                         int protocol_family,
                                         int backlog)
 {
-  ACE_TRACE ("ACE_SOCK_SEQPACK_Acceptor::commun_open");
+  ACE_TRACE ("ACE_SOCK_SEQPACK_Acceptor::shared_open");
   int error = 0;
 
   // TODO: Add multi-address support to IPV6
@@ -447,7 +447,7 @@ ACE_SOCK_SEQPACK_Acceptor::open (const ACE_Addr &local_sap,
                       reuse_addr) == -1)
     return -1;
   else
-    return this->commun_open (local_sap,
+    return this->shared_open (local_sap,
                               protocol_family,
                               backlog);
 }
@@ -475,7 +475,7 @@ ACE_SOCK_SEQPACK_Acceptor::ACE_SOCK_SEQPACK_Acceptor (const ACE_Addr &local_sap,
                 ACE_TEXT ("ACE_SOCK_SEQPACK_Acceptor")));
 }
 
-// General purpose routine for performing serveur ACE_SOCK creation.
+// General purpose routine for performing server ACE_SOCK creation.
 
 int
 ACE_SOCK_SEQPACK_Acceptor::open (const ACE_Addr &local_sap,
@@ -507,7 +507,7 @@ ACE_SOCK_SEQPACK_Acceptor::open (const ACE_Addr &local_sap,
                       reuse_addr) == -1)
     return -1;
   else
-    return this->commun_open (local_sap,
+    return this->shared_open (local_sap,
                               protocol_family,
                               backlog);
 }
@@ -544,12 +544,12 @@ ACE_SOCK_SEQPACK_Acceptor::open (const ACE_Multihomed_INET_Addr &local_sap,
                       reuse_addr) == -1)
     return -1;
   else
-    return this->commun_open (local_sap,
+    return this->shared_open (local_sap,
                               protocol_family,
                               backlog);
 }
 
-// General purpose routine for performing serveur ACE_SOCK creation.
+// General purpose routine for performing server ACE_SOCK creation.
 
 ACE_SOCK_SEQPACK_Acceptor::ACE_SOCK_SEQPACK_Acceptor (const ACE_Addr &local_sap,
                                       int reuse_addr,

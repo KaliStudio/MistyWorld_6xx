@@ -50,13 +50,13 @@ public:
   /// Constructor
   ACE_Registry_Name_Space (void);
 
-  /// Contacts and opens the registry on the specified serveur
+  /// Contacts and opens the registry on the specified server
   ACE_Registry_Name_Space (ACE_Name_Options *name_options);
 
   /// Destructor
   ~ACE_Registry_Name_Space (void);
 
-  /// Contacts and opens the registry on the specified serveur
+  /// Contacts and opens the registry on the specified server
   int open (ACE_Name_Options *name_options);
 
   /// Bind a new name to a naming context (Wide character strings).

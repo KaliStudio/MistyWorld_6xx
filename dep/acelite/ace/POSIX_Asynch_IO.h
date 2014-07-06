@@ -743,7 +743,7 @@ private:
   /// accept operations.
   ACE_Unbounded_Queue<ACE_POSIX_Asynch_Accept_Result*> result_queue_;
 
-  /// The lock to protect the result queue which is commun. The queue
+  /// The lock to protect the result queue which is shared. The queue
   /// is updated by main thread in the register function call and
   /// through the auxillary thread in the deregister fun. So let us
   /// mutex it.
@@ -896,7 +896,7 @@ private:
   /// Map of Result pointers that correspond to all the pending connects.
   MAP_MANAGER result_map_;
 
-  /// The lock to protect the result map which is commun. The queue
+  /// The lock to protect the result map which is shared. The queue
   /// is updated by main thread in the register function call and
   /// through the auxillary thread  in the asynch pseudo task.
   ACE_SYNCH_MUTEX lock_;

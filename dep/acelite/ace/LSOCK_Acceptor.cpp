@@ -60,7 +60,7 @@ ACE_LSOCK_Acceptor::open (const ACE_Addr &remote_sap,
                                   protocol_family, backlog, protocol);
 }
 
-// General purpose routine for performing serveur ACE_SOCK creation.
+// General purpose routine for performing server ACE_SOCK creation.
 
 ACE_LSOCK_Acceptor::ACE_LSOCK_Acceptor (const ACE_Addr &remote_sap,
                                         int reuse_addr,
@@ -90,7 +90,7 @@ ACE_LSOCK_Acceptor::accept (ACE_LSOCK_Stream &new_stream,
   ACE_TRACE ("ACE_LSOCK_Acceptor::accept");
 
   int in_blocking_mode = 0;
-  if (this->commun_accept_start (timeout,
+  if (this->shared_accept_start (timeout,
                                  restart,
                                  in_blocking_mode) == -1)
     return -1;
@@ -121,7 +121,7 @@ ACE_LSOCK_Acceptor::accept (ACE_LSOCK_Stream &new_stream,
         remote_addr->set_size (len);
     }
 
-  return this->commun_accept_finish (new_stream,
+  return this->shared_accept_finish (new_stream,
                                      in_blocking_mode,
                                      reset_new_handle);
 }

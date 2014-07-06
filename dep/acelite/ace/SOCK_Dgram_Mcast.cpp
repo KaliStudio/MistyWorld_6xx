@@ -221,7 +221,7 @@ ACE_SOCK_Dgram_Mcast::open_i (const ACE_INET_Addr &mcast_addr,
     }
 
   // Bind to the address (which may be INADDR_ANY) and port# (which may be 0)
-  if (ACE_SOCK_Dgram::commun_open (bind_addy, bind_addy.get_type ()) == -1)
+  if (ACE_SOCK_Dgram::shared_open (bind_addy, bind_addy.get_type ()) == -1)
     return -1;
 
   // Cache the actual bound address (which may be INADDR_ANY)

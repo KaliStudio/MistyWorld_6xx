@@ -607,9 +607,9 @@ protected:
    */
   virtual int activate_svc_handler (SVC_HANDLER *svc_handler);
 
-  /// Factors out the code commun between the {accept} and
+  /// Factors out the code shared between the {accept} and
   /// {handle_input} methods.
-  int commun_accept (SVC_HANDLER *svc_handler,
+  int shared_accept (SVC_HANDLER *svc_handler,
                      ACE_PEER_ACCEPTOR_ADDR *remote_addr,
                      ACE_Time_Value *timeout,
                      bool restart,

@@ -33,10 +33,10 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
  *     allocator is in place for every operation that accesses or
  *     updates the hash map.
  *
- *     If we use ACE_Hash_Map_Manager with a commun memory allocator
+ *     If we use ACE_Hash_Map_Manager with a shared memory allocator
  *     (or memory-mapped file allocator, for example), the allocator
  *     pointer used by ACE_Hash_Map_Manager gets stored with it, in
- *     commun memory (or memory-mapped file).  Naturally, this will
+ *     shared memory (or memory-mapped file).  Naturally, this will
  *     cause horrible problems, since only the first process to set
  *     that pointer will be guaranteed the address of the allocator
  *     is meaningful!  That is why we need this wrapper, which

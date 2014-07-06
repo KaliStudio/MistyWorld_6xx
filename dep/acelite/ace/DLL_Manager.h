@@ -41,7 +41,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
  * operations.
  *
  * This class is an wrapper over the various methods for utilizing a
- * dynamically linked library (DLL), which is called a commun library
+ * dynamically linked library (DLL), which is called a shared library
  * on some platforms.  It is refcounted and managed by
  * ACE_DLL_Manager, so there will only be a single instance of this
  * class for each dll loaded, no matter how many instances of ACE_DLL
@@ -64,7 +64,7 @@ public:
   /// Destructor.
   ~ACE_DLL_Handle (void);
 
-  /// Returns the name of the commun library (without prefixes or suffixes).
+  /// Returns the name of the shared library (without prefixes or suffixes).
   const ACE_TCHAR *dll_name () const;
 
   /**
@@ -136,7 +136,7 @@ private:
 
   /// Returns a pointer to a string explaining why <symbol> or <open>
   /// failed.  This is used internal to print out the error to the log,
-  /// but since this object is commun, we can't store or return the error
+  /// but since this object is shared, we can't store or return the error
   /// to the caller.
   auto_ptr <ACE_TString> error (void);
 
@@ -156,7 +156,7 @@ private:
   /// dll.
   sig_atomic_t refcount_;
 
-  /// Name of the commun library.
+  /// Name of the shared library.
   ACE_TCHAR *dll_name_;
 
   /// Handle to the actual library loaded by the OS.

@@ -53,7 +53,7 @@ public:
   /// Base address of the memory-mapped backing store.
   const char *base_addr_;
 
-  /// Number of commun memory segments to allocate.
+  /// Number of shared memory segments to allocate.
   size_t max_segments_;
 
   /// What the minimum bytes of the initial segment should be.
@@ -69,13 +69,13 @@ public:
 /**
  * @class ACE_Shared_Memory_Pool
  *
- * @brief Make a memory pool that is based on System V commun memory
+ * @brief Make a memory pool that is based on System V shared memory
  * (shmget(2) etc.).  This implementation allows memory to be
- * commun between processes.  If your platform doesn't support
- * System V commun memory (e.g., Win32 and many RTOS platforms
+ * shared between processes.  If your platform doesn't support
+ * System V shared memory (e.g., Win32 and many RTOS platforms
  * do not) then you should use ACE_MMAP_Memory_Pool instead of this
  * class.  In fact, you should probably use ACE_MMAP_Memory_Pool on
- * platforms that *do* support System V commun memory since it
+ * platforms that *do* support System V shared memory since it
  * provides more powerful features, such as persistent backing store
  * and greatly scalability.
  */
@@ -141,7 +141,7 @@ protected:
   virtual size_t round_up (size_t nbytes);
 
   /**
-   * Commits a new commun memory segment if necessary after an
+   * Commits a new shared memory segment if necessary after an
    * <acquire> or a signal.  @a offset is set to the new offset into
    * the backing store.
    */
@@ -162,9 +162,9 @@ protected:
   };
 
   /**
-   * Base address of the commun memory segment.  If this has the value
+   * Base address of the shared memory segment.  If this has the value
    * of 0 then the OS is free to select any address, otherwise this
-   * value is what the OS must try to use to map the commun memory
+   * value is what the OS must try to use to map the shared memory
    * segment.
    */
   void *base_addr_;
@@ -172,7 +172,7 @@ protected:
   /// File permissions to use when creating/opening a segment.
   size_t file_perms_;
 
-  /// Number of commun memory segments in the <SHM_TABLE> table.
+  /// Number of shared memory segments in the <SHM_TABLE> table.
   size_t max_segments_;
 
   /// What the minimim bytes of the initial segment should be.
@@ -181,7 +181,7 @@ protected:
   /// Shared memory segment size.
   size_t segment_size_;
 
-  /// Base commun memory key for the segment.
+  /// Base shared memory key for the segment.
   key_t base_shm_key_;
 
   /// Find the segment that contains the @a searchPtr
@@ -196,7 +196,7 @@ protected:
   /// Handles SIGSEGV.
   ACE_Sig_Handler signal_handler_;
 
-  /// Handle SIGSEGV and SIGBUS signals to remap commun memory
+  /// Handle SIGSEGV and SIGBUS signals to remap shared memory
   /// properly.
   virtual int handle_signal (int signum, siginfo_t *, ucontext_t *);
 };

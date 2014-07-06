@@ -33,12 +33,12 @@ ACE_Future_Holder<T>::~ACE_Future_Holder (void)
 }
 
 template <class T>
-ACE_Future_Observeur<T>::ACE_Future_Observeur (void)
+ACE_Future_Observer<T>::ACE_Future_Observer (void)
 {
 }
 
 template <class T>
-ACE_Future_Observeur<T>::~ACE_Future_Observeur (void)
+ACE_Future_Observer<T>::~ACE_Future_Observer (void)
 {
 }
 
@@ -182,17 +182,17 @@ ACE_Future_Rep<T>::set (const T &r,
                           T (r),
                           -1);
 
-          // Remove and notify all subscribed observeurs.
+          // Remove and notify all subscribed observers.
           typename OBSERVER_COLLECTION::iterator iterator =
-            this->observeur_collection_.begin ();
+            this->observer_collection_.begin ();
 
           typename OBSERVER_COLLECTION::iterator end =
-            this->observeur_collection_.end ();
+            this->observer_collection_.end ();
 
           while (iterator != end)
             {
-              OBSERVER *observeur = *iterator++;
-              observeur->update (caller);
+              OBSERVER *observer = *iterator++;
+              observer->update (caller);
             }
 
           // Signal all the waiting threads.
@@ -229,7 +229,7 @@ ACE_Future_Rep<T>::get (T &value,
 }
 
 template <class T> int
-ACE_Future_Rep<T>::attach (ACE_Future_Observeur<T> *observeur,
+ACE_Future_Rep<T>::attach (ACE_Future_Observer<T> *observer,
                           ACE_Future<T> &caller)
 {
   ACE_GUARD_RETURN (ACE_SYNCH_RECURSIVE_MUTEX, ace_mon, this->value_ready_mutex_, -1);
@@ -239,23 +239,23 @@ ACE_Future_Rep<T>::attach (ACE_Future_Observeur<T> *observeur,
 
   int result = 1;
 
-  // If the value is already produced, then notify observeur
+  // If the value is already produced, then notify observer
   if (this->value_ == 0)
-    result = this->observeur_collection_.insert (observeur);
+    result = this->observer_collection_.insert (observer);
   else
-      observeur->update (caller);
+      observer->update (caller);
 
   return result;
 }
 
 template <class T> int
-ACE_Future_Rep<T>::detach (ACE_Future_Observeur<T> *observeur)
+ACE_Future_Rep<T>::detach (ACE_Future_Observer<T> *observer)
 {
   ACE_GUARD_RETURN (ACE_SYNCH_RECURSIVE_MUTEX, ace_mon, this->value_ready_mutex_, -1);
 
-  // Remove all occurrences of the specified observeur from this
+  // Remove all occurrences of the specified observer from this
   // objects hash map.
-  return this->observeur_collection_.remove (observeur);
+  return this->observer_collection_.remove (observer);
 }
 
 template <class T>
@@ -362,15 +362,15 @@ ACE_Future<T>::get (T &value,
 }
 
 template <class T> int
-ACE_Future<T>::attach (ACE_Future_Observeur<T> *observeur)
+ACE_Future<T>::attach (ACE_Future_Observer<T> *observer)
 {
-  return this->future_rep_->attach (observeur, *this);
+  return this->future_rep_->attach (observer, *this);
 }
 
 template <class T> int
-ACE_Future<T>::detach (ACE_Future_Observeur<T> *observeur)
+ACE_Future<T>::detach (ACE_Future_Observer<T> *observer)
 {
-  return this->future_rep_->detach (observeur);
+  return this->future_rep_->detach (observer);
 }
 
 template <class T>

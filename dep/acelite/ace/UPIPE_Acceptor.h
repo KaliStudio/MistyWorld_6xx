@@ -66,7 +66,7 @@ public:
    * block forever, a @a timeout of {0, 0} means poll.  @a restart == 1
    * means "restart if interrupted."
    */
-  int accept (ACE_UPIPE_Stream &serveur_stream,
+  int accept (ACE_UPIPE_Stream &server_stream,
               ACE_UPIPE_Addr *remote_addr = 0,
               ACE_Time_Value *timeout = 0,
               bool restart = true,

@@ -444,7 +444,7 @@ protected:
   /// Reinitialize constructor.
   /**
    * This constructor is used to provide a valid vtable and allocator
-   * if the tree is reconstructed from commun memory.  Constructor
+   * if the tree is reconstructed from shared memory.  Constructor
    * used by the derived class that has an allocator
    */
   ACE_RB_Tree (void *location,

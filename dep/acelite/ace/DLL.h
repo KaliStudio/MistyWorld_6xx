@@ -34,7 +34,7 @@ class ACE_DLL_Handle;
  * operations.
  *
  * This class is a wrapper over the various methods for utilizing
- * a dynamically linked library (DLL), which is called a commun
+ * a dynamically linked library (DLL), which is called a shared
  * library on some platforms.  Operations @c open(), @c close(), and
  * @c symbol() have been implemented to help opening/closing and
  * extracting symbol information from a DLL, respectively.

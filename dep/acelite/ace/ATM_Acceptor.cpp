@@ -127,7 +127,7 @@ ACE_ATM_Acceptor::open (const ACE_Addr &remote_sap,
 
  ((ACE_SOCK_Acceptor *)this) -> set_handle (ret);
 
-  /* Set up the address information to become a serveur */
+  /* Set up the address information to become a server */
   ACE_OS::memset ((void *) &local_atm_addr, 0, sizeof local_atm_addr);
   local_atm_addr.satm_family = AF_ATM;
   local_atm_addr.satm_number.AddressType = SAP_FIELD_ANY_AESA_REST;

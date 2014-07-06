@@ -37,7 +37,7 @@ ACE_UPIPE_Acceptor::~ACE_UPIPE_Acceptor (void)
   ACE_TRACE ("ACE_UPIPE_Acceptor::~ACE_UPIPE_Acceptor");
 }
 
-// General purpose routine for performing serveur ACE_UPIPE.
+// General purpose routine for performing server ACE_UPIPE.
 
 int
 ACE_UPIPE_Acceptor::open (const ACE_UPIPE_Addr &local_addr,

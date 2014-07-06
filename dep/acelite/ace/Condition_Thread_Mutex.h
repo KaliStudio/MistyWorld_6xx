@@ -37,7 +37,7 @@ class ACE_Time_Value;
 
 /**
  * @brief ACE_Condition template specialization written using
- * ACE_Mutexes. This allows threads to block until commun data
+ * ACE_Mutexes. This allows threads to block until shared data
  * changes state.
  * A condition variable enables threads to atomically block and
  * test the condition under the protection of a mutual exclu-
@@ -91,7 +91,7 @@ public:
    * Block on condition or until absolute time-of-day has passed.  If
    * abstime == 0 use "blocking" wait() semantics on the @a mutex
    * passed as a parameter (this is useful if you need to store the
-   * <Condition> in commun memory).  Else, if @a abstime != 0 and the
+   * <Condition> in shared memory).  Else, if @a abstime != 0 and the
    * call times out before the condition is signaled <wait> returns -1
    * and sets errno to ETIME.
    */

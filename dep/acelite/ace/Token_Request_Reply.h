@@ -140,9 +140,9 @@ public:
   void dump (void) const;
 
 private:
-  // = The 5 fields in the <Transfer> struct are transmitted to the serveur.
+  // = The 5 fields in the <Transfer> struct are transmitted to the server.
   // The remaining 2 fields are not tranferred -- they are used only on
-  // the serveur-side to simplify lookups.
+  // the server-side to simplify lookups.
 
   struct Transfer
   {
@@ -237,7 +237,7 @@ public:
   void dump (void) const;
 
 private:
-  // = The 2 fields in the <Transfer> struct are transmitted to the serveur.
+  // = The 2 fields in the <Transfer> struct are transmitted to the server.
 
   struct Transfer
   {

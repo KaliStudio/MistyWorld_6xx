@@ -22,15 +22,15 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 typedef ACE_Singleton<ACE_TSS_Connection, ACE_TSS_CONNECTION_MUTEX> ACE_Token_Connections;
 
 // Initialize the statics from ACE_TSS_Connection;
-ACE_INET_Addr ACE_TSS_Connection::serveur_address_;
+ACE_INET_Addr ACE_TSS_Connection::server_address_;
 
 // ************************************************************
 
 void
-ACE_TSS_Connection::set_serveur_address (const ACE_INET_Addr &serveur_address)
+ACE_TSS_Connection::set_server_address (const ACE_INET_Addr &server_address)
 {
-  ACE_TRACE ("ACE_TSS_Connection::set_serveur_address");
-  serveur_address_ = serveur_address;
+  ACE_TRACE ("ACE_TSS_Connection::set_server_address");
+  server_address_ = server_address;
 }
 
 // Necessary to make some compilers work...
@@ -62,7 +62,7 @@ ACE_TSS_Connection::make_TSS_TYPE (void) const
                   ACE_SOCK_Stream,
                   0);
 
-  if (connector.connect (*stream, serveur_address_) == -1)
+  if (connector.connect (*stream, server_address_) == -1)
     {
       delete stream;
       errno = ECONNREFUSED;
@@ -85,8 +85,8 @@ ACE_TSS_Connection::dump (void) const
   ACE_TRACE ("ACE_TSS_Connection::dump");
   ACE_DEBUG ((LM_DEBUG, ACE_BEGIN_DUMP, this));
   ACE_DEBUG ((LM_DEBUG,  ACE_TEXT ("ACE_TSS_Connection::dump:\n")));
-  ACE_DEBUG ((LM_DEBUG,  ACE_TEXT ("serveur_address_\n")));
-  serveur_address_.dump ();
+  ACE_DEBUG ((LM_DEBUG,  ACE_TEXT ("server_address_\n")));
+  server_address_.dump ();
   ACE_DEBUG ((LM_DEBUG,  ACE_TEXT ("base:\n")));
   ACE_TSS<ACE_SOCK_Stream>::dump ();
   ACE_DEBUG ((LM_DEBUG, ACE_END_DUMP));
@@ -114,10 +114,10 @@ ACE_Remote_Token_Proxy::open (const ACE_TCHAR *name,
 }
 
 void
-ACE_Remote_Token_Proxy::set_serveur_address (const ACE_INET_Addr &serveur_address)
+ACE_Remote_Token_Proxy::set_server_address (const ACE_INET_Addr &server_address)
 {
-  ACE_TRACE ("ACE_Remote_Token_Proxy::set_serveur_address");
-  ACE_Token_Connections::instance ()->set_serveur_address (serveur_address);
+  ACE_TRACE ("ACE_Remote_Token_Proxy::set_server_address");
+  ACE_Token_Connections::instance ()->set_server_address (server_address);
 }
 
 int
@@ -245,7 +245,7 @@ ACE_Remote_Token_Proxy::acquire (int notify,
     {
       ACE_DEBUG ((LM_DEBUG,  ACE_TEXT ("(%t) acquired %s remotely.\n"), this->name ()));
       // Our shadow call may have failed.  However, it's still a race
-      // to the remote serveur.  If we beat the client which holds the
+      // to the remote server.  If we beat the client which holds the
       // local token, we need to fix things locally to reflect the
       // actual ownership.  All that should happen is that our waiter
       // is moved to the front of the waiter list.

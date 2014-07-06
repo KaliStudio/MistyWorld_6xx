@@ -4,7 +4,7 @@
 /**
  *  @file   Lib_Find.h
  *
- *  All the static function calls needed to search and open commun
+ *  All the static function calls needed to search and open shared
  *  libraries.
  *
  *  $Id: Lib_Find.h 93359 2011-02-11 11:33:12Z mcorino $
@@ -26,7 +26,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 
 namespace ACE
 {
-  // = Methods for searching and opening commun libraries.
+  // = Methods for searching and opening shared libraries.
 
   /**
    * Finds the file @a filename either using an absolute path or using

@@ -15,7 +15,7 @@ ACE_Shared_Memory_SV::open (key_t id,
                             int flags)
 {
   ACE_TRACE ("ACE_Shared_Memory_SV::open");
-  return commun_memory_.open_and_attach (id, length, create,
+  return shared_memory_.open_and_attach (id, length, create,
                                          perms, addr, flags);
 }
 

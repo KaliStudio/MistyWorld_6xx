@@ -151,7 +151,7 @@ public:
    * Renew has the rather odd semantics such that if there are other
    * waiting threads it will give up the token even if the
    * nesting_level_ > 1.  I'm not sure if this is really the right
-   * thing to do (since it makes it possible for commun data to be
+   * thing to do (since it makes it possible for shared data to be
    * changed unexpectedly) so use with caution...  This method
    * maintians the original token priority.  As in <acquire>, the
    * @a timeout value is an absolute time.
@@ -280,7 +280,7 @@ private:
   };
 
   /// Implements the <acquire> and <tryacquire> methods above.
-  int commun_acquire (void (*sleep_hook_func)(void *),
+  int shared_acquire (void (*sleep_hook_func)(void *),
                       void *arg,
                       ACE_Time_Value *timeout,
                       ACE_Token_Op_Type op_type);

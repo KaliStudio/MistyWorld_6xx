@@ -161,7 +161,7 @@ public:
    * non-0.  If @a data != 0 then this block refers to that memory until
    * this this block ceases to exist; this object will not free @a data on
    * destruction.  If @a locking_strategy is non-0 then this is used
-   * to protect regions of code that access commun state (e.g.,
+   * to protect regions of code that access shared state (e.g.,
    * reference counting) from race conditions.  Note that the @c size
    * of the ACE_Message_Block will be @a size, but the @c length will be 0
    * until the write pointer is set. The @a data_block_allocator is used to
@@ -219,7 +219,7 @@ public:
    * @a data != 0 we assume that we have ownership of the @a data till
    * this object ceases to exist  (and don't delete it during
    * destruction).  If @a locking_strategy is non-0 then this is used
-   * to protect regions of code that access commun state (e.g.,
+   * to protect regions of code that access shared state (e.g.,
    * reference counting) from race conditions.  Note that the @a size
    * of the Message_Block will be @a size, but the @a length will be 0
    * until <wr_ptr> is set. The @a data_block_allocator is use to
@@ -326,7 +326,7 @@ public:
   static ACE_Message_Block *duplicate (const ACE_Message_Block *mb);
 
   /**
-   * Decrease the commun ACE_Data_Block's reference count by 1.  If the
+   * Decrease the shared ACE_Data_Block's reference count by 1.  If the
    * ACE_Data_Block's reference count goes to 0, it is deleted.
    * In all cases, this ACE_Message_Block is deleted - it must have come
    * from the heap, or there will be trouble.
@@ -754,7 +754,7 @@ public:
   ACE_Data_Block *duplicate (void);
 
   /**
-   * Decrease the commun reference count by 1.  If the reference count
+   * Decrease the shared reference count by 1.  If the reference count
    * is > 0 then return this; else if reference count == 0 then delete
    * @c this and @a mb and return 0.  Behavior is undefined if reference
    * count < 0.
@@ -828,7 +828,7 @@ protected:
   // = Strategies.
   /**
    * Pointer to the allocator defined for this ACE_Data_Block.  Note
-   * that this pointer is commun by all owners of this
+   * that this pointer is shared by all owners of this
    * ACE_Data_Block.
    */
   ACE_Allocator *allocator_strategy_;
@@ -836,15 +836,15 @@ protected:
   /**
    * Pointer to the locking strategy defined for this
    * ACE_Data_Block.  This is used to protect regions of code that
-   * access commun ACE_Data_Block state.  Note that this lock is
-   * commun by all owners of the ACE_Data_Block's data.
+   * access shared ACE_Data_Block state.  Note that this lock is
+   * shared by all owners of the ACE_Data_Block's data.
    */
   ACE_Lock *locking_strategy_;
 
   /**
    * Reference count for this ACE_Data_Block, which is used to avoid
    * deep copies (i.e., clone()).  Note that this pointer value is
-   * commun by all owners of the <Data_Block>'s data, i.e., all the
+   * shared by all owners of the <Data_Block>'s data, i.e., all the
    * ACE_Message_Blocks.
    */
   int reference_count_;

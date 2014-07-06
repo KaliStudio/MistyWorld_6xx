@@ -300,7 +300,7 @@ public:
                 else
                 {
                     handler->PSendSysMessage("[IP2NATION] Table empty");
-                    TC_LOG_DEBUG("serveur.authserveur", "[IP2NATION] Table empty");
+                    TC_LOG_DEBUG("serveur.authentification", "[IP2NATION] Table empty");
                 }
             }
             else if (param == "off")

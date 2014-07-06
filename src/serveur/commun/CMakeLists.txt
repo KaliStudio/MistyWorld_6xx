@@ -37,7 +37,7 @@ source_group(Utilities FILES ${sources_Utilities})
 source_group(localdir FILES ${sources_localdir})
 
 # Manually set sources for Debugging directory as we don't want to include WheatyExceptionReport in commun project
-# It needs to be included both in authserveur and worldserveur for the static global variable to be properly initialized
+# It needs to be included both in authentification and worldserveur for the static global variable to be properly initialized
 # and to handle crash logs on windows
 set(sources_Debugging Debugging/Errors.cpp Debugging/Errors.h)
 

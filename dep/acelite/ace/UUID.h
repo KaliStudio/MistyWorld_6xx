@@ -231,7 +231,7 @@ namespace ACE_Utils
     UUID_Time time_last_;
 
     /// Type to contain the UUID generator persistent state. This will
-    /// be kept in memory mapped commun memory
+    /// be kept in memory mapped shared memory
     struct UUID_State
     {
       UUID_Time timestamp;

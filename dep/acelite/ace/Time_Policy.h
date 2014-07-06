@@ -131,7 +131,7 @@ private:
 /**
  * @class ACE_Dynamic_Time_Policy_base
  *
- * @brief Abstract base class for dynamically loaded and/or commun
+ * @brief Abstract base class for dynamically loaded and/or shared
  *        time policies.
  *
  */

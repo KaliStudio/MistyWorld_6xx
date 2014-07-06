@@ -190,13 +190,13 @@ public:
 /**
  * @class ACE_Service_Config
  *
- * @brief Supplies common serveur operations for dynamic and static
+ * @brief Supplies common server operations for dynamic and static
  * configuration of service.
  *
  * The ACE_Service_Config uses the Monostate pattern.  Therefore,
  * you can only have one of these instantiated per-process. It
  * represents the process-wide collection of services, which is
- * typicaly commun among all other configurable entities. The only
+ * typicaly shared among all other configurable entities. The only
  * ACE_Service_Config instance is registered with and owned by the
  * ACE_Object_Manager.
  *
@@ -464,8 +464,8 @@ private:
   static int insert (ACE_Static_Svc_Descriptor *svc);
 
   // = Utility methods.
-  /// Dynamically link the commun object file and retrieve a pointer to
-  /// the designated commun object in this file.
+  /// Dynamically link the shared object file and retrieve a pointer to
+  /// the designated shared object in this file.
   static int initialize (const ACE_Service_Type *,
                          const ACE_TCHAR *parameters);
 

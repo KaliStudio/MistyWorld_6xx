@@ -29,11 +29,11 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 /**
  * @class ACE_Shared_Memory
  *
- * @brief This base class adapts both System V commun memory and "BSD"
+ * @brief This base class adapts both System V shared memory and "BSD"
  * mmap to a common API.
  *
  * This is a very simple-minded wrapper, i.e., it really is only
- * useful for allocating large contiguous chunks of commun
+ * useful for allocating large contiguous chunks of shared
  * memory.  For a much more sophisticated version, please check
  * out the <ACE_Malloc> class.
  */

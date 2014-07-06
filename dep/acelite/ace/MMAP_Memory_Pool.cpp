@@ -319,7 +319,7 @@ ACE_MMAP_Memory_Pool::map_file (size_t map_size)
     }
 }
 
-// Ask operating system for more commun memory, increasing the mapping
+// Ask operating system for more shared memory, increasing the mapping
 // accordingly.  Note that this routine assumes that the appropriate
 // locks are held when it is called.
 
@@ -348,7 +348,7 @@ ACE_MMAP_Memory_Pool::acquire (size_t nbytes,
   return (void *) ((char *) this->mmap_.addr () + (this->mmap_.size () - rounded_bytes));
 }
 
-// Ask system for initial chunk of commun memory.
+// Ask system for initial chunk of shared memory.
 
 void *
 ACE_MMAP_Memory_Pool::init_acquire (size_t nbytes,

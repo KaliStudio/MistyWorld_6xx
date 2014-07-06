@@ -73,7 +73,7 @@ namespace ACE
                            Control_Action* action = 0);
 
       /// Remove a constraint and return the associated control action,
-      /// which may be commun, for deletion or further use.
+      /// which may be shared, for deletion or further use.
       Control_Action* remove_constraint (const long constraint_id);
 
       /// Get all constraints

@@ -70,7 +70,7 @@ public:
   /// Destructor
   virtual ~ACE_Pagefile_Memory_Pool (void);
 
-  /// Ask system for initial chunk of commun memory.
+  /// Ask system for initial chunk of shared memory.
   void *init_acquire (size_t nbytes,
                       size_t &rounded_bytes,
                       int &first_time);
@@ -159,7 +159,7 @@ private:
       /// Maximum size the pool may grow
       size_t max_size_;
 
-      /// Size of mapped commun memory segment
+      /// Size of mapped shared memory segment
       size_t mapped_size_;
 
       /// Offset to mapped but not yet acquired address space
@@ -180,7 +180,7 @@ private:
   Control_Block local_cb_;
 
   /// Shared memory pool statistics.
-  Control_Block *commun_cb_;
+  Control_Block *shared_cb_;
 
   /// File mapping handle.
   ACE_HANDLE object_handle_;
@@ -188,7 +188,7 @@ private:
   /// System page size.
   size_t page_size_;
 
-  /// Name of the backing store where the commun memory pool is kept.
+  /// Name of the backing store where the shared memory pool is kept.
   ACE_TCHAR backing_store_name_[MAXPATHLEN];
 };
 

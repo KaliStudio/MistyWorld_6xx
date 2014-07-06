@@ -2972,7 +2972,7 @@ ACE::sock_error (int error)
       return ACE_TEXT ("Authoritive: Host not found");
       /* NOTREACHED */
     case WSATRY_AGAIN:
-      return ACE_TEXT ("Non-authoritive: host not found or serveur failure");
+      return ACE_TEXT ("Non-authoritive: host not found or server failure");
       /* NOTREACHED */
     case WSANO_RECOVERY:
       return ACE_TEXT ("Non-recoverable: refused or not implemented");

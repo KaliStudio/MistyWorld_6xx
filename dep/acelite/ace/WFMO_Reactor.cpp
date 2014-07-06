@@ -1143,7 +1143,7 @@ ACE_WFMO_Reactor::open (size_t size,
                         int,
                         ACE_Reactor_Notify *notify)
 {
-  // This GUARD is necessary since we are updating commun state.
+  // This GUARD is necessary since we are updating shared state.
   ACE_GUARD_RETURN (ACE_Process_Mutex, ace_mon, this->lock_, -1);
 
   // If we are already open, return -1
@@ -1301,7 +1301,7 @@ ACE_WFMO_Reactor::timer_queue (ACE_Timer_Queue *tq)
 int
 ACE_WFMO_Reactor::close (void)
 {
-  // This GUARD is necessary since we are updating commun state.
+  // This GUARD is necessary since we are updating shared state.
   ACE_GUARD_RETURN (ACE_Process_Mutex, ace_mon, this->lock_, -1);
 
   // If we are already closed, return error
@@ -2274,7 +2274,7 @@ ACE_WFMO_Reactor::upcall (ACE_Event_Handler *event_handler,
 int
 ACE_WFMO_Reactor::update_state (void)
 {
-  // This GUARD is necessary since we are updating commun state.
+  // This GUARD is necessary since we are updating shared state.
   ACE_GUARD_RETURN (ACE_Process_Mutex, monitor, this->lock_, -1);
 
   // Decrement active threads

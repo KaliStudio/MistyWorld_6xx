@@ -49,7 +49,7 @@ class ACE_Svc_Conf_Param;
 /**
  * @class ACE_Service_Gestalt
  *
- * @brief Supplies common serveur operations for dynamic and static
+ * @brief Supplies common server operations for dynamic and static
  * configuration of services.
  *
  * The Gestalt embodies the concept of configuration context. On one
@@ -265,8 +265,8 @@ public:
   // = Utility methods.
 
 #if (ACE_USES_CLASSIC_SVC_CONF == 1)
-  /// Dynamically link the commun object file and retrieve a pointer to
-  /// the designated commun object in this file. Also account for the
+  /// Dynamically link the shared object file and retrieve a pointer to
+  /// the designated shared object in this file. Also account for the
   /// possiblity to have static services registered when loading the DLL, by
   /// ensuring that the dynamic sevice is registered before any of its
   /// subordibnate static services. Thus avoiding any finalization order
@@ -275,8 +275,8 @@ public:
                   const ACE_TCHAR *parameters);
 #endif /* (ACE_USES_CLASSIC_SVC_CONF == 1) */
 
-  /// Dynamically link the commun object file and retrieve a pointer to
-  /// the designated commun object in this file.
+  /// Dynamically link the shared object file and retrieve a pointer to
+  /// the designated shared object in this file.
   /// @deprecated
   /// @note This is error-prone in the presense of dynamic services,
   /// which in turn initialize their own static services. This method
@@ -379,8 +379,8 @@ protected:
   ACE_XML_Svc_Conf* get_xml_svc_conf (ACE_DLL &d);
 #endif /* ACE_USES_CLASSIC_SVC_CONF == 1 */
 
-  /// Dynamically link the commun object file and retrieve a pointer to
-  /// the designated commun object in this file.
+  /// Dynamically link the shared object file and retrieve a pointer to
+  /// the designated shared object in this file.
   int initialize_i (const ACE_Service_Type *sr, const ACE_TCHAR *parameters);
 
   const ACE_Static_Svc_Descriptor* find_processed_static_svc (const ACE_TCHAR*);

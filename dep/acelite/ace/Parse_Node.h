@@ -299,7 +299,7 @@ private:
 /**
  * @class ACE_Location_Node
  *
- * @brief Keep track of where a commun library is located.
+ * @brief Keep track of where a shared library is located.
  *
  * @note This class is only meant for INTERNAL use by ACE.
  *
@@ -332,7 +332,7 @@ public:
 protected:
   int open_dll (int & yyerrno);
 
-  /// Pathname to the commun library we are working on.
+  /// Pathname to the shared library we are working on.
   const ACE_TCHAR *pathname_;
 
   /**
@@ -342,10 +342,10 @@ protected:
    */
   int must_delete_;
 
-  /// The open commun library.
+  /// The open shared library.
   ACE_DLL dll_;
 
-  /// Symbol that we've obtained from the commun library.
+  /// Symbol that we've obtained from the shared library.
   void *symbol_;
 
 private:
@@ -356,7 +356,7 @@ private:
 /**
  * @class ACE_Object_Node
  *
- * @brief Keeps track of the symbol name for a commun object.
+ * @brief Keeps track of the symbol name for a shared object.
  *
  * @note This class is only meant for INTERNAL use by ACE.
  *
@@ -389,7 +389,7 @@ private:
 /**
  * @class ACE_Function_Node
  *
- * @brief Keeps track of the symbol name of for a commun function.
+ * @brief Keeps track of the symbol name of for a shared function.
  *
  * @note This class is only meant for INTERNAL use by ACE.
  *

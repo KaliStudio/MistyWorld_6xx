@@ -1841,7 +1841,7 @@ class ACE_Export ACE_event_t
   friend int ACE_OS::event_reset(ACE_event_t*);
 protected:
 
-  /// Event name if process commun.
+  /// Event name if process shared.
   char* name_;
 
   /// Event data

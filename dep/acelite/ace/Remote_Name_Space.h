@@ -54,16 +54,16 @@ public:
   /**
    * Specifies the scope of this namespace, opens and memory-maps the
    * associated file (if accessible) or contacts the dedicated name
-   * serveur process for NET_LOCAL namespace.
+   * server process for NET_LOCAL namespace.
    */
   ACE_Remote_Name_Space (const ACE_TCHAR *hostname, u_short port);
 
   /**
    * Specifies the scope of this namespace, opens and memory-maps the
    * associated file (if accessible) or contacts the dedicated name
-   * serveur process for NET_LOCAL namespace.
+   * server process for NET_LOCAL namespace.
    */
-  int open (const ACE_TCHAR *serveurname, u_short port);
+  int open (const ACE_TCHAR *servername, u_short port);
 
   /// destructor, do some cleanup :TBD: last dtor should "compress"
   /// file
@@ -136,7 +136,7 @@ public:
   virtual void dump (void) const;
 
 private:
-  /// Interface to Name serveur process for NET_LOCAL namespace.
+  /// Interface to Name server process for NET_LOCAL namespace.
   ACE_Name_Proxy ns_proxy_;
 };
 

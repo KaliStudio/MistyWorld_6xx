@@ -75,7 +75,7 @@ ACE_System_Time::get_local_system_time (ACE_Time_Value &time_out)
   return 0;
 }
 
-// Get the system time of the central time serveur.
+// Get the system time of the central time server.
 
 int
 ACE_System_Time::get_master_system_time (time_t &time_out)
@@ -88,7 +88,7 @@ ACE_System_Time::get_master_system_time (time_t &time_out)
       void * temp = 0;
       if (this->shmem_->find (ACE_DEFAULT_TIME_SERVER_STR, temp) == -1)
         {
-          // No time entry in commun memory (meaning no Clerk exists)
+          // No time entry in shared memory (meaning no Clerk exists)
           // so return the local time of the host.
           return this->get_local_system_time (time_out);
         }
@@ -111,7 +111,7 @@ ACE_System_Time::get_master_system_time (time_t &time_out)
     }
   else
     // Return the last local time. Note that this is stored as the
-    // second field in commun memory.
+    // second field in shared memory.
     time_out = *(this->delta_time_ + 1);
   return 0;
 }
@@ -127,7 +127,7 @@ ACE_System_Time::get_master_system_time (ACE_Time_Value &time_out)
   return 0;
 }
 
-// Synchronize local system time with the central time serveur using
+// Synchronize local system time with the central time server using
 // specified mode (currently unimplemented).
 
 int

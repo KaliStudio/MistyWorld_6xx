@@ -362,7 +362,7 @@ protected:
  * interface at this level of the library.  As of yet, no one
  * uses ACE_Tokens derivatives through this abstract interface
  * except for ACE_Token_Manager.  It only uses the statistical
- * methods which are commun by all Tokens.  For that reason, it
+ * methods which are shared by all Tokens.  For that reason, it
  * still makes since to have a common base class.  However,
  * acquire, renew, and release do not need to have matching
  * interfaces throughout all Tokens.
@@ -538,7 +538,7 @@ public:
    * Renew has the rather odd semantics such that if there are other
    * waiting threads it will give up the token even if the
    * nesting_level_ > 1.  I'm not sure if this is really the right
-   * thing to do (since it makes it possible for commun data to be
+   * thing to do (since it makes it possible for shared data to be
    * changed unexpectedly) so use with caution...  Returns 0 on
    * success, -1 on failure with <ACE_Log_Msg::errnum> as the reason.
    * If errnum == EWOULDBLOCK, and notify == 1,
@@ -633,7 +633,7 @@ public:
    * Renew has the rather odd semantics such that if there are other
    * waiting threads it will give up the token even if the
    * nesting_level_ > 1.  I'm not sure if this is really the right
-   * thing to do (since it makes it possible for commun data to be
+   * thing to do (since it makes it possible for shared data to be
    * changed unexpectedly) so use with caution...  Returns 0 on
    * success, -1 on failure with <ACE_Log_Msg::errnum> as the reason.
    * If errnum == EWOULDBLOCK, and notify == 1,
@@ -840,7 +840,7 @@ public:
 
   /**
    * Return the name of the token.  This is important for use within
-   * the token serveurs (local and remote) as well as with token
+   * the token servers (local and remote) as well as with token
    * collections.  So, all derivations of ACE_Token_Proxy must be able to
    * stringify some name.  The name must uniquely identify a token.
    * So, for instance, the token within the reactor should probably be

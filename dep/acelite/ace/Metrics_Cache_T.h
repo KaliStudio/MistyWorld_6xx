@@ -92,7 +92,7 @@ public:
   /// Mutator for probe id.
   void probe_id (u_int id);
 
-  /// Flush the ACE metrics timeprobe into commun memory.
+  /// Flush the ACE metrics timeprobe into shared memory.
   void flush_ACE_Metrics_Timeprobe ();
 
 protected:
@@ -157,7 +157,7 @@ public:
   /// Flips the supplier and consumer sides.
   void flip_supplier_and_consumer ();
 
-  /// Flush the ACE metrics cache into commun memory.
+  /// Flush the ACE metrics cache into shared memory.
   void flush_ACE_Metrics_Cache ();
 
   /// Set the enable state for metrics collection.

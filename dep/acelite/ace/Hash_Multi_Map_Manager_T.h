@@ -569,7 +569,7 @@ protected:
 protected:
   /// Returns the @c ACE_Hash_Multi_Map_Entry object that corresponds to
   /// @a ext_id.
-  int commun_find (const EXT_ID &ext_id,
+  int shared_find (const EXT_ID &ext_id,
                    ACE_Hash_Multi_Map_Entry<EXT_ID, INT_ID> *&entry,
                    size_t &loc);
 

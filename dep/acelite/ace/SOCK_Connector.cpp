@@ -28,12 +28,12 @@ ACE_SOCK_Connector::dump (void) const
 }
 
 int
-ACE_SOCK_Connector::commun_open (ACE_SOCK_Stream &new_stream,
+ACE_SOCK_Connector::shared_open (ACE_SOCK_Stream &new_stream,
                                  int protocol_family,
                                  int protocol,
                                  int reuse_addr)
 {
-  ACE_TRACE ("ACE_SOCK_Connector::commun_open");
+  ACE_TRACE ("ACE_SOCK_Connector::shared_open");
 
   // Only open a new socket if we don't already have a valid handle.
   if (new_stream.get_handle () == ACE_INVALID_HANDLE
@@ -47,7 +47,7 @@ ACE_SOCK_Connector::commun_open (ACE_SOCK_Stream &new_stream,
 }
 
 int
-ACE_SOCK_Connector::commun_open (ACE_SOCK_Stream &new_stream,
+ACE_SOCK_Connector::shared_open (ACE_SOCK_Stream &new_stream,
                                  int protocol_family,
                                  int protocol,
                                  ACE_Protocol_Info *protocolinfo,
@@ -55,7 +55,7 @@ ACE_SOCK_Connector::commun_open (ACE_SOCK_Stream &new_stream,
                                  u_long flags,
                                  int reuse_addr)
 {
-  ACE_TRACE ("ACE_SOCK_Connector::commun_open");
+  ACE_TRACE ("ACE_SOCK_Connector::shared_open");
 
   // Only open a new socket if we don't already have a valid handle.
   if (new_stream.get_handle () == ACE_INVALID_HANDLE
@@ -72,11 +72,11 @@ ACE_SOCK_Connector::commun_open (ACE_SOCK_Stream &new_stream,
 }
 
 int
-ACE_SOCK_Connector::commun_connect_start (ACE_SOCK_Stream &new_stream,
+ACE_SOCK_Connector::shared_connect_start (ACE_SOCK_Stream &new_stream,
                                           const ACE_Time_Value *timeout,
                                           const ACE_Addr &local_sap)
 {
-  ACE_TRACE ("ACE_SOCK_Connector::commun_connect_start");
+  ACE_TRACE ("ACE_SOCK_Connector::shared_connect_start");
 
   if (local_sap != ACE_Addr::sap_any)
     {
@@ -100,11 +100,11 @@ ACE_SOCK_Connector::commun_connect_start (ACE_SOCK_Stream &new_stream,
 }
 
 int
-ACE_SOCK_Connector::commun_connect_finish (ACE_SOCK_Stream &new_stream,
+ACE_SOCK_Connector::shared_connect_finish (ACE_SOCK_Stream &new_stream,
                                            const ACE_Time_Value *timeout,
                                            int result)
 {
-  ACE_TRACE ("ACE_SOCK_Connector::commun_connect_finish");
+  ACE_TRACE ("ACE_SOCK_Connector::shared_connect_finish");
   // Save/restore errno.
   ACE_Errno_Guard error (errno);
 
@@ -185,12 +185,12 @@ ACE_SOCK_Connector::connect (ACE_SOCK_Stream &new_stream,
 {
   ACE_TRACE ("ACE_SOCK_Connector::connect");
 
-  if (this->commun_open (new_stream,
+  if (this->shared_open (new_stream,
                          remote_sap.get_type (),
                          protocol,
                          reuse_addr) == -1)
     return -1;
-  else if (this->commun_connect_start (new_stream,
+  else if (this->shared_connect_start (new_stream,
                                        timeout,
                                        local_sap) == -1)
     return -1;
@@ -199,7 +199,7 @@ ACE_SOCK_Connector::connect (ACE_SOCK_Stream &new_stream,
                                 reinterpret_cast<sockaddr *> (remote_sap.get_addr ()),
                                 remote_sap.get_size ());
 
-  return this->commun_connect_finish (new_stream, timeout, result);
+  return this->shared_connect_finish (new_stream, timeout, result);
 }
 
 #if !defined (ACE_HAS_WINCE)
@@ -217,7 +217,7 @@ ACE_SOCK_Connector::connect (ACE_SOCK_Stream &new_stream,
 {
   ACE_TRACE ("ACE_SOCK_Connector::connect");
 
-  if (this->commun_open (new_stream,
+  if (this->shared_open (new_stream,
                          remote_sap.get_type (),
                          0,
                          protocolinfo,
@@ -225,7 +225,7 @@ ACE_SOCK_Connector::connect (ACE_SOCK_Stream &new_stream,
                          flags,
                          reuse_addr) == -1)
     return -1;
-  else if (this->commun_connect_start (new_stream,
+  else if (this->shared_connect_start (new_stream,
                                        timeout,
                                        local_sap) == -1)
     return -1;
@@ -235,7 +235,7 @@ ACE_SOCK_Connector::connect (ACE_SOCK_Stream &new_stream,
                                 remote_sap.get_size (),
                                 qos_params);
 
-  return this->commun_connect_finish (new_stream, timeout, result);
+  return this->shared_connect_finish (new_stream, timeout, result);
 }
 #endif  // ACE_HAS_WINCE
 

@@ -37,7 +37,7 @@ class ACE_Time_Value;
  * the blocking as opposed to timed acquires.  The blocking version of
  * acquire() is often used to serialize access to a critical section,
  * whereas the timed version is often used to wait for another thread
- * to update some condition or change some commun state.  When using an
+ * to update some condition or change some shared state.  When using an
  * ACE_Null_Semaphore, however, there's no other thread involved to
  * change a state or condition (otherwise, a null semaphore would be
  * inappropriate).  Returning an error value signifies that the

@@ -109,7 +109,7 @@ ACE_SOCK::open (int type,
   return 0;
 }
 
-// General purpose constructor for performing serveur ACE_SOCK
+// General purpose constructor for performing server ACE_SOCK
 // creation.
 
 ACE_SOCK::ACE_SOCK (int type,

@@ -64,7 +64,7 @@ public:
    *     bind the local address to a randomly generated port number.
    *
    * @li <b>remote_addr == ACE_Addr::sap_any && local_addr != ACE_Addr::sap_any:</b>
-   *     Bind the local address (used primarily by serveurs).
+   *     Bind the local address (used primarily by servers).
    *
    * @li <b>remote_addr != ACE_Addr::sap_any && local_addr == ACE_Addr::sap_any:</b>
    *     Connect to the remote address without binding a local address
@@ -108,7 +108,7 @@ public:
    *     bind the local address to a randomly generated port number.
    *
    * @li <b>remote_addr == ACE_Addr::sap_any && local_addr != ACE_Addr::sap_any:</b>
-   *     Bind the local address (used primarily by serveurs).
+   *     Bind the local address (used primarily by servers).
    *
    * @li <b>remote_addr != ACE_Addr::sap_any && local_addr == ACE_Addr::sap_any:</b>
    *     Connect to the remote address without binding a local address

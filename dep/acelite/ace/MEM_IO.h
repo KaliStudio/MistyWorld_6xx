@@ -144,9 +144,9 @@ private:
 /**
  * @class ACE_MEM_IO
  *
- * @brief Defines the methods for the ACE commun memeory wrapper I/O
+ * @brief Defines the methods for the ACE shared memeory wrapper I/O
  * routines (e.g., send/recv).
- * The commun memory transport uses ACE_SOCK_* class to
+ * The shared memory transport uses ACE_SOCK_* class to
  * implement the signaling mechanism so we can easily use the
  * new mechanism with the Reactor pattern (which uses select
  * under the hood.)
@@ -161,9 +161,9 @@ private:
  * MMAP file.
  * When sending information using methods provided in this
  * class, ACE_MEM_IO requests a chunk of memory from the
- * MALLOC_TYPE object, copy the data into the commun memory and
+ * MALLOC_TYPE object, copy the data into the shared memory and
  * send the memory offset (from the start of the ACE_Malloc)
- * across the socket.  This action also serveurs as a signal to
+ * across the socket.  This action also servers as a signal to
  * the other end.  The receiving side then reverses the
  * procedures and copies the information into user buffer.
  */

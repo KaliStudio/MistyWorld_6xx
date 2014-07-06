@@ -658,7 +658,7 @@ ACE_Function_Node::symbol (ACE_Service_Gestalt *,
     {
       this->symbol_ = 0;
 
-      // Locate the factory function <function_name> in the commun
+      // Locate the factory function <function_name> in the shared
       // object.
       ACE_TCHAR * const function_name =
         const_cast<ACE_TCHAR *> (this->function_name_);

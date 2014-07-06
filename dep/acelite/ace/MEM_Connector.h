@@ -156,7 +156,7 @@ private:
   ACE_MEM_Addr address_;
 
   /// A cached MALLOC_OPTIONS that the MEM_Connector used to initialize
-  /// the commun memory malloc update connection establishment.
+  /// the shared memory malloc update connection establishment.
   ACE_MEM_SAP::MALLOC_OPTIONS malloc_options_;
 
   /// Preferred signaling strategy.

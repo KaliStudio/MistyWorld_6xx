@@ -105,13 +105,13 @@ public:
   enum {
     INVALID_METHOD = -1,
     SSLv2_client = 1,
-    SSLv2_serveur,
+    SSLv2_server,
     SSLv2,
     SSLv3_client,
-    SSLv3_serveur,
+    SSLv3_server,
     SSLv3,
     SSLv23_client,
-    SSLv23_serveur,
+    SSLv23_server,
     SSLv23,
     TLSv1_client,
     TLSv1_server,
@@ -261,9 +261,9 @@ public:
    *  @todo Complete this documentation where elipses(...) are used
    *
    *  @doc Use this method when certificate chain verification is
-   *  required.  The default serveur behaviour is SSL_VERIFY_NONE
+   *  required.  The default server behaviour is SSL_VERIFY_NONE
    *  i.e. client certicates are requested for verified. This method
-   *  can be used to configure serveur to request client certificates
+   *  can be used to configure server to request client certificates
    *  and perform the certificate verification. If <strict> is set
    *  true the client connection is rejected when certificate
    *  verification fails.  Otherwise the session is accepted with a

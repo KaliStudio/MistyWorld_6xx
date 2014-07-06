@@ -29,7 +29,7 @@ ACE_Registry_Name_Space::~ACE_Registry_Name_Space (void)
 int
 ACE_Registry_Name_Space::open (ACE_Name_Options *name_options)
 {
-  const ACE_TCHAR *host = name_options->nameserveur_host ();
+  const ACE_TCHAR *host = name_options->nameserver_host ();
   ACE_Registry::Naming_Context predefined;
 
   int result = ACE_Predefined_Naming_Contexts::connect (predefined,

@@ -47,7 +47,7 @@
 // Compiler/platform contains the <sys/syscall.h> file.
 #define ACE_HAS_SYS_SYSCALL_H
 
-// Compiler/platform correctly calls init()/fini() for commun libraries.
+// Compiler/platform correctly calls init()/fini() for shared libraries.
 #define ACE_HAS_AUTOMATIC_INIT_FINI
 
 // Platform supports POSIX O_NONBLOCK semantics.

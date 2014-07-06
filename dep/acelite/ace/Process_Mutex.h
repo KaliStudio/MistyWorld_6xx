@@ -64,9 +64,9 @@ class ACE_Time_Value;
  * Consider these tradeoffs when evaluating whether or not to change
  * the default:
  *   - Some platforms (e.g., Pthreads and UI Threads) require interprocess
- *     mutexes to be allocated from commun memory. On these platforms, using
+ *     mutexes to be allocated from shared memory. On these platforms, using
  *     ACE_Mutex as the underlying mechanism requires that ACE_Process_Mutex
- *     objects be allocated in commun memory. Using ACE_SV_Semaphore_Complex
+ *     objects be allocated in shared memory. Using ACE_SV_Semaphore_Complex
  *     avoids this restriction.
  *   - System V IPC kernel parameters have a low default limit on some
  *     platforms. This would restrict the number of ACE_Process_Mutex objects

@@ -37,7 +37,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
  * The ACE_Msg_WFMO_Reactor is an OO event demultiplexor and
  * event handler Reactor. It differs from <ACE_WFMO_Reactor> by
  * its ability to react on Windows messages.  It is needed when
- * the task should serve also as a COM/DCOM serveur.
+ * the task should serve also as a COM/DCOM server.
  */
 class ACE_Export ACE_Msg_WFMO_Reactor : public ACE_WFMO_Reactor
 {

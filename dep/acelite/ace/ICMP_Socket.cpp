@@ -116,13 +116,13 @@ ACE_ICMP_Socket::open (ACE_Addr const & local,
       return -1;
     }
 
-  return this->commun_open (local);
+  return this->shared_open (local);
 }
 
 int
-ACE_ICMP_Socket::commun_open (ACE_Addr const & local)
+ACE_ICMP_Socket::shared_open (ACE_Addr const & local)
 {
-  ACE_TRACE ("ACE_ICMP_Socket::commun_open");
+  ACE_TRACE ("ACE_ICMP_Socket::shared_open");
 
   int error = 0;
   if (local == ACE_Addr::sap_any)

@@ -47,7 +47,7 @@ ACE_SPIPE_Acceptor::dump (void) const
 #endif /* ACE_HAS_DUMP */
 }
 
-// General purpose routine for performing serveur ACE_SPIPE creation.
+// General purpose routine for performing server ACE_SPIPE creation.
 
 int
 ACE_SPIPE_Acceptor::open (const ACE_SPIPE_Addr &local_sap,
@@ -196,7 +196,7 @@ ACE_SPIPE_Acceptor::close (void)
 
 #endif /* ACE_HAS_WIN32_NAMED_PIPES */
 
-  // This behavior is commun by UNIX and Win32...
+  // This behavior is shared by UNIX and Win32...
   int result = this->ACE_SPIPE::close ();
   this->set_handle (ACE_INVALID_HANDLE);
 

@@ -26,7 +26,7 @@
    exists. */
 #define ACE_HAS_ALT_CUSERID 1
 
-/* Compiler/platform correctly calls init()/fini() for commun libraries. */
+/* Compiler/platform correctly calls init()/fini() for shared libraries. */
 #define ACE_HAS_AUTOMATIC_INIT_FINI 1
 
 /* Define to 1 if platform has bswap_16(). */

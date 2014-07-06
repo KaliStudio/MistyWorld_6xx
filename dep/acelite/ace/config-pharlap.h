@@ -66,7 +66,7 @@
 // Let the config-win32.h file do its thing
 #undef ACE_CONFIG_H
 #include "ace/config-win32.h"
-// Now remove things that desktop/serveur Windows has but Pharlap ETS doesn't.
+// Now remove things that desktop/server Windows has but Pharlap ETS doesn't.
 #undef ACE_HAS_INTERLOCKED_EXCHANGEADD
 #undef ACE_HAS_WCHAR
 

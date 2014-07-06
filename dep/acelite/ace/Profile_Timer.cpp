@@ -172,13 +172,13 @@ ACE_Profile_Timer::elapsed_rusage (ACE_Profile_Timer::Rusage &usage)
 {
   ACE_TRACE ("ACE_Profile_Timer::elapsed_rusage");
 #    if !defined (ACE_HAS_LIMITED_RUSAGE_T)
-  // integral commun memory size
+  // integral shared memory size
   usage.ru_ixrss =
     this->end_usage_.ru_ixrss - this->last_usage_.ru_ixrss;
-  // integral uncommun data "
+  // integral unshared data "
   usage.ru_idrss =
     this->end_usage_.ru_idrss - this->last_usage_.ru_idrss;
-  // integral uncommun stack "
+  // integral unshared stack "
   usage.ru_isrss =
     this->end_usage_.ru_isrss - this->last_usage_.ru_isrss;
   // page reclaims - total vmfaults

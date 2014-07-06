@@ -195,7 +195,7 @@ public:
 
   /**
    * Return the unique kernel handle of the thread.  Note that on
-   * Win32 this is actually a pseudohandle, which cannot be commun
+   * Win32 this is actually a pseudohandle, which cannot be shared
    * with other processes or waited on by threads.  To locate the real
    * handle, please use the ACE_Thread_Manager::thr_self() method.
    */

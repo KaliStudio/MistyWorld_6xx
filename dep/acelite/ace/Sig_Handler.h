@@ -106,7 +106,7 @@ public:
   ACE_ALLOC_HOOK_DECLARE;
 
 protected:
-  // = These methods and data members are commun by derived classes.
+  // = These methods and data members are shared by derived classes.
 
   /**
    * Set a new ACE_Event_Handler that is associated with @a signum.

@@ -239,8 +239,8 @@ ACE_SSL_Context::set_mode (int mode)
     case ACE_SSL_Context::SSLv2_client:
       method = ::SSLv2_client_method ();
       break;
-    case ACE_SSL_Context::SSLv2_serveur:
-      method = ::SSLv2_serveur_method ();
+    case ACE_SSL_Context::SSLv2_server:
+      method = ::SSLv2_server_method ();
       break;
     case ACE_SSL_Context::SSLv2:
       method = ::SSLv2_method ();
@@ -248,8 +248,8 @@ ACE_SSL_Context::set_mode (int mode)
     case ACE_SSL_Context::SSLv3_client:
       method = ::SSLv3_client_method ();
       break;
-    case ACE_SSL_Context::SSLv3_serveur:
-      method = ::SSLv3_serveur_method ();
+    case ACE_SSL_Context::SSLv3_server:
+      method = ::SSLv3_server_method ();
       break;
     case ACE_SSL_Context::SSLv3:
       method = ::SSLv3_method ();
@@ -257,8 +257,8 @@ ACE_SSL_Context::set_mode (int mode)
     case ACE_SSL_Context::SSLv23_client:
       method = ::SSLv23_client_method ();
       break;
-    case ACE_SSL_Context::SSLv23_serveur:
-      method = ::SSLv23_serveur_method ();
+    case ACE_SSL_Context::SSLv23_server:
+      method = ::SSLv23_server_method ();
       break;
     case ACE_SSL_Context::SSLv23:
       method = ::SSLv23_method ();
@@ -333,16 +333,16 @@ ACE_SSL_Context::load_trusted_ca (const char* ca_file,
 
   ++this->have_ca_;
 
-  // For TLS/SSL serveurs scan all certificates in ca_file and ca_dir and
+  // For TLS/SSL servers scan all certificates in ca_file and ca_dir and
   // list them as acceptable CAs when requesting a client certificate.
   if (mode_ == SSLv23
-      || mode_ == SSLv23_serveur
+      || mode_ == SSLv23_server
       || mode_ == TLSv1
       || mode_ == TLSv1_server
       || mode_ == SSLv3
-      || mode_ == SSLv3_serveur
+      || mode_ == SSLv3_server
       || mode_ == SSLv2
-      || mode_ == SSLv2_serveur)
+      || mode_ == SSLv2_server)
     {
       // Note: The STACK_OF(X509_NAME) pointer is a copy of the pointer in
       // the CTX; any changes to it by way of these function calls will
@@ -607,7 +607,7 @@ ACE_SSL_Context::dh_params (const char *file_name,
   this->check_context ();
 
   {
-    // Swiped from Rescorla's examples and the OpenSSL s_serveur.c app
+    // Swiped from Rescorla's examples and the OpenSSL s_server.c app
     DH * ret=0;
     BIO * bio = 0;
 

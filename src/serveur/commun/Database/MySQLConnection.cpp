@@ -1,21 +1,3 @@
-/*
-
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation; either version 3 of the License, or (at your
- * option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program. If not, see <http://www.gnu.org/licenses/>.
- */
 
 
 #include "Common.h"
@@ -78,7 +60,7 @@ bool MySQLConnection::Open()
     mysqlInit = mysql_init(NULL);
     if (!mysqlInit)
     {
-        TC_LOG_ERROR("sql.sql", "Could not initialize Mysql connection to database `%s`", m_connectionInfo.database.c_str());
+        TC_LOG_ERROR("sql.sql", "Impossible d'initialiser la connexion aux bases de données Mysql `%s`", m_connectionInfo.database.c_str());
         return false;
     }
 
@@ -124,14 +106,14 @@ bool MySQLConnection::Open()
     {
         if (!m_reconnecting)
         {
-            TC_LOG_INFO("sql.sql", "MySQL client library: %s", mysql_get_client_info());
-            TC_LOG_INFO("sql.sql", "MySQL serveur ver: %s ", mysql_get_serveur_info(m_Mysql));
+            TC_LOG_INFO("sql.sql", "Bibliothèque du client MySQL: %s", mysql_get_client_info());
+            TC_LOG_INFO("sql.sql", "Version du serveur MySQL: %s ", mysql_get_serveur_info(m_Mysql));
             // MySQL version above 5.1 IS required in both client and serveur and there is no known issue with different versions above 5.1
             // if (mysql_get_serveur_version(m_Mysql) != mysql_get_client_version())
             //     TC_LOG_INFO("sql.sql", "[WARNING] MySQL client/serveur version mismatch; may conflict with behaviour of prepared statements.");
         }
 
-        TC_LOG_INFO("sql.sql", "Connected to MySQL database at %s", m_connectionInfo.host.c_str());
+        TC_LOG_INFO("sql.sql", "Connecté à la base de données MySQL à %s", m_connectionInfo.host.c_str());
         mysql_autocommit(m_Mysql, 1);
 
         // set connection properties to UTF8 to properly handle locales for different
@@ -141,7 +123,7 @@ bool MySQLConnection::Open()
     }
     else
     {
-        TC_LOG_ERROR("sql.sql", "Could not connect to MySQL database at %s: %s\n", m_connectionInfo.host.c_str(), mysql_error(mysqlInit));
+        TC_LOG_ERROR("sql.sql", "Impossible de se connecter à la base de données MySQL à %s: %s\n", m_connectionInfo.host.c_str(), mysql_error(mysqlInit));
         mysql_close(mysqlInit);
         return false;
     }
@@ -379,7 +361,7 @@ bool MySQLConnection::ExecuteTransaction(SQLTransaction& transaction)
                 ASSERT(stmt);
                 if (!Execute(stmt))
                 {
-                    TC_LOG_WARN("sql.sql", "Transaction aborted. %u queries not executed.", (uint32)queries.size());
+                    TC_LOG_WARN("sql.sql", "Transaction annulée. %u requêtes non exécutés.", (uint32)queries.size());
                     RollbackTransaction();
                     return false;
                 }
@@ -391,7 +373,7 @@ bool MySQLConnection::ExecuteTransaction(SQLTransaction& transaction)
                 ASSERT(sql);
                 if (!Execute(sql))
                 {
-                    TC_LOG_WARN("sql.sql", "Transaction aborted. %u queries not executed.", (uint32)queries.size());
+                    TC_LOG_WARN("sql.sql", "Transaction annulée. %u requêtes non exécutés.", (uint32)queries.size());
                     RollbackTransaction();
                     return false;
                 }
@@ -414,8 +396,8 @@ MySQLPreparedStatement* MySQLConnection::GetPreparedStatement(uint32 index)
     ASSERT(index < m_stmts.size());
     MySQLPreparedStatement* ret = m_stmts[index];
     if (!ret)
-        TC_LOG_ERROR("sql.sql", "Could not fetch prepared statement %u on database `%s`, connection type: %s.",
-            index, m_connectionInfo.database.c_str(), (m_connectionFlags & CONNECTION_ASYNC) ? "asynchronous" : "synchronous");
+        TC_LOG_ERROR("sql.sql", "Impossible de récupérer requête préparée %u sur la base de données `%s`, type de connexion: %s.",
+            index, m_connectionInfo.database.c_str(), (m_connectionFlags & CONNECTION_ASYNC) ? "asynchrone" : "synchrone");
 
     return ret;
 }
@@ -440,7 +422,7 @@ void MySQLConnection::PrepareStatement(uint32 index, const char* sql, Connection
     MYSQL_STMT* stmt = mysql_stmt_init(m_Mysql);
     if (!stmt)
     {
-        TC_LOG_ERROR("sql.sql", "In mysql_stmt_init() id: %u, sql: \"%s\"", index, sql);
+        TC_LOG_ERROR("sql.sql", "Dans mysql_stmt_init() id: %u, sql: \"%s\"", index, sql);
         TC_LOG_ERROR("sql.sql", "%s", mysql_error(m_Mysql));
         m_prepareError = true;
     }
@@ -448,7 +430,7 @@ void MySQLConnection::PrepareStatement(uint32 index, const char* sql, Connection
     {
         if (mysql_stmt_prepare(stmt, sql, static_cast<unsigned long>(strlen(sql))))
         {
-            TC_LOG_ERROR("sql.sql", "In mysql_stmt_prepare() id: %u, sql: \"%s\"", index, sql);
+            TC_LOG_ERROR("sql.sql", "Dans mysql_stmt_prepare() id: %u, sql: \"%s\"", index, sql);
             TC_LOG_ERROR("sql.sql", "%s", mysql_stmt_error(stmt));
             mysql_stmt_close(stmt);
             m_prepareError = true;
@@ -491,11 +473,11 @@ bool MySQLConnection::_HandleMySQLErrno(uint32 errNo)
             mysql_close(GetHandle());
             if (this->Open())                           // Don't remove 'this' pointer unless you want to skip loading all prepared statements....
             {
-                TC_LOG_INFO("sql.sql", "Connection to the MySQL serveur is active.");
+                TC_LOG_INFO("sql.sql", "Connexion au serveur MySQL est actif.");
                 if (oldThreadId != mysql_thread_id(GetHandle()))
-                    TC_LOG_INFO("sql.sql", "Successfully reconnected to %s @%s:%s (%s).",
+                    TC_LOG_INFO("sql.sql", "Reconnecté avec succès à %s @%s:%s (%s).",
                         m_connectionInfo.database.c_str(), m_connectionInfo.host.c_str(), m_connectionInfo.port_or_socket.c_str(),
-                            (m_connectionFlags & CONNECTION_ASYNC) ? "asynchronous" : "synchronous");
+                            (m_connectionFlags & CONNECTION_ASYNC) ? "asynchrone" : "synchrone");
 
                 m_reconnecting = false;
                 return true;
@@ -516,17 +498,17 @@ bool MySQLConnection::_HandleMySQLErrno(uint32 errNo)
         // Outdated table or database structure - terminate core
         case ER_BAD_FIELD_ERROR:
         case ER_NO_SUCH_TABLE:
-            TC_LOG_ERROR("sql.sql", "Your database structure is not up to date. Please make sure you've executed all queries in the sql/updates folders.");
+            TC_LOG_ERROR("sql.sql", "La structure de votre base de données n'est pas à jour. S'il vous plaît assurez vous que vous avez exécuté toutes les requêtes dans les dossiers sql/update.");
             ACE_OS::sleep(10);
             std::abort();
             return false;
         case ER_PARSE_ERROR:
-            TC_LOG_ERROR("sql.sql", "Error while parsing SQL. Core fix required.");
+            TC_LOG_ERROR("sql.sql", "Erreur lors de l'analyse SQL. Correctif du noyau requis.");
             ACE_OS::sleep(10);
             std::abort();
             return false;
         default:
-            TC_LOG_ERROR("sql.sql", "Unhandled MySQL errno %u. Unexpected behaviour possible.", errNo);
+            TC_LOG_ERROR("sql.sql", "Non prise en charge MySQL errno %u. Un comportement inattendu possible.", errNo);
             return false;
     }
 }

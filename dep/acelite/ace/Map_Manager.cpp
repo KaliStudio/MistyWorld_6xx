@@ -93,7 +93,7 @@ ACE_Map_Manager<EXT_ID, INT_ID, ACE_LOCK>::bind_i (const EXT_ID &ext_id,
     return 1;
   else
     // We didn't find the key.
-    return this->commun_bind (ext_id,
+    return this->shared_bind (ext_id,
                               int_id);
 }
 
@@ -181,7 +181,7 @@ ACE_Map_Manager<EXT_ID, INT_ID, ACE_LOCK>::move_all_free_slots_from_occupied_lis
 #endif /* ACE_HAS_LAZY_MAP_MANAGER */
 
 template <class EXT_ID, class INT_ID, class ACE_LOCK> void
-ACE_Map_Manager<EXT_ID, INT_ID, ACE_LOCK>::commun_move (ACE_UINT32 slot,
+ACE_Map_Manager<EXT_ID, INT_ID, ACE_LOCK>::shared_move (ACE_UINT32 slot,
                                                         ACE_Map_Entry<EXT_ID, INT_ID> &current_list,
                                                         ACE_UINT32 current_list_id,
                                                         ACE_Map_Entry<EXT_ID, INT_ID> &new_list,
@@ -226,7 +226,7 @@ ACE_Map_Manager<EXT_ID, INT_ID, ACE_LOCK>::commun_move (ACE_UINT32 slot,
 }
 
 template <class EXT_ID, class INT_ID, class ACE_LOCK> int
-ACE_Map_Manager<EXT_ID, INT_ID, ACE_LOCK>::commun_bind (const EXT_ID &ext_id,
+ACE_Map_Manager<EXT_ID, INT_ID, ACE_LOCK>::shared_bind (const EXT_ID &ext_id,
                                                         const INT_ID &int_id)
 {
   // This function assumes that the find() has already been done, and
@@ -279,7 +279,7 @@ ACE_Map_Manager<EXT_ID, INT_ID, ACE_LOCK>::rebind_i (const EXT_ID &ext_id,
     }
   else
     // We didn't find it, so let's add it.
-    return this->commun_bind (ext_id,
+    return this->shared_bind (ext_id,
                               int_id);
 }
 
@@ -308,7 +308,7 @@ ACE_Map_Manager<EXT_ID, INT_ID, ACE_LOCK>::rebind_i (const EXT_ID &ext_id,
     }
   else
     // We didn't find it, so let's add it.
-    return this->commun_bind (ext_id,
+    return this->shared_bind (ext_id,
                               int_id);
 }
 
@@ -334,7 +334,7 @@ ACE_Map_Manager<EXT_ID, INT_ID, ACE_LOCK>::rebind_i (const EXT_ID &ext_id,
     }
   else
     // We didn't find it, so let's add it.
-    return this->commun_bind (ext_id,
+    return this->shared_bind (ext_id,
                               int_id);
 }
 

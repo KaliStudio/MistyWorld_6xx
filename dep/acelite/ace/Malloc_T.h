@@ -424,7 +424,7 @@ class ACE_Malloc_FIFO_Iterator_T;
  * it's not a good idea to use them for managing a large number of
  * entities.  If you need to manage a large number of entities, it's
  * recommended that you bind() an ACE_Hash_Map_Manager that
- * resides in commun memory, use find() to locate it, and then
+ * resides in shared memory, use find() to locate it, and then
  * store/retrieve the entities in the hash map.
  */
 template <ACE_MEM_POOL_1, class ACE_LOCK, class ACE_CB>
@@ -626,7 +626,7 @@ private:
 
   /// Associate @a name with @a pointer.  Assumes that locks are held by
   /// callers.
-  int commun_bind (const char *name,
+  int shared_bind (const char *name,
                    void *pointer);
 
   /**
@@ -635,13 +635,13 @@ private:
    * Assumes that locks are held by callers.  Remember to cast the
    * return value to ACE_CB::ACE_Name_Node*.
    */
-  void *commun_find (const char *name);
+  void *shared_find (const char *name);
 
   /// Allocate memory.  Assumes that locks are held by callers.
-  void *commun_malloc (size_t nbytes);
+  void *shared_malloc (size_t nbytes);
 
   /// Deallocate memory.  Assumes that locks are held by callers.
-  void commun_free (void *ptr);
+  void shared_free (void *ptr);
 
   /// Pointer to the control block that is stored in memory controlled
   /// by <MEMORY_POOL>.

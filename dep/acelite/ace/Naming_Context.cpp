@@ -54,9 +54,9 @@ int
 ACE_Naming_Context::local (void)
 {
   ACE_TRACE ("ACE_Naming_Context::local");
-  return ACE_OS::strcmp (this->netnameserveur_host_,
+  return ACE_OS::strcmp (this->netnameserver_host_,
                          ACE_TEXT ("localhost")) == 0
-    || ACE_OS::strcmp (this->netnameserveur_host_,
+    || ACE_OS::strcmp (this->netnameserver_host_,
                        this->hostname_) == 0;
 }
 
@@ -67,10 +67,10 @@ ACE_Naming_Context::open (Context_Scope_Type scope_in, int lite)
   ACE_OS::hostname (this->hostname_,
                     (sizeof this->hostname_ / sizeof (ACE_TCHAR)));
 
-  this->netnameserveur_host_ =
-    this->name_options_->nameserveur_host ();
-  this->netnameserveur_port_ =
-    this->name_options_->nameserveur_port ();
+  this->netnameserver_host_ =
+    this->name_options_->nameserver_host ();
+  this->netnameserver_port_ =
+    this->name_options_->nameserver_port ();
 
   // Perform factory operation to select appropriate type of
   // Name_Space subclass.
@@ -88,10 +88,10 @@ ACE_Naming_Context::open (Context_Scope_Type scope_in, int lite)
     {
       if (scope_in == ACE_Naming_Context::NET_LOCAL && this->local () == 0)
         {
-          // Use NET_LOCAL name space, set up connection with remote serveur.
+          // Use NET_LOCAL name space, set up connection with remote server.
           ACE_NEW_RETURN (this->name_space_,
-                          ACE_Remote_Name_Space (this->netnameserveur_host_,
-                                                 (u_short) this->netnameserveur_port_),
+                          ACE_Remote_Name_Space (this->netnameserver_host_,
+                                                 (u_short) this->netnameserver_port_),
                           -1);
         }
       else   // Use NODE_LOCAL or PROC_LOCAL name space.
@@ -152,7 +152,7 @@ ACE_Naming_Context::ACE_Naming_Context (Context_Scope_Type scope_in,
                                         int lite)
   : name_options_ (0),
     name_space_ (0),
-    netnameserveur_host_ (0)
+    netnameserver_host_ (0)
 {
   ACE_TRACE ("ACE_Naming_Context::ACE_Naming_Context");
 
@@ -418,8 +418,8 @@ ACE_Name_Options::ACE_Name_Options (void)
   : debugging_ (false),
     verbosity_ (false),
     use_registry_ (false),
-    nameserveur_port_ (ACE_DEFAULT_SERVER_PORT),
-    nameserveur_host_ (ACE_OS::strdup (ACE_DEFAULT_SERVER_HOST)),
+    nameserver_port_ (ACE_DEFAULT_SERVER_PORT),
+    nameserver_host_ (ACE_OS::strdup (ACE_DEFAULT_SERVER_HOST)),
     process_name_ (0),
     database_ (ACE_OS::strdup (ACE_DEFAULT_LOCALNAME)),
     base_address_ (ACE_DEFAULT_BASE_ADDR)
@@ -447,24 +447,24 @@ ACE_Name_Options::~ACE_Name_Options (void)
 {
   ACE_TRACE ("ACE_Name_Options::~ACE_Name_Options");
 
-  ACE_OS::free ((void *) this->nameserveur_host_);
+  ACE_OS::free ((void *) this->nameserver_host_);
   ACE_OS::free ((void *) this->namespace_dir_ );
   ACE_OS::free ((void *) this->process_name_ );
   ACE_OS::free ((void *) this->database_ );
 }
 
 void
-ACE_Name_Options::nameserveur_port (int port)
+ACE_Name_Options::nameserver_port (int port)
 {
-  ACE_TRACE ("ACE_Name_Options::nameserveur_port");
-  this->nameserveur_port_ = port;
+  ACE_TRACE ("ACE_Name_Options::nameserver_port");
+  this->nameserver_port_ = port;
 }
 
 int
-ACE_Name_Options::nameserveur_port (void)
+ACE_Name_Options::nameserver_port (void)
 {
-  ACE_TRACE ("ACE_Name_Options::nameserveur_port");
-  return this->nameserveur_port_;
+  ACE_TRACE ("ACE_Name_Options::nameserver_port");
+  return this->nameserver_port_;
 }
 
 void
@@ -485,18 +485,18 @@ ACE_Name_Options::process_name (const ACE_TCHAR *pname)
 }
 
 void
-ACE_Name_Options::nameserveur_host (const ACE_TCHAR *host)
+ACE_Name_Options::nameserver_host (const ACE_TCHAR *host)
 {
-  ACE_TRACE ("ACE_Name_Options::nameserveur_host");
-  ACE_OS::free ((void *) this->nameserveur_host_);
-  this->nameserveur_host_ = ACE_OS::strdup (host);
+  ACE_TRACE ("ACE_Name_Options::nameserver_host");
+  ACE_OS::free ((void *) this->nameserver_host_);
+  this->nameserver_host_ = ACE_OS::strdup (host);
 }
 
 const ACE_TCHAR *
-ACE_Name_Options::nameserveur_host (void)
+ACE_Name_Options::nameserver_host (void)
 {
-  ACE_TRACE ("ACE_Name_Options::nameserveur_host");
-  return this->nameserveur_host_;
+  ACE_TRACE ("ACE_Name_Options::nameserver_host");
+  return this->nameserver_host_;
 }
 
 const ACE_TCHAR *
@@ -586,7 +586,7 @@ ACE_Name_Options::parse_args (int argc, ACE_TCHAR *argv[])
         this->use_registry_ = true;
         break;
       case 'h':
-        this->nameserveur_host (get_opt.opt_arg ());
+        this->nameserver_host (get_opt.opt_arg ());
         break;
       case 'l':
         this->namespace_dir (get_opt.opt_arg ());
@@ -595,7 +595,7 @@ ACE_Name_Options::parse_args (int argc, ACE_TCHAR *argv[])
         this->process_name (get_opt.opt_arg ());
         break;
       case 'p':
-        this->nameserveur_port (ACE_OS::atoi (get_opt.opt_arg ()));
+        this->nameserver_port (ACE_OS::atoi (get_opt.opt_arg ()));
         break;
       case 's':
         this->database (get_opt.opt_arg ());
@@ -618,10 +618,10 @@ ACE_Name_Options::parse_args (int argc, ACE_TCHAR *argv[])
       default:
         ACE_OS::fprintf (stderr, "%s\n"
                          "\t[-d] (enable debugging)\n"
-                         "\t[-h nameserveur host]\n"
+                         "\t[-h nameserver host]\n"
                          "\t[-l namespace directory]\n"
                          "\t[-P processname]\n"
-                         "\t[-p nameserveur port]\n"
+                         "\t[-p nameserver port]\n"
                          "\t[-s database name]\n"
                          "\t[-b base address]\n"
                          "\t[-v] (verbose)\n"

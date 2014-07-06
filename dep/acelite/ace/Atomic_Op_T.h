@@ -135,7 +135,7 @@ struct ACE_Type_Traits<TYPE*>
  * templatized version of the Decorator pattern from the GoF book.
  *
  * ACE_Atomic_Op_Ex objects must be constructed with a reference
- * to an existing lock. A single lock can be commun between
+ * to an existing lock. A single lock can be shared between
  * multiple ACE_Atomic_Op_Ex objects. If you do not require this
  * ability consider using the ACE_Atomic_Op class instead, which
  * may be able to take advantage of platform-specific

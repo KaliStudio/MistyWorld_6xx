@@ -1838,7 +1838,7 @@ ACE_OS::mutex_init (ACE_mutex_t *m,
   if (result == 0 && lock_scope != 0)
 {
 #     if defined (_POSIX_THREAD_PROCESS_SHARED) && !defined (ACE_LACKS_MUTEXATTR_PSHARED)
-      (void) ACE_ADAPT_RETVAL (::pthread_mutexattr_setpcommun (attributes,
+      (void) ACE_ADAPT_RETVAL (::pthread_mutexattr_setpshared (attributes,
                                                                lock_scope),
                                result);
 #     endif /* _POSIX_THREAD_PROCESS_SHARED && !ACE_LACKS_MUTEXATTR_PSHARED */
@@ -2554,7 +2554,7 @@ ACE_OS::event_init (ACE_event_t *event,
       name_p = name;
 #  endif /* ACE_SHM_OPEN_REQUIRES_ONE_SLASH */
       int owner = 0;
-      // Let's see if the commun memory entity already exists.
+      // Let's see if the shared memory entity already exists.
       ACE_HANDLE fd = ACE_OS::shm_open (ACE_TEXT_CHAR_TO_TCHAR (name_p),
                                         O_RDWR | O_CREAT | O_EXCL,
                                         ACE_DEFAULT_FILE_PERMS);
@@ -2569,7 +2569,7 @@ ACE_OS::event_init (ACE_event_t *event,
         }
       else
         {
-          // We own this commun memory object!  Let's set its size.
+          // We own this shared memory object!  Let's set its size.
           if (ACE_OS::ftruncate (fd, sizeof (ACE_eventdata_t)) == -1)
             {
               ACE_OS::close (fd);

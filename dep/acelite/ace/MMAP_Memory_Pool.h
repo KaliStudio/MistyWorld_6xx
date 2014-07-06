@@ -131,7 +131,7 @@ private:
  * @class ACE_MMAP_Memory_Pool
  *
  * @brief Make a memory pool that is based on @c mmap(2).  This
- * implementation allows memory to be commun between processes.
+ * implementation allows memory to be shared between processes.
  */
 class ACE_Export ACE_MMAP_Memory_Pool : public ACE_Event_Handler
 {
@@ -147,7 +147,7 @@ public:
   /// Destructor.
   virtual ~ACE_MMAP_Memory_Pool (void);
 
-  /// Ask system for initial chunk of commun memory.
+  /// Ask system for initial chunk of shared memory.
   virtual void *init_acquire (size_t nbytes,
                               size_t &rounded_bytes,
                               int &first_time);
@@ -285,7 +285,7 @@ protected:
   /// What the minimum bytes of the initial segment should be.
   size_t minimum_bytes_;
 
-  /// Name of the backing store where the commun memory pool is kept.
+  /// Name of the backing store where the shared memory pool is kept.
   ACE_TCHAR backing_store_name_[MAXPATHLEN + 1];
 
   /**
@@ -310,7 +310,7 @@ protected:
  *
  * @brief Make a ``lighter-weight'' memory pool based ACE_Mem_Map.
  *
- * This implementation allows memory to be commun between
+ * This implementation allows memory to be shared between
  * processes.  However, unlike the ACE_MMAP_Memory_Pool
  * the @c sync methods are no-ops, which means that we don't pay
  * for the price of flushing the memory to the backing store on

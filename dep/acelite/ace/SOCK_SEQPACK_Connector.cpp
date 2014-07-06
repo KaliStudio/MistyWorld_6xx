@@ -33,12 +33,12 @@ ACE_SOCK_SEQPACK_Connector::dump (void) const
 }
 
 int
-ACE_SOCK_SEQPACK_Connector::commun_open (ACE_SOCK_SEQPACK_Association &new_association,
+ACE_SOCK_SEQPACK_Connector::shared_open (ACE_SOCK_SEQPACK_Association &new_association,
                                  int protocol_family,
                                  int protocol,
                                  int reuse_addr)
 {
-  ACE_TRACE ("ACE_SOCK_SEQPACK_Connector::commun_open");
+  ACE_TRACE ("ACE_SOCK_SEQPACK_Connector::shared_open");
 
 
 
@@ -58,7 +58,7 @@ ACE_SOCK_SEQPACK_Connector::commun_open (ACE_SOCK_SEQPACK_Association &new_assoc
 }
 
 int
-ACE_SOCK_SEQPACK_Connector::commun_open (ACE_SOCK_SEQPACK_Association &new_association,
+ACE_SOCK_SEQPACK_Connector::shared_open (ACE_SOCK_SEQPACK_Association &new_association,
                                  int protocol_family,
                                  int protocol,
                                  ACE_Protocol_Info *protocolinfo,
@@ -66,7 +66,7 @@ ACE_SOCK_SEQPACK_Connector::commun_open (ACE_SOCK_SEQPACK_Association &new_assoc
                                  u_long flags,
                                  int reuse_addr)
 {
-  ACE_TRACE ("ACE_SOCK_SEQPACK_Connector::commun_open");
+  ACE_TRACE ("ACE_SOCK_SEQPACK_Connector::shared_open");
 
   // Only open a new socket if we don't already have a valid handle.
   if (new_association.get_handle () == ACE_INVALID_HANDLE &&
@@ -87,11 +87,11 @@ ACE_SOCK_SEQPACK_Connector::commun_open (ACE_SOCK_SEQPACK_Association &new_assoc
 }
 
 int
-ACE_SOCK_SEQPACK_Connector::commun_connect_start (ACE_SOCK_SEQPACK_Association &new_association,
+ACE_SOCK_SEQPACK_Connector::shared_connect_start (ACE_SOCK_SEQPACK_Association &new_association,
                                           const ACE_Time_Value *timeout,
                                           const ACE_Addr &local_sap)
 {
-  ACE_TRACE ("ACE_SOCK_SEQPACK_Connector::commun_connect_start");
+  ACE_TRACE ("ACE_SOCK_SEQPACK_Connector::shared_connect_start");
 
   if (local_sap != ACE_Addr::sap_any)
     {
@@ -119,11 +119,11 @@ ACE_SOCK_SEQPACK_Connector::commun_connect_start (ACE_SOCK_SEQPACK_Association &
 
 // Multihomed version of same
 int
-ACE_SOCK_SEQPACK_Connector::commun_connect_start (ACE_SOCK_SEQPACK_Association &new_association,
+ACE_SOCK_SEQPACK_Connector::shared_connect_start (ACE_SOCK_SEQPACK_Association &new_association,
                                           const ACE_Time_Value *timeout,
                                           const ACE_Multihomed_INET_Addr &local_sap)
 {
-  ACE_TRACE ("ACE_SOCK_SEQPACK_Connector::commun_connect_start");
+  ACE_TRACE ("ACE_SOCK_SEQPACK_Connector::shared_connect_start");
 
   if (local_sap.ACE_Addr::operator!= (ACE_Addr::sap_any))
     {
@@ -229,11 +229,11 @@ ACE_SOCK_SEQPACK_Connector::commun_connect_start (ACE_SOCK_SEQPACK_Association &
 }
 
 int
-ACE_SOCK_SEQPACK_Connector::commun_connect_finish (ACE_SOCK_SEQPACK_Association &new_association,
+ACE_SOCK_SEQPACK_Connector::shared_connect_finish (ACE_SOCK_SEQPACK_Association &new_association,
                                            const ACE_Time_Value *timeout,
                                            int result)
 {
-  ACE_TRACE ("ACE_SOCK_SEQPACK_Connector::commun_connect_finish");
+  ACE_TRACE ("ACE_SOCK_SEQPACK_Connector::shared_connect_finish");
   // Save/restore errno.
   ACE_Errno_Guard error (errno);
 
@@ -281,12 +281,12 @@ ACE_SOCK_SEQPACK_Connector::connect (ACE_SOCK_SEQPACK_Association &new_associati
 {
   ACE_TRACE ("ACE_SOCK_SEQPACK_Connector::connect");
 
-  if (this->commun_open (new_association,
+  if (this->shared_open (new_association,
                          remote_sap.get_type (),
                          protocol,
                          reuse_addr) == -1)
     return -1;
-  else if (this->commun_connect_start (new_association,
+  else if (this->shared_connect_start (new_association,
                                        timeout,
                                        local_sap) == -1)
     return -1;
@@ -295,7 +295,7 @@ ACE_SOCK_SEQPACK_Connector::connect (ACE_SOCK_SEQPACK_Association &new_associati
                                 reinterpret_cast<sockaddr *> (remote_sap.get_addr ()),
                                 remote_sap.get_size ());
 
-  return this->commun_connect_finish (new_association,
+  return this->shared_connect_finish (new_association,
                                       timeout,
                                       result);
 }
@@ -313,12 +313,12 @@ ACE_SOCK_SEQPACK_Connector::connect (ACE_SOCK_SEQPACK_Association &new_associati
 {
   ACE_TRACE ("ACE_SOCK_SEQPACK_Connector::connect");
 
-  if (this->commun_open (new_association,
+  if (this->shared_open (new_association,
                          remote_sap.get_type (),
                          protocol,
                          reuse_addr) == -1)
     return -1;
-  else if (this->commun_connect_start (new_association,
+  else if (this->shared_connect_start (new_association,
                                        timeout,
                                        local_sap) == -1)
     return -1;
@@ -327,7 +327,7 @@ ACE_SOCK_SEQPACK_Connector::connect (ACE_SOCK_SEQPACK_Association &new_associati
                                 reinterpret_cast<sockaddr *> (remote_sap.get_addr ()),
                                 remote_sap.get_size ());
 
-  return this->commun_connect_finish (new_association,
+  return this->shared_connect_finish (new_association,
                                       timeout,
                                       result);
 }

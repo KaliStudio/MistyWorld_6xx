@@ -1,21 +1,4 @@
-/*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation; either version 3 of the License, or (at your
- * option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program. If not, see <http://www.gnu.org/licenses/>.
- */
 
 #ifndef _DATABASEWORKERPOOL_H
 #define _DATABASEWORKERPOOL_H
@@ -57,8 +40,8 @@ class DatabaseWorkerPool
             memset(_connectionCount, 0, sizeof(_connectionCount));
             _connections.resize(IDX_SIZE);
 
-            WPFatal(mysql_thread_safe(), "Used MySQL library isn't thread-safe.");
-            WPFatal(mysql_get_client_version() >= MIN_MYSQL_CLIENT_VERSION, "TrinityCore does not support MySQL versions below 5.1");
+            WPFatal(mysql_thread_safe(), "La bibliothèque MySQL utilisée n'est pas sécurisée.");
+            WPFatal(mysql_get_client_version() >= MIN_MYSQL_CLIENT_VERSION, "MistyWorld ne prend pas en charge les versions de MySQL inférieur à 5.1");
         }
 
         ~DatabaseWorkerPool()
@@ -70,7 +53,7 @@ class DatabaseWorkerPool
             bool res = true;
             _connectionInfo = MySQLConnectionInfo(infoString);
 
-            TC_LOG_INFO("sql.driver", "Opening DatabasePool '%s'. Asynchronous connections: %u, synchronous connections: %u.",
+            TC_LOG_INFO("sql.driver", "Ouverture de la base de données externe '%s'. Connexions asynchrones: %u, Connexions synchrones: %u.",
                 GetDatabaseName(), async_threads, synch_threads);
 
             //! Open asynchronous connections (delayed operations)
@@ -80,7 +63,7 @@ class DatabaseWorkerPool
                 T* t = new T(_queue, _connectionInfo);
                 res &= t->Open();
                 if (res) // only check mysql version if connection is valid
-                    WPFatal(mysql_get_serveur_version(t->GetHandle()) >= MIN_MYSQL_SERVER_VERSION, "TrinityCore does not support MySQL versions below 5.1");
+                    WPFatal(mysql_get_serveur_version(t->GetHandle()) >= MIN_MYSQL_SERVER_VERSION, "MistyWorld ne prend pas en charge les versions de MySQL inférieur à 5.1");
                 _connections[IDX_ASYNC][i] = t;
                 ++_connectionCount[IDX_ASYNC];
             }
@@ -96,17 +79,17 @@ class DatabaseWorkerPool
             }
 
             if (res)
-                TC_LOG_INFO("sql.driver", "DatabasePool '%s' opened successfully. %u total connections running.", GetDatabaseName(),
+                TC_LOG_INFO("sql.driver", "La base de données externe '%s' ouverte avec succès. %u connexions en cours d'exécution.", GetDatabaseName(),
                     (_connectionCount[IDX_SYNCH] + _connectionCount[IDX_ASYNC]));
             else
-                TC_LOG_ERROR("sql.driver", "DatabasePool %s NOT opened. There were errors opening the MySQL connections. Check your SQLDriverLogFile "
+                TC_LOG_ERROR("sql.driver", "La base de données externe %s NON ouverte. Il y avait des erreurs d'ouverture aux connexions MySQL. Vérifiez votre SQLDriverLogFile "
                     "for specific errors.", GetDatabaseName());
             return res;
         }
 
         void Close()
         {
-            TC_LOG_INFO("sql.driver", "Closing down DatabasePool '%s'.", GetDatabaseName());
+            TC_LOG_INFO("sql.driver", "Fermeture de la base de données extérieure '%s'.", GetDatabaseName());
 
             //! Shuts down delaythreads for this connection pool by underlying deactivate().
             //! The next dequeue attempt in the worker thread tasks will result in an error,
@@ -122,7 +105,7 @@ class DatabaseWorkerPool
                 t->Close();         //! Closes the actualy MySQL connection.
             }
 
-            TC_LOG_INFO("sql.driver", "Asynchronous connections on DatabasePool '%s' terminated. Proceeding with synchronous connections.",
+            TC_LOG_INFO("sql.driver", "Connexions asynchrones sur les base de données externe  '%s' terminées. Procéder à des connexions synchrones.",
                 GetDatabaseName());
 
             //! Shut down the synchronous connections
@@ -135,7 +118,7 @@ class DatabaseWorkerPool
             //! Deletes the ACE_Activation_Queue object and its underlying ACE_Message_Queue
             delete _queue;
 
-            TC_LOG_INFO("sql.driver", "All connections on DatabasePool '%s' closed.", GetDatabaseName());
+            TC_LOG_INFO("sql.driver", "Toutes les connexions à la base de données externe '%s' fermé.", GetDatabaseName());
         }
 
         /**

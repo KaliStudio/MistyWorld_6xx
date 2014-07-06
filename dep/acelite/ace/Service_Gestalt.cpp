@@ -566,8 +566,8 @@ ACE_Service_Gestalt::initialize (const ACE_Service_Type_Factory *stf,
 #endif /* (ACE_USES_CLASSIC_SVC_CONF == 1) */
 
 
-/// Dynamically link the commun object file and retrieve a pointer to
-/// the designated commun object in this file.
+/// Dynamically link the shared object file and retrieve a pointer to
+/// the designated shared object in this file.
 /// @note This is obsolete (and error-prone) in the presense of dynamic
 /// services with their own static services. This method will allow those
 /// static services to register *before* the dynamic service that owns them.
@@ -607,8 +607,8 @@ ACE_Service_Gestalt::initialize (const ACE_Service_Type *sr,
 
 }
 
-/// Dynamically link the commun object file and retrieve a pointer to
-/// the designated commun object in this file.
+/// Dynamically link the shared object file and retrieve a pointer to
+/// the designated shared object in this file.
 int
 ACE_Service_Gestalt::initialize_i (const ACE_Service_Type *sr,
                                    const ACE_TCHAR *parameters)

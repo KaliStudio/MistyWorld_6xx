@@ -103,9 +103,9 @@ ACE_MEM_Connector::connect (ACE_MEM_Stream &new_stream,
   ACE_TCHAR buf[MAXPATHLEN];
 
   // @@ Need to handle timeout here.
-  ACE_INT16 serveur_strategy = ACE_MEM_IO::Reactive;
-  // Receive the signaling strategy theserveur support.
-  if (ACE::recv (new_handle, &serveur_strategy,
+  ACE_INT16 server_strategy = ACE_MEM_IO::Reactive;
+  // Receive the signaling strategy theserver support.
+  if (ACE::recv (new_handle, &server_strategy,
                  sizeof (ACE_INT16)) == -1)
     ACE_ERROR_RETURN ((LM_DEBUG,
                        ACE_TEXT ("ACE_MEM_Connector::connect error receiving strategy\n")),
@@ -114,11 +114,11 @@ ACE_MEM_Connector::connect (ACE_MEM_Stream &new_stream,
   // If either side don't support MT, we will not use it.
 #if defined (ACE_WIN32) || !defined (_ACE_USE_SV_SEM)
   if (! (this->preferred_strategy_ == ACE_MEM_IO::MT &&
-         serveur_strategy == ACE_MEM_IO::MT))
+         server_strategy == ACE_MEM_IO::MT))
 #endif /* ACE_WIN32 || !_ACE_USE_SV_SEM */
-    serveur_strategy = ACE_MEM_IO::Reactive;
+    server_strategy = ACE_MEM_IO::Reactive;
 
-  if (ACE::send (new_handle, &serveur_strategy,
+  if (ACE::send (new_handle, &server_strategy,
                  sizeof (ACE_INT16)) == -1)
     ACE_ERROR_RETURN ((LM_DEBUG,
                        ACE_TEXT ("ACE_MEM_Connector::connect error sending strategy\n")),
@@ -137,7 +137,7 @@ ACE_MEM_Connector::connect (ACE_MEM_Stream &new_stream,
                       -1);
 
   if (new_stream.init (buf,
-                       static_cast<ACE_MEM_IO::Signal_Strategy> (serveur_strategy),
+                       static_cast<ACE_MEM_IO::Signal_Strategy> (server_strategy),
                        &this->malloc_options_) == -1)
     return -1;
 

@@ -89,7 +89,7 @@ ACE_Reactive_MEM_IO::send_buf (ACE_MEM_SAP_Node *buf,
                  flags,
                  timeout) != static_cast <ssize_t> (sizeof (offset)))
     {
-      // unsuccessful send, release the memory in the commun-memory.
+      // unsuccessful send, release the memory in the shared-memory.
       this->release_buffer (buf);
 
       return -1;
@@ -168,37 +168,37 @@ ACE_MT_MEM_IO::init (ACE_HANDLE handle,
   ACE_UNUSED_ARG (handle);
 
   // @@ Give me a rule on naming and how the queue should
-  //    be kept in the commun memory and we are done
+  //    be kept in the shared memory and we are done
   //    with this.
   if (this->create_shm_malloc (name, options) == -1)
     return -1;
 
-  ACE_TCHAR serveur_sema [MAXPATHLEN];
+  ACE_TCHAR server_sema [MAXPATHLEN];
   ACE_TCHAR client_sema [MAXPATHLEN];
-  ACE_TCHAR serveur_lock [MAXPATHLEN];
+  ACE_TCHAR server_lock [MAXPATHLEN];
   ACE_TCHAR client_lock [MAXPATHLEN];
   const ACE_TCHAR *basename = ACE::basename (name);
   //  size_t baselen = ACE_OS::strlen (basename);
 
   // Building names.  @@ Check buffer overflow?
-  ACE_OS::strcpy (serveur_sema, basename);
-  ACE_OS::strcat (serveur_sema, ACE_TEXT ("_sema_to_serveur"));
+  ACE_OS::strcpy (server_sema, basename);
+  ACE_OS::strcat (server_sema, ACE_TEXT ("_sema_to_server"));
   ACE_OS::strcpy (client_sema, basename);
   ACE_OS::strcat (client_sema, ACE_TEXT ("_sema_to_client"));
-  ACE_OS::strcpy (serveur_lock, basename);
-  ACE_OS::strcat (serveur_lock, ACE_TEXT ("_lock_to_serveur"));
+  ACE_OS::strcpy (server_lock, basename);
+  ACE_OS::strcat (server_lock, ACE_TEXT ("_lock_to_server"));
   ACE_OS::strcpy (client_lock, basename);
   ACE_OS::strcat (client_lock, ACE_TEXT ("_lock_to_client"));
 
-  void *to_serveur_ptr = 0;
-  // @@ Here, we assume the commun memory fill will never be resued.
-  //    So we can determine whether we are serveur or client by examining
+  void *to_server_ptr = 0;
+  // @@ Here, we assume the shared memory fill will never be resued.
+  //    So we can determine whether we are server or client by examining
   //    if the simple message queues have already been set up in
   //    the Malloc object or not.
-  if (this->shm_malloc_->find ("to_serveur", to_serveur_ptr) == -1)
+  if (this->shm_malloc_->find ("to_server", to_server_ptr) == -1)
     {
       void *ptr = 0;
-      // We are serveur.
+      // We are server.
       ACE_ALLOCATOR_RETURN (ptr,
                             this->shm_malloc_->malloc (2 * sizeof (MQ_Struct)),
                             -1);
@@ -208,7 +208,7 @@ ACE_MT_MEM_IO::init (ACE_HANDLE handle,
       mymq->head_ = 0;
       (mymq + 1)->tail_ = 0;
       (mymq + 1)->head_ = 0;
-      if (this->shm_malloc_->bind ("to_serveur", mymq) == -1)
+      if (this->shm_malloc_->bind ("to_server", mymq) == -1)
         return -1;
 
       if (this->shm_malloc_->bind ("to_client", mymq + 1) == -1)
@@ -216,10 +216,10 @@ ACE_MT_MEM_IO::init (ACE_HANDLE handle,
 
       this->recv_channel_.queue_.init (mymq, this->shm_malloc_);
       ACE_NEW_RETURN (this->recv_channel_.sema_,
-                      ACE_SYNCH_PROCESS_SEMAPHORE (0, serveur_sema),
+                      ACE_SYNCH_PROCESS_SEMAPHORE (0, server_sema),
                       -1);
       ACE_NEW_RETURN (this->recv_channel_.lock_,
-                      ACE_SYNCH_PROCESS_MUTEX (serveur_lock),
+                      ACE_SYNCH_PROCESS_MUTEX (server_lock),
                       -1);
 
       this->send_channel_.queue_.init (mymq + 1, this->shm_malloc_);
@@ -233,7 +233,7 @@ ACE_MT_MEM_IO::init (ACE_HANDLE handle,
   else
     {
       // we are client.
-      MQ_Struct *mymq = reinterpret_cast<MQ_Struct *> (to_serveur_ptr);
+      MQ_Struct *mymq = reinterpret_cast<MQ_Struct *> (to_server_ptr);
       this->recv_channel_.queue_.init (mymq +1, this->shm_malloc_);
       ACE_NEW_RETURN (this->recv_channel_.sema_,
                       ACE_SYNCH_PROCESS_SEMAPHORE (0, client_sema),
@@ -244,10 +244,10 @@ ACE_MT_MEM_IO::init (ACE_HANDLE handle,
 
       this->send_channel_.queue_.init (mymq, this->shm_malloc_);
       ACE_NEW_RETURN (this->send_channel_.sema_,
-                      ACE_SYNCH_PROCESS_SEMAPHORE (0, serveur_sema),
+                      ACE_SYNCH_PROCESS_SEMAPHORE (0, server_sema),
                       -1);
       ACE_NEW_RETURN (this->send_channel_.lock_,
-                      ACE_SYNCH_PROCESS_MUTEX (serveur_lock),
+                      ACE_SYNCH_PROCESS_MUTEX (server_lock),
                       -1);
     }
   return 0;

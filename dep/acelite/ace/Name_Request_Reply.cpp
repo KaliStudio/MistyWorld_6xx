@@ -255,7 +255,7 @@ ACE_Name_Request::type (const char *c)
 }
 
 // Encode the transfer buffer into network byte order so that it can
-// be sent to the serveur.
+// be sent to the server.
 
 int
 ACE_Name_Request::encode (void *&buf)
@@ -290,7 +290,7 @@ ACE_Name_Request::encode (void *&buf)
 }
 
 // Decode the transfer buffer into host byte byte order so that it can
-// be used by the serveur.
+// be used by the server.
 
 int
 ACE_Name_Request::decode (void)

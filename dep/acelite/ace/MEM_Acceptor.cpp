@@ -43,7 +43,7 @@ ACE_MEM_Acceptor::~ACE_MEM_Acceptor (void)
   delete[] this->mmap_prefix_;
 }
 
-// General purpose routine for performing serveur ACE_SOCK creation.
+// General purpose routine for performing server ACE_SOCK creation.
 
 ACE_MEM_Acceptor::ACE_MEM_Acceptor (const ACE_MEM_Addr &remote_sap,
                                     int reuse_addr,
@@ -88,7 +88,7 @@ ACE_MEM_Acceptor::accept (ACE_MEM_Stream &new_stream,
   ACE_TRACE ("ACE_MEM_Acceptor::accept");
 
   int in_blocking_mode = 1;
-  if (this->commun_accept_start (timeout,
+  if (this->shared_accept_start (timeout,
                                  restart,
                                  in_blocking_mode) == -1)
     return -1;
@@ -124,7 +124,7 @@ ACE_MEM_Acceptor::accept (ACE_MEM_Stream &new_stream,
         }
     }
 
-  if (this->commun_accept_finish (new_stream,
+  if (this->shared_accept_finish (new_stream,
                                   in_blocking_mode,
                                   reset_new_handle) == -1)
     return -1;
@@ -202,7 +202,7 @@ ACE_MEM_Acceptor::accept (ACE_MEM_Stream &new_stream,
 
   // Client will decide what signaling strategy to use.
 
-  // Now set up the commun memory malloc pool.
+  // Now set up the shared memory malloc pool.
   if (new_stream.init (buf,
                        static_cast<ACE_MEM_IO::Signal_Strategy> (client_signaling),
                        &this->malloc_options_) == -1)
@@ -224,11 +224,11 @@ ACE_MEM_Acceptor::accept (ACE_MEM_Stream &new_stream,
 }
 
 int
-ACE_MEM_Acceptor::commun_accept_finish (ACE_MEM_Stream new_stream,
+ACE_MEM_Acceptor::shared_accept_finish (ACE_MEM_Stream new_stream,
                                         int in_blocking_mode,
                                         bool reset_new_handle) const
 {
-  ACE_TRACE ("ACE_MEM_Acceptor::commun_accept_finish ()");
+  ACE_TRACE ("ACE_MEM_Acceptor::shared_accept_finish ()");
 
   ACE_HANDLE new_handle = new_stream.get_handle ();
 

@@ -88,7 +88,7 @@
 // if you ACE to use it.
 //#define ACE_HAS_ALLOCA
 
-// Compiler/platform correctly calls init()/fini() for commun libraries.
+// Compiler/platform correctly calls init()/fini() for shared libraries.
 #define ACE_HAS_AUTOMATIC_INIT_FINI
 
 // Explicit dynamic linking permits "lazy" symbol resolution

@@ -805,7 +805,7 @@ ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::~ACE_Strategy_Acceptor 
   this->handle_close ();
 }
 
-// Signal the serveur to shutdown gracefully.
+// Signal the server to shutdown gracefully.
 
 template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
 ACE_Strategy_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::handle_signal (int, siginfo_t *, ucontext_t *)
@@ -1043,18 +1043,18 @@ ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::activate_svc_handler
      (void *) this);
 }
 
-// Factors out the code commun between the <accept> and <handle_input>
+// Factors out the code shared between the <accept> and <handle_input>
 // methods.
 
 template <class SVC_HANDLER, ACE_PEER_ACCEPTOR_1> int
-ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::commun_accept
+ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::shared_accept
   (SVC_HANDLER *svc_handler,
    ACE_PEER_ACCEPTOR_ADDR *remote_addr,
    ACE_Time_Value *timeout,
    bool restart,
    bool reset_new_handle)
 {
-  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::commun_accept");
+  ACE_TRACE ("ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::shared_accept");
   if (svc_handler == 0)
     return -1;
 
@@ -1107,7 +1107,7 @@ ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::accept
   else
     timeout = (ACE_Time_Value *) synch_options.time_value ();
 
-  if (this->commun_accept (svc_handler, // stream
+  if (this->shared_accept (svc_handler, // stream
                            remote_addr, // remote address
                            timeout, // timeout
                            restart, // restart
@@ -1145,15 +1145,15 @@ ACE_Oneshot_Acceptor<SVC_HANDLER, ACE_PEER_ACCEPTOR_2>::handle_input (ACE_HANDLE
   bool const reset_new_handle = this->reactor ()->uses_event_associations ();
 
   // There is a use-case whereby this object will be gone upon return
-  // from commun_accept - if the Svc_Handler deletes this Oneshot_Acceptor
-  // during the commun_accept/activation steps. So, do whatever we need
-  // to do with this object before calling commun_accept.
+  // from shared_accept - if the Svc_Handler deletes this Oneshot_Acceptor
+  // during the shared_accept/activation steps. So, do whatever we need
+  // to do with this object before calling shared_accept.
   if (this->reactor ())
     this->reactor ()->remove_handler
       (this,
        ACE_Event_Handler::ACCEPT_MASK | ACE_Event_Handler::DONT_CALL);
 
-  if (this->commun_accept (this->svc_handler_, // stream
+  if (this->shared_accept (this->svc_handler_, // stream
                            0, // remote address
                            0, // timeout
                            this->restart_, // restart

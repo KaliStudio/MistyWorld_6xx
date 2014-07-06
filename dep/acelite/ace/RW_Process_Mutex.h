@@ -35,7 +35,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
  * threads in the same process.  This isn't a limitation of ACE, it's simply
  * the file lock semantics on UNIX and Win32.
  *
- * @todo For systems with pthread_rwlockattr_setpcommun one
+ * @todo For systems with pthread_rwlockattr_setpshared one
  * may consider using them to make the mutex faster.
  */
 class ACE_Export ACE_RW_Process_Mutex

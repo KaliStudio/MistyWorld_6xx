@@ -412,13 +412,13 @@ ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::free (void *ptr)
   ACE_TRACE ("ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::free");
   ACE_GUARD (ACE_LOCK, ace_mon, *this->lock_);
 
-  this->commun_free (ptr);
+  this->shared_free (ptr);
 }
 
 // This function is called by the ACE_Malloc_T constructor to initialize
 // the memory pool.  The first time in it allocates room for the
 // control block (as well as a chunk of memory, depending on
-// rounding...).  Depending on the type of <MEM_POOL> (i.e., commun
+// rounding...).  Depending on the type of <MEM_POOL> (i.e., shared
 // vs. local) subsequent calls from other processes will only
 // initialize the control block pointer.
 
@@ -489,7 +489,7 @@ ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::open (void)
           // Insert the newly allocated chunk of memory into the free
           // list.  Add "1" to skip over the <MALLOC_HEADER> when
           // freeing the pointer.
-          this->commun_free (p + 1);
+          this->shared_free (p + 1);
         }
     }
   else
@@ -613,10 +613,10 @@ ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::remove (void)
 // General-purpose memory allocator.  Assumes caller holds the locks.
 
 template <ACE_MEM_POOL_1, class ACE_LOCK, class ACE_CB> void *
-ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::commun_malloc (size_t nbytes)
+ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::shared_malloc (size_t nbytes)
 {
 #if !defined (ACE_HAS_WIN32_STRUCTURAL_EXCEPTIONS)
-  ACE_TRACE ("ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::commun_malloc");
+  ACE_TRACE ("ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::shared_malloc");
 #endif /* !ACE_HAS_WIN32_STRUCTURAL_EXCEPTIONS */
 
   if (this->cb_ptr_ == 0)
@@ -708,7 +708,7 @@ ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::commun_malloc (size_t nbytes)
                   // <MALLOC_HEADER> when freeing the pointer since
                   // the first thing <free> does is decrement by this
                   // amount.
-                  this->commun_free (currp + 1);
+                  this->shared_free (currp + 1);
                   currp = this->cb_ptr_->freep_;
                 }
               else
@@ -740,7 +740,7 @@ ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::malloc (size_t nbytes)
   ACE_TRACE ("ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::malloc");
   ACE_GUARD_RETURN (ACE_LOCK, ace_mon, *this->lock_, 0);
 
-  return this->commun_malloc (nbytes);
+  return this->shared_malloc (nbytes);
 }
 
 // General-purpose memory allocator.
@@ -771,10 +771,10 @@ ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::calloc (size_t n_elem,
 // Put block AP in the free list (must be called with locks held!)
 
 template <ACE_MEM_POOL_1, class ACE_LOCK, class ACE_CB> void
-ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::commun_free (void *ap)
+ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::shared_free (void *ap)
 {
 #if !defined (ACE_HAS_WIN32_STRUCTURAL_EXCEPTIONS)
-  ACE_TRACE ("ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::commun_free");
+  ACE_TRACE ("ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::shared_free");
 #endif /* ACE_HAS_WIN32_STRUCTURAL_EXCEPTIONS */
 
   if (ap == 0 || this->cb_ptr_ == 0)
@@ -832,10 +832,10 @@ ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::commun_free (void *ap)
 // No locks held here, caller must acquire/release lock.
 
 template <ACE_MEM_POOL_1, class ACE_LOCK, class ACE_CB> void*
-ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::commun_find (const char *name)
+ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::shared_find (const char *name)
 {
 #if !defined (ACE_HAS_WIN32_STRUCTURAL_EXCEPTIONS)
-  ACE_TRACE ("ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::commun_find");
+  ACE_TRACE ("ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::shared_find");
 #endif /* !ACE_HAS_WIN32_STRUCTURAL_EXCEPTIONS */
 
   if (this->cb_ptr_ == 0)
@@ -857,7 +857,7 @@ ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::commun_find (const char *name)
 }
 
 template <ACE_MEM_POOL_1, class ACE_LOCK, class ACE_CB> int
-ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::commun_bind (const char *name,
+ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::shared_bind (const char *name,
                                                              void *pointer)
 {
   if (this->cb_ptr_ == 0)
@@ -868,7 +868,7 @@ ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::commun_bind (const char *name,
 
   ACE_ALLOCATOR_RETURN (new_node,
                         (NAME_NODE *)
-                        this->commun_malloc (sizeof (NAME_NODE) +
+                        this->shared_malloc (sizeof (NAME_NODE) +
                                              ACE_OS::strlen (name) + 1),
                         -1);
   char *name_ptr = (char *) (new_node + 1);
@@ -891,11 +891,11 @@ ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::trybind (const char *name,
   ACE_TRACE ("ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::trybind");
   ACE_WRITE_GUARD_RETURN (ACE_LOCK, ace_mon, *this->lock_, -1);
 
-  NAME_NODE *node = (NAME_NODE *) this->commun_find (name);
+  NAME_NODE *node = (NAME_NODE *) this->shared_find (name);
 
   if (node == 0)
     // Didn't find it, so insert it.
-    return this->commun_bind (name, pointer);
+    return this->shared_bind (name, pointer);
 
   // Found it, so return a copy of the current entry.
   pointer = (char *) node->pointer_;
@@ -910,14 +910,14 @@ ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::bind (const char *name,
   ACE_TRACE ("ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::bind");
   ACE_WRITE_GUARD_RETURN (ACE_LOCK, ace_mon, *this->lock_, -1);
 
-  if (duplicates == 0 && this->commun_find (name) != 0)
+  if (duplicates == 0 && this->shared_find (name) != 0)
     // If we're not allowing duplicates, then if the name is already
     // present, return 1.
     return 1;
 
   // If we get this far, either we're allowing duplicates or we didn't
   // find the name yet.
-  return this->commun_bind (name, pointer);
+  return this->shared_bind (name, pointer);
 }
 
 template <ACE_MEM_POOL_1, class ACE_LOCK, class ACE_CB> int
@@ -928,7 +928,7 @@ ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::find (const char *name,
 
   ACE_READ_GUARD_RETURN (ACE_LOCK, ace_mon, *this->lock_, -1);
 
-  NAME_NODE *node = (NAME_NODE *) this->commun_find (name);
+  NAME_NODE *node = (NAME_NODE *) this->shared_find (name);
 
   if (node == 0)
     return -1;
@@ -978,7 +978,7 @@ ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::find (const char *name)
   ACE_TRACE ("ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::find");
   ACE_READ_GUARD_RETURN (ACE_LOCK, ace_mon, *this->lock_, -1);
 
-  return this->commun_find (name) == 0 ? -1 : 0;
+  return this->shared_find (name) == 0 ? -1 : 0;
 }
 
 template <ACE_MEM_POOL_1, class ACE_LOCK, class ACE_CB> int
@@ -1010,7 +1010,7 @@ ACE_Malloc_T<ACE_MEM_POOL_2, ACE_LOCK, ACE_CB>::unbind (const char *name, void *
 
           // This will free up both the node and the name due to our
           // clever trick in <bind>!
-          this->commun_free (curr);
+          this->shared_free (curr);
           return 0;
         }
       prev = curr;

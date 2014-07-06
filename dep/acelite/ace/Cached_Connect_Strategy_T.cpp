@@ -146,7 +146,7 @@ ACE_Cached_Connect_Strategy_Ex<SVC_HANDLER, ACE_PEER_CONNECTOR_2, CACHING_STRATE
   REFCOUNTED_HASH_RECYCLABLE_ADDRESS search_addr (remote_addr);
 
   // Try to find the address in the cache.  Only if we don't find it
-  // do we create a new <SVC_HANDLER> and connect it with the serveur.
+  // do we create a new <SVC_HANDLER> and connect it with the server.
   while (this->find (search_addr, entry) != -1)
   {
     // We found a cached svc_handler.
@@ -597,7 +597,7 @@ ACE_Bounded_Cached_Connect_Strategy<SVC_HANDLER, ACE_PEER_CONNECTOR_2, CACHING_S
   REFCOUNTED_HASH_RECYCLABLE_ADDRESS search_addr (remote_addr);
 
   // Try to find the address in the cache.  Only if we don't find it
-  // do we create a new <SVC_HANDLER> and connect it with the serveur.
+  // do we create a new <SVC_HANDLER> and connect it with the server.
   while (this->find (search_addr, entry) != -1)
     {
       // We found a cached svc_handler.
@@ -646,7 +646,7 @@ ACE_Bounded_Cached_Connect_Strategy<SVC_HANDLER, ACE_PEER_CONNECTOR_2, CACHING_S
           ACE_ERROR ((LM_ERROR,
                       ACE_TEXT ("(%t)ACE_Bounded_Cached_Connect_Strategy<>::")
                       ACE_TEXT ("find_or_create_svc_handler_i - ")
-                      ACE_TEXT ("error polling serveur socket state.\n")));
+                      ACE_TEXT ("error polling server socket state.\n")));
 
           return -1;
         }

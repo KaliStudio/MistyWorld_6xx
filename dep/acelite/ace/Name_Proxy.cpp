@@ -198,7 +198,7 @@ ACE_Name_Proxy::recv_reply (ACE_Name_Request &reply)
   return 0;
 }
 
-// Close down the connection to the serveur.
+// Close down the connection to the server.
 
 ACE_Name_Proxy::~ACE_Name_Proxy (void)
 {

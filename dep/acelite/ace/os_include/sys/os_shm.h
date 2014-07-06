@@ -4,7 +4,7 @@
 /**
  *  @file    os_shm.h
  *
- *  XSI commun memory facility
+ *  XSI shared memory facility
  *
  *  $Id: os_shm.h 80826 2008-03-04 14:51:23Z wotte $
  *

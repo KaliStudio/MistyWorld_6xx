@@ -67,7 +67,7 @@ ACE_SOCK_Dgram_Bcast::ACE_SOCK_Dgram_Bcast (void)
 }
 
 // Here's the general-purpose constructor used by a connectionless
-// datagram ``serveur''...
+// datagram ``server''...
 
 ACE_SOCK_Dgram_Bcast::ACE_SOCK_Dgram_Bcast (const ACE_Addr &local,
                                             int protocol_family,

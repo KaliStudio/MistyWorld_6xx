@@ -212,7 +212,7 @@ ACE_Hash_Multi_Map_Manager<EXT_ID, INT_ID, HASH_KEY, COMPARE_KEYS, ACE_LOCK>::bi
                                                                                       ACE_Hash_Multi_Map_Entry<EXT_ID, INT_ID> *&entry)
 {
   size_t loc;
-  int result = this->commun_find (ext_id, entry, loc);
+  int result = this->shared_find (ext_id, entry, loc);
 
   ACE_Unbounded_Set<INT_ID> int_id_set;
   if (result == -1)
@@ -254,7 +254,7 @@ ACE_Hash_Multi_Map_Manager<EXT_ID, INT_ID, HASH_KEY, COMPARE_KEYS, ACE_LOCK>::bi
                                                                                       ACE_Hash_Multi_Map_Entry<EXT_ID, INT_ID> *&entry)
 {
   size_t loc;
-  int result = this->commun_find (ext_id, entry, loc);
+  int result = this->shared_find (ext_id, entry, loc);
 
   if (result == -1)
     {
@@ -283,7 +283,7 @@ ACE_Hash_Multi_Map_Manager<EXT_ID, INT_ID, HASH_KEY, COMPARE_KEYS, ACE_LOCK>::tr
                                                                                          ACE_Hash_Multi_Map_Entry<EXT_ID, INT_ID> *&entry)
 {
   size_t loc;
-  int result = this->commun_find (ext_id, entry, loc);
+  int result = this->shared_find (ext_id, entry, loc);
 
   if (result == -1)
     {
@@ -313,7 +313,7 @@ ACE_Hash_Multi_Map_Manager<EXT_ID, INT_ID, HASH_KEY, COMPARE_KEYS, ACE_LOCK>::un
   ACE_Hash_Multi_Map_Entry<EXT_ID, INT_ID> *temp;
 
   size_t loc;
-  int result = this->commun_find (ext_id, temp, loc);
+  int result = this->shared_find (ext_id, temp, loc);
 
   if (result == -1)
     {
@@ -347,7 +347,7 @@ ACE_Hash_Multi_Map_Manager<EXT_ID, INT_ID, HASH_KEY, COMPARE_KEYS, ACE_LOCK>::un
   ACE_Hash_Multi_Map_Entry<EXT_ID, INT_ID> *temp;
 
   size_t loc;
-  int result = this->commun_find (ext_id, temp, loc);
+  int result = this->shared_find (ext_id, temp, loc);
 
   if (result == -1)
     {
@@ -371,7 +371,7 @@ ACE_Hash_Multi_Map_Manager<EXT_ID, INT_ID, HASH_KEY, COMPARE_KEYS, ACE_LOCK>::un
 
 
 template <class EXT_ID, class INT_ID, class HASH_KEY, class COMPARE_KEYS, class ACE_LOCK> int
-ACE_Hash_Multi_Map_Manager<EXT_ID, INT_ID, HASH_KEY, COMPARE_KEYS, ACE_LOCK>::commun_find (const EXT_ID &ext_id,
+ACE_Hash_Multi_Map_Manager<EXT_ID, INT_ID, HASH_KEY, COMPARE_KEYS, ACE_LOCK>::shared_find (const EXT_ID &ext_id,
                                                                                            ACE_Hash_Multi_Map_Entry<EXT_ID, INT_ID> *&entry,
                                                                                            size_t &loc)
 {
@@ -400,7 +400,7 @@ ACE_Hash_Multi_Map_Manager<EXT_ID, INT_ID, HASH_KEY, COMPARE_KEYS, ACE_LOCK>::re
                                                                                         ACE_Hash_Multi_Map_Entry<EXT_ID, INT_ID> *&entry)
 {
   size_t dummy;
-  if (this->commun_find (ext_id, entry, dummy) == -1)
+  if (this->shared_find (ext_id, entry, dummy) == -1)
     return this->bind_i (ext_id, int_id_set);
   else
     {
@@ -417,7 +417,7 @@ ACE_Hash_Multi_Map_Manager<EXT_ID, INT_ID, HASH_KEY, COMPARE_KEYS, ACE_LOCK>::re
                                                                                         ACE_Hash_Multi_Map_Entry<EXT_ID, INT_ID> *&entry)
 {
   size_t dummy;
-  if (this->commun_find (ext_id, entry, dummy) == -1)
+  if (this->shared_find (ext_id, entry, dummy) == -1)
     return this->bind_i (ext_id, int_id_set);
   else
     {
@@ -436,7 +436,7 @@ ACE_Hash_Multi_Map_Manager<EXT_ID, INT_ID, HASH_KEY, COMPARE_KEYS, ACE_LOCK>::re
                                                                                         ACE_Hash_Multi_Map_Entry<EXT_ID, INT_ID> *&entry)
 {
   size_t dummy;
-  if (this->commun_find (ext_id, entry, dummy) == -1)
+  if (this->shared_find (ext_id, entry, dummy) == -1)
     return this->bind_i (ext_id, int_id_set);
   else
     {

@@ -141,7 +141,7 @@ private:
   /// Pointer to C++ object that implements the svc.
   const ACE_Service_Type_Impl *type_;
 
-  /// ACE_DLL representing the commun object file (non-zero if
+  /// ACE_DLL representing the shared object file (non-zero if
   /// dynamically linked).
   mutable ACE_DLL dll_;
 
@@ -162,7 +162,7 @@ private:
  *
  * This class is similar to the Standard C++ Library class
  * auto_ptr. It is used in conjunction with statically linked
- * ACE_Service_Objects, as shown in the ./netsvcs/serveur/main.cpp example.
+ * ACE_Service_Objects, as shown in the ./netsvcs/server/main.cpp example.
  */
 class ACE_Export ACE_Service_Object_Ptr
 {

@@ -35,7 +35,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 
 // Forward decl.
 template <class T> class ACE_Future_Holder;
-template <class T> class ACE_Future_Observeur;
+template <class T> class ACE_Future_Observer;
 template <class T> class ACE_Future_Rep;
 template <class T> class ACE_Future;
 
@@ -61,21 +61,21 @@ protected:
 };
 
 /**
- * @class ACE_Future_Observeur
+ * @class ACE_Future_Observer
  *
- * @brief ACE_Future_Observeur<T>
+ * @brief ACE_Future_Observer<T>
  *
- * An ACE_Future_Observeur object implements an object that is
+ * An ACE_Future_Observer object implements an object that is
  * subscribed with an ACE_Future object so that it may be notified
  * when the value of the ACE_Future object is written to by a writer
- * thread.  It uses the Observeur pattern.
+ * thread.  It uses the Observer pattern.
  */
 template <class T>
-class ACE_Future_Observeur
+class ACE_Future_Observer
 {
 public:
   /// Destructor
-  virtual ~ACE_Future_Observeur (void);
+  virtual ~ACE_Future_Observer (void);
 
   /// Called by the ACE_Future in which we are subscribed to when
   /// its value is written to.
@@ -86,7 +86,7 @@ public:
 protected:
 
   /// Constructor
-  ACE_Future_Observeur (void);
+  ACE_Future_Observer (void);
 };
 
 /**
@@ -110,7 +110,7 @@ private:
   /**
    * Set the result value.  The specified @a caller represents the
    * future that invoked this <set> method, which is used to notify
-   * the list of future observeurs. Returns 0 for success, -1 on error.
+   * the list of future observers. Returns 0 for success, -1 on error.
    * This function only has an effect the first time it is called for
    * the object. Subsequent calls return 0 (success) but have no effect.
    */
@@ -123,26 +123,26 @@ private:
            ACE_Time_Value *tv) const;
 
   /**
-   * Attaches the specified observeur to a subject (i.e., the ACE_Future_Rep).
+   * Attaches the specified observer to a subject (i.e., the ACE_Future_Rep).
    * The update method of the specified subject will be invoked with a copy of
    * the written-to ACE_Future as input when the result gets set.
    *
-   * Returns 0 if the observeur is successfully attached, 1 if the
-   * observeur is already attached, and -1 if failures occur.
+   * Returns 0 if the observer is successfully attached, 1 if the
+   * observer is already attached, and -1 if failures occur.
    */
-  int attach (ACE_Future_Observeur<T> *observeur,
+  int attach (ACE_Future_Observer<T> *observer,
                ACE_Future<T> &caller);
 
   /**
-   * Detaches the specified observeur from a subject (i.e., the ACE_Future_Rep).
+   * Detaches the specified observer from a subject (i.e., the ACE_Future_Rep).
    * The update method of the specified subject will not be invoked when the
-   * ACE_Future_Reps result gets set.  Returns 1 if the specified observeur was
+   * ACE_Future_Reps result gets set.  Returns 1 if the specified observer was
    * actually attached to the subject prior to this call and 0 if was not.
    *
-   * Returns 0 if the observeur was successfully detached, and -1 if the
-   * observeur was not attached in the first place.
+   * Returns 0 if the observer was successfully detached, and -1 if the
+   * observer was not attached in the first place.
    */
-  int detach (ACE_Future_Observeur<T> *observeur);
+  int detach (ACE_Future_Observer<T> *observer);
 
   /**
    * Type conversion. will block forever until the result is
@@ -207,12 +207,12 @@ private:
   /// Reference count.
   int ref_count_;
 
-  typedef ACE_Future_Observeur<T> OBSERVER;
+  typedef ACE_Future_Observer<T> OBSERVER;
 
   typedef ACE_Unbounded_Set<OBSERVER *> OBSERVER_COLLECTION;
 
-  /// Keep a list of ACE_Future_Observeurs unread by client's reader thread.
-  OBSERVER_COLLECTION observeur_collection_;
+  /// Keep a list of ACE_Future_Observers unread by client's reader thread.
+  OBSERVER_COLLECTION observer_collection_;
 
   // = Condition variable and mutex that protect the <value_>.
   mutable ACE_SYNCH_RECURSIVE_MUTEX value_ready_mutex_;
@@ -283,7 +283,7 @@ public:
   bool operator != (const ACE_Future<T> &r) const;
 
   /**
-   * Make the result available. Is used by the serveur thread to give
+   * Make the result available. Is used by the server thread to give
    * the result to all waiting clients. Returns 0 for success, -1 on failure.
    * This function only has an effect the first time it is called for
    * the object (actually, the first time the underlying ACE_Future_Rep has a
@@ -322,32 +322,32 @@ public:
   int ready (void) const;
 
   /**
-   * Attaches the specified observeur to a subject (this ACE_Future).
+   * Attaches the specified observer to a subject (this ACE_Future).
    * The update method of the specified subject will be invoked with a copy of
    * the associated ACE_Future as input when the result gets set.  If the
    * result is already set when this method gets invoked, then the update
    * method of the specified subject will be invoked immediately.
    *
-   * @param observeur The observeur to attach to the subject.
+   * @param observer The observer to attach to the subject.
    *
    * @retval  0   Success.
-   * @retval  1   The observeur was already attached.
+   * @retval  1   The observer was already attached.
    * @retval -1   Error; check ACE_OS::last_error() for an error code.
    */
-  int attach (ACE_Future_Observeur<T> *observeur);
+  int attach (ACE_Future_Observer<T> *observer);
 
   /**
-   * Detaches the specified observeur from a subject (this ACE_Future).
+   * Detaches the specified observer from a subject (this ACE_Future).
    * The update method of the specified subject will not be invoked when the
    * ACE_Future_Rep result gets set.
    *
-   * @param observeur The observeur to attach to the subject.
+   * @param observer The observer to attach to the subject.
    *
-   * @retval  0   The observeur was successfully detached.
-   * @retval -1   Error, including the observeur not attached prior
+   * @retval  0   The observer was successfully detached.
+   * @retval -1   Error, including the observer not attached prior
    *              to calling this method.
    */
-  int detach (ACE_Future_Observeur<T> *observeur);
+  int detach (ACE_Future_Observer<T> *observer);
 
   /// Dump the state of an object.
   void dump (void) const;

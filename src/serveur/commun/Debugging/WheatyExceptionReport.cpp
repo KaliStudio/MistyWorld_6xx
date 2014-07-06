@@ -335,10 +335,10 @@ void WheatyExceptionReport::PrintSystemInfo()
     TCHAR sString[1024];
     _tprintf(_T("//=====================================================\r\n"));
     if (_GetProcessorName(sString, countof(sString)))
-        _tprintf(_T("*** Hardware ***\r\nProcessor: %s\r\nNumber Of Processors: %d\r\nPhysical Memory: %d KB (Available: %d KB)\r\nCommit Charge Limit: %d KB\r\n"),
+        _tprintf(_T("*** Hardware ***\r\nProcesseur: %s\r\nNombre de Processeurs: %d\r\nMémoire physique: %d KB (disponible: %d KB)\r\nEngager limite de charge: %d KB\r\n"),
             sString, SystemInfo.dwNumberOfProcessors, MemoryStatus.dwTotalPhys/0x400, MemoryStatus.dwAvailPhys/0x400, MemoryStatus.dwTotalPageFile/0x400);
     else
-        _tprintf(_T("*** Hardware ***\r\nProcessor: <unknown>\r\nNumber Of Processors: %d\r\nPhysical Memory: %d KB (Available: %d KB)\r\nCommit Charge Limit: %d KB\r\n"),
+        _tprintf(_T("*** Hardware ***\r\nProcesseur: <unknown>\r\nNombre de Processeurs: %d\r\nMémoire physique: %d KB (disponible: %d KB)\r\nEngager limite de charge: %d KB\r\n"),
             SystemInfo.dwNumberOfProcessors, MemoryStatus.dwTotalPhys/0x400, MemoryStatus.dwAvailPhys/0x400, MemoryStatus.dwTotalPageFile/0x400);
 
     if (_GetWindowsVersion(sString, countof(sString)))
@@ -406,13 +406,13 @@ PEXCEPTION_POINTERS pExceptionInfo)
 
     // Start out with a banner
     _tprintf(_T("Revision: %s\r\n"), _FULLVERSION);
-    _tprintf(_T("Date %u:%u:%u. Time %u:%u \r\n"), systime.wDay, systime.wMonth, systime.wYear, systime.wHour, systime.wMinute);
+    _tprintf(_T("Date %u:%u:%u. Heure %u:%u \r\n"), systime.wDay, systime.wMonth, systime.wYear, systime.wHour, systime.wMinute);
     PEXCEPTION_RECORD pExceptionRecord = pExceptionInfo->ExceptionRecord;
 
     PrintSystemInfo();
     // First print information about the type of fault
     _tprintf(_T("\r\n//=====================================================\r\n"));
-    _tprintf(_T("Exception code: %08X %s\r\n"),
+    _tprintf(_T("Code Exception: %08X %s\r\n"),
         pExceptionRecord->ExceptionCode,
         GetExceptionString(pExceptionRecord->ExceptionCode));
 
@@ -426,12 +426,12 @@ PEXCEPTION_POINTERS pExceptionInfo)
         section, offset);
 
 #ifdef _M_IX86
-    _tprintf(_T("Fault address:  %08X %02X:%08X %s\r\n"),
+    _tprintf(_T("Adresse de défaut:  %08X %02X:%08X %s\r\n"),
         pExceptionRecord->ExceptionAddress,
         section, offset, szFaultingModule);
 #endif
 #ifdef _M_X64
-    _tprintf(_T("Fault address:  %016I64X %02X:%016I64X %s\r\n"),
+    _tprintf(_T("Adresse de défaut:  %016I64X %02X:%016I64X %s\r\n"),
         pExceptionRecord->ExceptionAddress,
         section, offset, szFaultingModule);
 #endif
@@ -440,7 +440,7 @@ PEXCEPTION_POINTERS pExceptionInfo)
 
     // Show the registers
     #ifdef _M_IX86                                          // X86 Only!
-    _tprintf(_T("\r\nRegisters:\r\n"));
+    _tprintf(_T("\r\nRegistres:\r\n"));
 
     _tprintf(_T("EAX:%08X\r\nEBX:%08X\r\nECX:%08X\r\nEDX:%08X\r\nESI:%08X\r\nEDI:%08X\r\n")
         , pCtx->Eax, pCtx->Ebx, pCtx->Ecx, pCtx->Edx,
@@ -455,7 +455,7 @@ PEXCEPTION_POINTERS pExceptionInfo)
     #endif
 
     #ifdef _M_X64
-    _tprintf(_T("\r\nRegisters:\r\n"));
+    _tprintf(_T("\r\nRegistres:\r\n"));
     _tprintf(_T("RAX:%016I64X\r\nRBX:%016I64X\r\nRCX:%016I64X\r\nRDX:%016I64X\r\nRSI:%016I64X\r\nRDI:%016I64X\r\n")
         _T("R8: %016I64X\r\nR9: %016I64X\r\nR10:%016I64X\r\nR11:%016I64X\r\nR12:%016I64X\r\nR13:%016I64X\r\nR14:%016I64X\r\nR15:%016I64X\r\n")
         , pCtx->Rax, pCtx->Rbx, pCtx->Rcx, pCtx->Rdx,
@@ -473,7 +473,7 @@ PEXCEPTION_POINTERS pExceptionInfo)
     // Initialize DbgHelp
     if (!SymInitialize(GetCurrentProcess(), 0, TRUE))
     {
-        _tprintf(_T("\n\rCRITICAL ERROR.\n\r Couldn't initialize the symbol handler for process.\n\rError [%s].\n\r\n\r"),
+        _tprintf(_T("\n\rCRITICAL ERROR.\n\r Impossible d`initialiser le gestionnaire de symbole pour le processus.\n\rErreur [%s].\n\r\n\r"),
             ErrorMessage(GetLastError()));
     }
 
@@ -485,13 +485,13 @@ PEXCEPTION_POINTERS pExceptionInfo)
 //    #ifdef _M_IX86                                          // X86 Only!
 
     _tprintf(_T("========================\r\n"));
-    _tprintf(_T("Local Variables And Parameters\r\n"));
+    _tprintf(_T("Variables locales et paramètres\r\n"));
 
     trashableContext = *pCtx;
     WriteStackDetails(&trashableContext, true, NULL);
 
     _tprintf(_T("========================\r\n"));
-    _tprintf(_T("Global Variables\r\n"));
+    _tprintf(_T("Variables globales\r\n"));
 
     SymEnumSymbols(GetCurrentProcess(),
         (UINT_PTR)GetModuleHandle(szFaultingModule),
@@ -624,7 +624,7 @@ bool bWriteVariables, HANDLE pThreadHandle)                                     
 {
     _tprintf(_T("\r\nCall stack:\r\n"));
 
-    _tprintf(_T("Address   Frame     Function      SourceFile\r\n"));
+    _tprintf(_T("Addresse   Frame     Fonction      SourceFichier\r\n"));
 
     DWORD dwMachineType = 0;
     // Could use SymSetOptions here to add the SYMOPT_DEFERRED_LOADS flag
@@ -713,7 +713,7 @@ bool bWriteVariables, HANDLE pThreadHandle)                                     
         if (SymGetLineFromAddr64(m_hProcess, sf.AddrPC.Offset,
             &dwLineDisplacement, &lineInfo))
         {
-            _tprintf(_T("  %s line %u"), lineInfo.FileName, lineInfo.LineNumber);
+            _tprintf(_T("  %s ligne %u"), lineInfo.FileName, lineInfo.LineNumber);
         }
 
         _tprintf(_T("\r\n"));
@@ -756,7 +756,7 @@ PVOID         UserContext)
     }
     __except(1)
     {
-        _tprintf(_T("punting on symbol %s\r\n"), pSymInfo->Name);
+        _tprintf(_T("renvoyé au symbole %s\r\n"), pSymInfo->Name);
     }
 
     return TRUE;
@@ -777,9 +777,9 @@ unsigned /*cbBuffer*/)
 
     // Indicate if the variable is a local or parameter
     if (pSym->Flags & IMAGEHLP_SYMBOL_INFO_PARAMETER)
-        pszCurrBuffer += sprintf(pszCurrBuffer, "Parameter ");
+        pszCurrBuffer += sprintf(pszCurrBuffer, "Parametre ");
     else if (pSym->Flags & IMAGEHLP_SYMBOL_INFO_LOCAL)
-        pszCurrBuffer += sprintf(pszCurrBuffer, "Local ");
+        pszCurrBuffer += sprintf(pszCurrBuffer, "Locale ");
 
     // If it's a function, don't do anything.
     if (pSym->Tag == 5)                                   // SymTagFunction from CVCONST.H from the DIA SDK

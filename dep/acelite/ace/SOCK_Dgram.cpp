@@ -97,16 +97,16 @@ ACE_SOCK_Dgram::recv (iovec *io_vec,
 #endif /* FIONREAD */
 }
 
-// Here's the commun open function.  Note that if we are using the
+// Here's the shared open function.  Note that if we are using the
 // PF_INET protocol family and the address of LOCAL == the address of
 // the special variable SAP_ANY then we are going to arbitrarily bind
 // to a portnumber.
 
 int
-ACE_SOCK_Dgram::commun_open (const ACE_Addr &local,
+ACE_SOCK_Dgram::shared_open (const ACE_Addr &local,
                              int protocol_family)
 {
-  ACE_TRACE ("ACE_SOCK_Dgram::commun_open");
+  ACE_TRACE ("ACE_SOCK_Dgram::shared_open");
   bool error = false;
 
   if (local == ACE_Addr::sap_any)
@@ -151,7 +151,7 @@ ACE_SOCK_Dgram::open (const ACE_Addr &local,
                       flags,
                       reuse_addr) == -1)
     return -1;
-  else if (this->commun_open (local,
+  else if (this->shared_open (local,
                               protocol_family) == -1)
     return -1;
   else
@@ -185,12 +185,12 @@ ACE_SOCK_Dgram::open (const ACE_Addr &local,
                       reuse_addr) == -1)
     return -1;
   else
-    return this->commun_open (local,
+    return this->shared_open (local,
                               protocol_family);
 }
 
 // Here's the general-purpose constructor used by a connectionless
-// datagram ``serveur''...
+// datagram ``server''...
 
 ACE_SOCK_Dgram::ACE_SOCK_Dgram (const ACE_Addr &local,
                                 int protocol_family,

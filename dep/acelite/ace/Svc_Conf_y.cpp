@@ -1203,7 +1203,7 @@ int ace_yynerrs;
   YYSIZE_T ace_yymsg_alloc = sizeof ace_yymsgbuf;
 #endif
 
-  /* Three stacks and their outils:
+  /* Three stacks and their tools:
      `ace_yyss': related to states,
      `ace_yyvs': related to semantic values,
      `ace_yyls': related to locations.

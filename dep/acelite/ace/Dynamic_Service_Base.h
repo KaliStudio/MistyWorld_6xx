@@ -32,7 +32,7 @@ class ACE_Service_Type;
  *
  * @brief Base class for all ACE_Dynamic_Service instantiations.
  *
- * Factors out common code commun by all ACE_Dynamic_Service
+ * Factors out common code shared by all ACE_Dynamic_Service
  * instantiations, this avoid code bloat.
  */
 class ACE_Export ACE_Dynamic_Service_Base

@@ -28,9 +28,9 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 /**
  * @class ACE_Shared_Memory_SV
  *
- * @brief Shared memory wrapper based on System V commun memory.
+ * @brief Shared memory wrapper based on System V shared memory.
  *
- * This class provides a very simple-minded commun memory manager.  We
+ * This class provides a very simple-minded shared memory manager.  We
  * strongly recommend that you do NOT use this class.  Instead, please
  * use @c ACE_Malloc, which has much more powerful capabilities.
  */
@@ -59,10 +59,10 @@ public:
             void *addr = 0,
             int flags = 0);
 
-  /// Close down the commun memory segment.
+  /// Close down the shared memory segment.
   virtual int close (void);
 
-  /// Remove the underlying commun memory segment.
+  /// Remove the underlying shared memory segment.
   virtual int remove (void);
 
   // = Allocation and deallocation methods.
@@ -72,11 +72,11 @@ public:
   /// Free a chuck of memory allocated by <ACE_Shared_Memory_SV::malloc>.
   virtual int free (void *p);
 
-  /// Return the size of the commun memory segment.
+  /// Return the size of the shared memory segment.
   virtual size_t get_segment_size (void) const;
 
-  /// Return the ID of the commun memory segment (i.e., a System V
-  /// commun memory internal id).
+  /// Return the ID of the shared memory segment (i.e., a System V
+  /// shared memory internal id).
   virtual ACE_HANDLE get_id (void) const;
 
   /// Dump the state of an object.
@@ -86,9 +86,9 @@ public:
   ACE_ALLOC_HOOK_DECLARE;
 
 private:
-   /// This version is implemented with System V commun memory
+   /// This version is implemented with System V shared memory
    /// segments.
-   ACE_SV_Shared_Memory commun_memory_;
+   ACE_SV_Shared_Memory shared_memory_;
 };
 
 ACE_END_VERSIONED_NAMESPACE_DECL

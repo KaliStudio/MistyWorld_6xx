@@ -18,7 +18,7 @@ ACE_Shared_Memory_MM::dump (void) const
 #endif /* ACE_HAS_DUMP */
 }
 
-// Creates a commun memory segment of SIZE bytes.
+// Creates a shared memory segment of SIZE bytes.
 
 ACE_Shared_Memory_MM::ACE_Shared_Memory_MM (ACE_HANDLE handle,
                                             size_t length,
@@ -26,7 +26,7 @@ ACE_Shared_Memory_MM::ACE_Shared_Memory_MM (ACE_HANDLE handle,
                                             int share,
                                             char *addr,
                                             ACE_OFF_T pos)
-  : commun_memory_ (handle, length, prot, share, addr, pos)
+  : shared_memory_ (handle, length, prot, share, addr, pos)
 {
   ACE_TRACE ("ACE_Shared_Memory_MM::ACE_Shared_Memory_MM");
 }
@@ -39,7 +39,7 @@ ACE_Shared_Memory_MM::ACE_Shared_Memory_MM (const ACE_TCHAR *file_name,
                                             int share,
                                             char *addr,
                                             ACE_OFF_T pos)
-  : commun_memory_ (file_name, len, flags, mode,
+  : shared_memory_ (file_name, len, flags, mode,
                     prot, share, addr, pos)
 {
   ACE_TRACE ("ACE_Shared_Memory_MM::ACE_Shared_Memory_MM");
@@ -59,25 +59,25 @@ ACE_Shared_Memory_MM::get_segment_size (void) const
 {
   ACE_TRACE ("ACE_Shared_Memory_MM::get_segment_size");
   // This cast is legit since the original length in open() is an int.
-  return this->commun_memory_.size ();
+  return this->shared_memory_.size ();
 }
 
-// Unmaps the commun memory segment.
+// Unmaps the shared memory segment.
 
 int
 ACE_Shared_Memory_MM::remove (void)
 {
   ACE_TRACE ("ACE_Shared_Memory_MM::remove");
-  return commun_memory_.remove ();
+  return shared_memory_.remove ();
 }
 
-// Closes (unmaps) the commun memory segment.
+// Closes (unmaps) the shared memory segment.
 
 int
 ACE_Shared_Memory_MM::close (void)
 {
   ACE_TRACE ("ACE_Shared_Memory_MM::close");
-  return commun_memory_.unmap ();
+  return shared_memory_.unmap ();
 }
 
 void *
@@ -86,14 +86,14 @@ ACE_Shared_Memory_MM::malloc (size_t)
   ACE_TRACE ("ACE_Shared_Memory_MM::malloc");
   void *addr = 0;
 
-  return this->commun_memory_ (addr) == -1 ? 0 : addr;
+  return this->shared_memory_ (addr) == -1 ? 0 : addr;
 }
 
 ACE_HANDLE
 ACE_Shared_Memory_MM::get_id (void) const
 {
   ACE_TRACE ("ACE_Shared_Memory_MM::get_id");
-  return this->commun_memory_.handle ();
+  return this->shared_memory_.handle ();
 }
 
 int

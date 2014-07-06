@@ -47,7 +47,7 @@ ACE_SOCK_CODgram::ACE_SOCK_CODgram (const ACE_Addr &remote,
 
    2. remote == ACE_Addr::sap_any && local != ACE_Addr::sap_any
          we are just binding the local address
-         (used primarily by serveurs)
+         (used primarily by servers)
 
    3. remote != ACE_Addr::sap_any && local == ACE_Addr::sap_any
          we are connecting to the remote address

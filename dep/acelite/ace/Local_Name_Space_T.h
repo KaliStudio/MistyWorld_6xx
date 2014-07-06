@@ -51,7 +51,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
  *
  * We need this class because otherwise the ALLOCATOR
  * pointer will be stored in the Map_Manager that resides within
- * commun memory.  Naturally, this will cause horrible problems
+ * shared memory.  Naturally, this will cause horrible problems
  * since only the first process to set that pointer will be
  * guaranteed the address of the ALLOCATOR is meaningful!
  */
@@ -111,7 +111,7 @@ public:
   /**
    * Specifies the scope of this namespace, opens and memory-maps the
    * associated file (if accessible) or contacts the dedicated name
-   * serveur process for NET_LOCAL namespace.
+   * server process for NET_LOCAL namespace.
    */
   ACE_Local_Name_Space (ACE_Naming_Context::Context_Scope_Type scope_in,
                         ACE_Name_Options *name_options);
@@ -119,7 +119,7 @@ public:
   /**
    * Specifies the scope of this namespace, opens and memory-maps the
    * associated file (if accessible) or contacts the dedicated name
-   * serveur process for NET_LOCAL namespace.
+   * server process for NET_LOCAL namespace.
    */
   int open (ACE_Naming_Context::Context_Scope_Type scope_in);
 
@@ -221,10 +221,10 @@ private:
 #endif /* ACE_WIN32 */
 
   /// Factor out code from bind() and rebind().
-  int commun_bind (const ACE_NS_WString &name,
+  int shared_bind (const ACE_NS_WString &name,
                    const ACE_NS_WString &value,
                    const char *type, int rebind);
-  int commun_bind_i (const ACE_NS_WString &name,
+  int shared_bind_i (const ACE_NS_WString &name,
                      const ACE_NS_WString &value,
                      const char *type, int rebind);
 

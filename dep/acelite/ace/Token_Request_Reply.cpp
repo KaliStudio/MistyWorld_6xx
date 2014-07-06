@@ -41,7 +41,7 @@ ACE_Token_Request::ACE_Token_Request (int token_type,
 }
 
 // Encode the transfer buffer into network byte order
-// so that it can be sent to the serveur.
+// so that it can be sent to the server.
 
 int
 ACE_Token_Request::encode (void *&buf)
@@ -51,7 +51,7 @@ ACE_Token_Request::encode (void *&buf)
 }
 
 // Decode the transfer buffer into host byte byte order
-// so that it can be used by the serveur.
+// so that it can be used by the server.
 
 int
 ACE_Token_Request::decode (void)

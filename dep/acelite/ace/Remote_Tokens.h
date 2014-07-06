@@ -65,9 +65,9 @@ public:
 
 
   /**
-   * Open a connection with the token serveur.  This only need be used
+   * Open a connection with the token server.  This only need be used
    * when the user wishes to explicitly open a connection to check if
-   * the serveur exists.  Connections are stored in the
+   * the server exists.  Connections are stored in the
    * ACE_Token_Connections singleton as thread-specific data.  That
    * is, every thread has only one connection that is used for all
    * remote tokens.
@@ -78,7 +78,7 @@ public:
    * Acquire the distributed token.  If notify is specified and the
    * token is already held, the owner is notified.  options contains
    * the timeout value for the acquire call.  The timer is kept at the
-   * token serveur.  Asynchronous operations are not supported.
+   * token server.  Asynchronous operations are not supported.
    * Returns 0 on success, -1 on failure with @c errno == problem.
    */
   virtual int acquire (int notify = 0,
@@ -101,7 +101,7 @@ public:
    * semantically equivalent to release() followed by acquire(), but
    * it is faster.  options contains the timeout value used if renew
    * blocks.  As with acquire, the timer is maintained at the token
-   * serveur.  If there are waiters and requeue_position == -1, the
+   * server.  If there are waiters and requeue_position == -1, the
    * caller is queued at the rear of the waiter list.  Otherwise,
    * requeue_position specifies the number of waiters to "let by"
    * before reacquiring the token (effectively, the position in the
@@ -131,12 +131,12 @@ public:
   virtual const ACE_TCHAR* owner_id (void);
 
   /**
-   * Sets the serveur address for all instances of ACE_Remote_Token_Proxy
+   * Sets the server address for all instances of ACE_Remote_Token_Proxy
    * If this isn't called, the environment variable TOKEN_SERVER is
-   * checked for the serveur address.  If that is not specified, all
+   * checked for the server address.  If that is not specified, all
    * ACE_Remote_** operations will fail.
    */
-  static void set_serveur_address (const ACE_INET_Addr &serveur_address);
+  static void set_server_address (const ACE_INET_Addr &server_address);
 
   /// Dump the state of the class.
   void dump (void) const;
@@ -291,8 +291,8 @@ public:
   /// from ACE_TSS so that we can use it.
   operator ACE_SOCK_Stream *(void);
 
-  /// Set the serveur address.
-  static void set_serveur_address (const ACE_INET_Addr &serveur_address);
+  /// Set the server address.
+  static void set_server_address (const ACE_INET_Addr &server_address);
 
   /// Dump the state of the class.
   void dump (void) const;
@@ -300,7 +300,7 @@ public:
 protected:
   /// The address of the Token Server used by all instances of
   /// Token_Proxy.
-  static ACE_INET_Addr serveur_address_;
+  static ACE_INET_Addr server_address_;
 
 private:
   /// Private: should not be used

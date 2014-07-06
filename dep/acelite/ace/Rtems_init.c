@@ -161,8 +161,8 @@ struct rtems_bsdnet_config rtems_bsdnet_config = {
   "nodomain.com",     /* Domain name */
   "XXX.YYY.ZZZ.1",    /* Gateway */
   "XXX.YYY.ZZZ.1",    /* Log host */
-  {"XXX.YYY.ZZZ.1" }, /* Name serveur(s) */
-  {"XXX.YYY.ZZZ.1" }, /* NTP serveur(s) */
+  {"XXX.YYY.ZZZ.1" }, /* Name server(s) */
+  {"XXX.YYY.ZZZ.1" }, /* NTP server(s) */
 
   /*
   *  A real example -- DO NOT USE THIS YOURSELF!!!
@@ -173,8 +173,8 @@ struct rtems_bsdnet_config rtems_bsdnet_config = {
   "NOT_oarcorp.com", /* Domain name */
   "192.168.1.2",     /* Gateway */
   "192.168.1.2",     /* Log host */
-  {"192.168.1.2" },  /* Name serveur(s) */
-  {"192.168.1.2" },  /* NTP serveur(s) */
+  {"192.168.1.2" },  /* Name server(s) */
+  {"192.168.1.2" },  /* NTP server(s) */
 #endif
 #endif /* !RTEMS_USE_BOOTP */
 

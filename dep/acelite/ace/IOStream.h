@@ -119,12 +119,12 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
  * The empty/full state of the read/write "buffers" are
  * controled by two sets pointers.  One set is dedicated to
  * read, the other to write.  These pointers, in turn, reference
- * a common buffer that is to be commun by both read and write
+ * a common buffer that is to be shared by both read and write
  * operations.  It is this common buffer to which data is
  * written and from which it is read.
  * The common buffer is used by functions of the streambuf as
  * well as the iostream.  Because of this and the fact that it
- * is "commun" by both read and write operators, there is a
+ * is "shared" by both read and write operators, there is a
  * danger of data corruption if read and write operations are
  * allowed to take place "at the same time".
  * To prevent data corruption, we manipulate the read and write

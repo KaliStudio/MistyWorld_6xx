@@ -1,21 +1,4 @@
-/*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation; either version 3 of the License, or (at your
- * option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program. If not, see <http://www.gnu.org/licenses/>.
- */
 
 #include <ace/OS_NS_string.h>
 #include <ace/INET_Addr.h>
@@ -57,7 +40,7 @@ int RealmSocket::open(void * arg)
 
     if (peer().get_remote_addr(addr) == -1)
     {
-        TC_LOG_ERROR("serveur.authserveur", "Error %s while opening realm socket!", ACE_OS::strerror(errno));
+        TC_LOG_ERROR("serveur.authentification", "Erreur %s pendant l'ouverture de socket de royaume!", ACE_OS::strerror(errno));
         return -1;
     }
 

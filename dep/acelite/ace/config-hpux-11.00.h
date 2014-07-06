@@ -143,7 +143,7 @@
 #  define ACE_INFINITE 10000000
 #endif
 
-/* Compiler/platform correctly calls init()/fini() for commun libraries. */
+/* Compiler/platform correctly calls init()/fini() for shared libraries. */
 #define ACE_HAS_AUTOMATIC_INIT_FINI 1
 
 // Manually tweak the malloc control block paddings to properly align

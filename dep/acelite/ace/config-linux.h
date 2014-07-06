@@ -288,7 +288,7 @@
 // Compiler/platform defines the sig_atomic_t typedef.
 #define ACE_HAS_SIG_ATOMIC_T
 
-// Compiler/platform defines a union semun for SysV commun memory.
+// Compiler/platform defines a union semun for SysV shared memory.
 #define ACE_HAS_SEMUN
 
 #define ACE_HAS_POSIX_TIME

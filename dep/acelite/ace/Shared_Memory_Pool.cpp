@@ -144,7 +144,7 @@ ACE_Shared_Memory_Pool::commit_backing_store_name (size_t rounded_bytes,
   return 0;
 }
 
-// Handle SIGSEGV and SIGBUS signals to remap commun memory properly.
+// Handle SIGSEGV and SIGBUS signals to remap shared memory properly.
 
 int
 ACE_Shared_Memory_Pool::handle_signal (int , siginfo_t *siginfo, ucontext_t *)
@@ -252,7 +252,7 @@ ACE_Shared_Memory_Pool::ACE_Shared_Memory_Pool (
         this->base_shm_key_ = segment_key;
 
       if (this->base_shm_key_ == IPC_PRIVATE)
-        // Make sure that the segment can be commun between unrelated
+        // Make sure that the segment can be shared between unrelated
         // processes.
         this->base_shm_key_ = ACE_DEFAULT_SHM_KEY;
     }
@@ -269,7 +269,7 @@ ACE_Shared_Memory_Pool::~ACE_Shared_Memory_Pool (void)
 {
 }
 
-// Ask system for more commun memory.
+// Ask system for more shared memory.
 
 void *
 ACE_Shared_Memory_Pool::acquire (size_t nbytes,
@@ -290,7 +290,7 @@ ACE_Shared_Memory_Pool::acquire (size_t nbytes,
   return ((char *) this->base_addr_) + offset;
 }
 
-// Ask system for initial chunk of commun memory.
+// Ask system for initial chunk of shared memory.
 
 void *
 ACE_Shared_Memory_Pool::init_acquire (size_t nbytes,

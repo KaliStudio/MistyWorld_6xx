@@ -74,14 +74,14 @@ ACE_OS::open (const char *filename,
         )
     }
 
-  DWORD commun_mode = perms;
+  DWORD shared_mode = perms;
   SECURITY_ATTRIBUTES sa_buffer;
   SECURITY_DESCRIPTOR sd_buffer;
 
 #if defined (ACE_HAS_WINCE)
   ACE_HANDLE h = ::CreateFileW (ACE_Ascii_To_Wide (filename).wchar_rep (),
                                 access,
-                                commun_mode,
+                                shared_mode,
                                 ACE_OS::default_win32_security_attributes_r
                                   (sa, &sa_buffer, &sd_buffer),
                                 creation,
@@ -90,7 +90,7 @@ ACE_OS::open (const char *filename,
 #else /* ACE_HAS_WINCE */
   ACE_HANDLE h = ::CreateFileA (filename,
                                 access,
-                                commun_mode,
+                                shared_mode,
                                 ACE_OS::default_win32_security_attributes_r
                                   (sa, &sa_buffer, &sd_buffer),
                                 creation,
@@ -196,13 +196,13 @@ ACE_OS::open (const wchar_t *filename,
         )
     }
 
-  DWORD commun_mode = perms;
+  DWORD shared_mode = perms;
   SECURITY_ATTRIBUTES sa_buffer;
   SECURITY_DESCRIPTOR sd_buffer;
 
   ACE_HANDLE h = ::CreateFileW (filename,
                                 access,
-                                commun_mode,
+                                shared_mode,
                                 ACE_OS::default_win32_security_attributes_r
                                   (sa, &sa_buffer, &sd_buffer),
                                 creation,

@@ -70,7 +70,7 @@
 
 
 // Take advantage of Sun Studio 8 (Sun C++ 5.5) or better symbol
-// visibility to generate improved commun library binaries.
+// visibility to generate improved shared library binaries.
 #  if (__SUNPRO_CC > 0x540)
 
 #    if defined (ACE_HAS_CUSTOM_EXPORT_MACROS) && ACE_HAS_CUSTOM_EXPORT_MACROS == 0
@@ -163,7 +163,7 @@
 // Platform has POSIX terminal interface.
 #define ACE_HAS_TERMIOS
 
-// Compiler/platform correctly calls init()/fini() for commun libraries.
+// Compiler/platform correctly calls init()/fini() for shared libraries.
 #define ACE_HAS_AUTOMATIC_INIT_FINI
 
 // Platform supports POSIX O_NONBLOCK semantics.

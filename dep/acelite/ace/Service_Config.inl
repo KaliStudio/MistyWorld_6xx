@@ -130,8 +130,8 @@ ACE_Service_Config::initialize (const ACE_TCHAR *svc_name,
                                                      parameters);
 }
 
-/// Dynamically link the commun object file and retrieve a pointer to
-/// the designated commun object in this file.
+/// Dynamically link the shared object file and retrieve a pointer to
+/// the designated shared object in this file.
 ACE_INLINE int
 ACE_Service_Config::initialize (const ACE_Service_Type *sr,
                                 const ACE_TCHAR *parameters)

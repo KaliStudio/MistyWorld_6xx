@@ -270,7 +270,7 @@ ACE::ldfind (const ACE_TCHAR* filename,
         {
           ACE_ERROR ((LM_WARNING,
                       ACE_TEXT ("Warning: improper suffix for a ")
-                      ACE_TEXT ("commun library on this platform: %s\n"),
+                      ACE_TEXT ("shared library on this platform: %s\n"),
                       s));
         }
     }

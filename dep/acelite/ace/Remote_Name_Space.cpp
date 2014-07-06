@@ -8,13 +8,13 @@
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 
 int
-ACE_Remote_Name_Space::open (const ACE_TCHAR *serveurname, u_short port)
+ACE_Remote_Name_Space::open (const ACE_TCHAR *servername, u_short port)
 {
   ACE_TRACE ("ACE_Remote_Name_Space::open");
   ACE_INET_Addr servaddr;
 
   // Initialize Addr
-  if (servaddr.set (port, serveurname) == -1)
+  if (servaddr.set (port, servername) == -1)
     return -1;
 
   // Connect to Name Server process.

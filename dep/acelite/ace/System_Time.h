@@ -41,7 +41,7 @@ class ACE_MMAP_Memory_Pool;
  *
  * @brief Defines the timer services of the OS interface to access the
  * system time either on the local host or on the central time
- * serveur in the network.
+ * server in the network.
  */
 class ACE_Export ACE_System_Time
 {
@@ -69,13 +69,13 @@ public:
   /// ACE_OS::time().
   static int get_local_system_time (ACE_Time_Value &time_out);
 
-  /// Get the system time of the central time serveur.
+  /// Get the system time of the central time server.
   int get_master_system_time (time_t & time_out);
 
-  /// Get the system time of the central time serveur.
+  /// Get the system time of the central time server.
   int get_master_system_time (ACE_Time_Value &time_out);
 
-  /// Synchronize local system time with the central time serveur using
+  /// Synchronize local system time with the central time server using
   /// specified mode.
   int sync_local_system_time (ACE_System_Time::Sync_Mode mode);
 
@@ -83,13 +83,13 @@ private:
   typedef ACE_Malloc<ACE_MMAP_MEMORY_POOL, ACE_Null_Mutex> MALLOC;
   typedef ACE_Allocator_Adapter<MALLOC> ALLOCATOR;
 
-  /// Our allocator (used for obtaining system time from commun memory).
+  /// Our allocator (used for obtaining system time from shared memory).
   ALLOCATOR * shmem_;
 
   /// The name of the pool used by the allocator.
   ACE_TCHAR poolname_[MAXPATHLEN + 1];
 
-  /// Pointer to delta time kept in commun memory.
+  /// Pointer to delta time kept in shared memory.
   long * delta_time_;
 };
 

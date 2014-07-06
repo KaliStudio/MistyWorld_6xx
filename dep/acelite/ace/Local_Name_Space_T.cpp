@@ -114,7 +114,7 @@ ACE_Local_Name_Space<ACE_MEM_POOL_2, ACE_LOCK>::remap (EXCEPTION_POINTERS *ep)
 #endif /* ACE_WIN32 */
 
 template <ACE_MEM_POOL_1, class ACE_LOCK> int
-ACE_Local_Name_Space<ACE_MEM_POOL_2, ACE_LOCK>::commun_bind (
+ACE_Local_Name_Space<ACE_MEM_POOL_2, ACE_LOCK>::shared_bind (
   const ACE_NS_WString &name,
   const ACE_NS_WString &value,
   const char *type,
@@ -126,7 +126,7 @@ ACE_Local_Name_Space<ACE_MEM_POOL_2, ACE_LOCK>::commun_bind (
   int result = 0;
   ACE_SEH_TRY
     {
-      result = this->commun_bind_i (name, value, type, rebind);
+      result = this->shared_bind_i (name, value, type, rebind);
     }
   ACE_SEH_EXCEPT (this->remap (GetExceptionInformation ()))
     {
@@ -135,14 +135,14 @@ ACE_Local_Name_Space<ACE_MEM_POOL_2, ACE_LOCK>::commun_bind (
 }
 
 template <ACE_MEM_POOL_1, class ACE_LOCK> int
-ACE_Local_Name_Space<ACE_MEM_POOL_2, ACE_LOCK>::commun_bind_i (
+ACE_Local_Name_Space<ACE_MEM_POOL_2, ACE_LOCK>::shared_bind_i (
   const ACE_NS_WString &name,
   const ACE_NS_WString &value,
   const char *type,
   int rebind)
 {
 
-  ACE_TRACE ("ACE_Local_Name_Space::commun_bind_i");
+  ACE_TRACE ("ACE_Local_Name_Space::shared_bind_i");
   const size_t name_len = (name.length () + 1) * sizeof (ACE_WCHAR_T);
   const size_t value_len = (value.length () + 1) * sizeof (ACE_WCHAR_T);
   const size_t type_len = ACE_OS::strlen (type) + 1;
@@ -197,7 +197,7 @@ ACE_Local_Name_Space<ACE_MEM_POOL_2, ACE_LOCK>::commun_bind_i (
                                                   this->allocator_);
           if (result == 1)
             {
-              // Free up the memory we allocated in commun_bind().
+              // Free up the memory we allocated in shared_bind().
               // Note that this assumes that the "value" pointer comes
               // first and that the value, name, and type are
               // contiguously allocated (see above for details)
@@ -251,9 +251,9 @@ ACE_Local_Name_Space<ACE_MEM_POOL_2, ACE_LOCK>::unbind_i (
                                      this->allocator_) != 0)
     return -1;
 
-  // Free up the memory we allocated in commun_bind().  Note that this
+  // Free up the memory we allocated in shared_bind().  Note that this
   // assumes that the "value" pointer comes first and that the value,
-  // name and type are contiguously allocated (see commun_bind() for
+  // name and type are contiguously allocated (see shared_bind() for
   // details)
   this->allocator_->free ((void *) (ns_internal.value ()).fast_rep ());
   return 0;
@@ -268,7 +268,7 @@ ACE_Local_Name_Space<ACE_MEM_POOL_2, ACE_LOCK>::bind (
   ACE_TRACE ("ACE_Local_Name_Space::bind");
   ACE_WRITE_GUARD_RETURN (ACE_LOCK, ace_mon, *this->lock_, -1);
 
-  return this->commun_bind (name, value, type, 0);
+  return this->shared_bind (name, value, type, 0);
 }
 
 template <ACE_MEM_POOL_1, class ACE_LOCK> int
@@ -280,7 +280,7 @@ ACE_Local_Name_Space<ACE_MEM_POOL_2, ACE_LOCK>::rebind (
   ACE_TRACE ("ACE_Local_Name_Space::rebind");
   ACE_WRITE_GUARD_RETURN (ACE_LOCK, ace_mon, *this->lock_, -1);
 
-  return this->commun_bind (name, value, type, 1);
+  return this->shared_bind (name, value, type, 1);
 }
 
 template <ACE_MEM_POOL_1, class ACE_LOCK> int
@@ -519,7 +519,7 @@ ACE_Local_Name_Space<ACE_MEM_POOL_2, ACE_LOCK>::create_manager_i (void)
           size_t map_size = sizeof *this->name_space_map_;
           ns_map = this->allocator_->malloc (map_size);
 
-          // Initialize the map into its memory location (e.g., commun memory).
+          // Initialize the map into its memory location (e.g., shared memory).
           this->name_space_map_ =
             new (ns_map) ACE_Name_Space_Map <ALLOCATOR> (this->allocator_);
 

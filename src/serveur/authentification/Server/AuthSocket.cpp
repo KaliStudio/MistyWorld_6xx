@@ -1,21 +1,4 @@
-/*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation; either version 3 of the License, or (at your
- * option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program. If not, see <http://www.gnu.org/licenses/>.
- */
 
 #include <algorithm>
 #include <openssl/md5.h>
@@ -212,12 +195,12 @@ AuthSocket::~AuthSocket(void) { }
 // Accept the connection
 void AuthSocket::OnAccept(void)
 {
-    TC_LOG_DEBUG("serveur.authserveur", "'%s:%d' Accepting connection", socket().getRemoteAddress().c_str(), socket().getRemotePort());
+    TC_LOG_DEBUG("serveur.authentification", "'%s:%d' connexion accepté", socket().getRemoteAddress().c_str(), socket().getRemotePort());
 }
 
 void AuthSocket::OnClose(void)
 {
-    TC_LOG_DEBUG("serveur.authserveur", "AuthSocket::OnClose");
+    TC_LOG_DEBUG("serveur.authentification", "AuthSocket::OnClose");
 }
 
 // Read the packet from the client
@@ -236,7 +219,7 @@ void AuthSocket::OnRead()
             ++challengesInARow;
             if (challengesInARow == MAX_AUTH_LOGON_CHALLENGES_IN_A_ROW)
             {
-                TC_LOG_WARN("serveur.authserveur", "Got %u AUTH_LOGON_CHALLENGE in a row from '%s', possible ongoing DoS", challengesInARow, socket().getRemoteAddress().c_str());
+                TC_LOG_WARN("serveur.authentification", "Vous avez %u AUTH_LOGON_CHALLENGE dans une ligne de '%s', possible DoS permanent", challengesInARow, socket().getRemoteAddress().c_str());
                 socket().shutdown();
                 return;
             }
@@ -249,11 +232,11 @@ void AuthSocket::OnRead()
         {
             if ((uint8)table[i].cmd == _cmd && (table[i].status == STATUS_CONNECTED || (_authed && table[i].status == STATUS_AUTHED)))
             {
-                TC_LOG_DEBUG("serveur.authserveur", "Got data for cmd %u recv length %u", (uint32)_cmd, (uint32)socket().recv_len());
+                TC_LOG_DEBUG("serveur.authentification", "Des données obtenu pour cmd %u recv longueur %u", (uint32)_cmd, (uint32)socket().recv_len());
 
                 if (!(*this.*table[i].handler)())
                 {
-                    TC_LOG_DEBUG("serveur.authserveur", "Command handler failed for cmd %u recv length %u", (uint32)_cmd, (uint32)socket().recv_len());
+                    TC_LOG_DEBUG("serveur.authentification", "Gestionnaire de commande a échoué pour cmd %u recv longueur %u", (uint32)_cmd, (uint32)socket().recv_len());
                     return;
                 }
                 break;
@@ -263,7 +246,7 @@ void AuthSocket::OnRead()
         // Report unknown packets in the error log
         if (i == AUTH_TOTAL_COMMANDS)
         {
-            TC_LOG_ERROR("serveur.authserveur", "Got unknown packet from '%s'", socket().getRemoteAddress().c_str());
+            TC_LOG_ERROR("serveur.authentification", "Vous avez paquet un inconnue '%s'", socket().getRemoteAddress().c_str());
             socket().shutdown();
             return;
         }
@@ -312,7 +295,7 @@ void AuthSocket::_SetVSFields(const std::string& rI)
 // Logon Challenge command handler
 bool AuthSocket::_HandleLogonChallenge()
 {
-    TC_LOG_DEBUG("serveur.authserveur", "Entering _HandleLogonChallenge");
+    TC_LOG_DEBUG("serveur.authentification", "Entering _HandleLogonChallenge");
     if (socket().recv_len() < sizeof(sAuthLogonChallenge_C))
         return false;
 
@@ -327,7 +310,7 @@ bool AuthSocket::_HandleLogonChallenge()
 #endif
 
     uint16 remaining = ((sAuthLogonChallenge_C *)&buf[0])->size;
-    TC_LOG_DEBUG("serveur.authserveur", "[AuthChallenge] got header, body is %#04x bytes", remaining);
+    TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Entête obtenu, corps de %#04x bytes", remaining);
 
     if ((remaining < sizeof(sAuthLogonChallenge_C) - buf.size()) || (socket().recv_len() < remaining))
         return false;
@@ -339,8 +322,8 @@ bool AuthSocket::_HandleLogonChallenge()
 
     // Read the remaining of the packet
     socket().recv((char *)&buf[4], remaining);
-    TC_LOG_DEBUG("serveur.authserveur", "[AuthChallenge] got full packet, %#04x bytes", ch->size);
-    TC_LOG_DEBUG("serveur.authserveur", "[AuthChallenge] name(%d): '%s'", ch->I_len, ch->I);
+    TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Obtenu plein paquet, %#04x bytes", ch->size);
+    TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] nom (%d): '%s'", ch->I_len, ch->I);
 
     // BigEndian code, nop in little endian case
     // size already converted
@@ -380,7 +363,7 @@ bool AuthSocket::_HandleLogonChallenge()
     if (result)
     {
         pkt << uint8(WOW_FAIL_BANNED);
-        TC_LOG_DEBUG("serveur.authserveur", "'%s:%d' [AuthChallenge] Banned ip tries to login!", socket().getRemoteAddress().c_str(), socket().getRemotePort());
+        TC_LOG_DEBUG("serveur.authentification", "'%s:%d' [AuthChallenge] Ip Banni tente de se connecter!", socket().getRemoteAddress().c_str(), socket().getRemotePort());
     }
     else
     {
@@ -398,24 +381,24 @@ bool AuthSocket::_HandleLogonChallenge()
             bool locked = false;
             if (fields[2].GetUInt8() == 1)                  // if ip is locked
             {
-                TC_LOG_DEBUG("serveur.authserveur", "[AuthChallenge] Account '%s' is locked to IP - '%s'", _login.c_str(), fields[3].GetCString());
-                TC_LOG_DEBUG("serveur.authserveur", "[AuthChallenge] Player address is '%s'", ip_address.c_str());
+                TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Compte '%s' est verrouillé avec IP - '%s'", _login.c_str(), fields[3].GetCString());
+                TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Adresse du joueur est '%s'", ip_address.c_str());
 
                 if (strcmp(fields[4].GetCString(), ip_address.c_str()) != 0)
                 {
-                    TC_LOG_DEBUG("serveur.authserveur", "[AuthChallenge] Account IP differs");
+                    TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] IP du compte différente");
                     pkt << uint8(WOW_FAIL_LOCKED_ENFORCED);
                     locked = true;
                 }
                 else
-                    TC_LOG_DEBUG("serveur.authserveur", "[AuthChallenge] Account IP matches");
+                    TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] IP du compte correspond ");
             }
             else
             {
-                TC_LOG_DEBUG("serveur.authserveur", "[AuthChallenge] Account '%s' is not locked to ip", _login.c_str());
+                TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Le compte '%s' n'est pas verrouillé pour IP", _login.c_str());
                 std::string accountCountry = fields[3].GetString();
                 if (accountCountry.empty() || accountCountry == "00")
-                    TC_LOG_DEBUG("serveur.authserveur", "[AuthChallenge] Account '%s' is not locked to country", _login.c_str());
+                    TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Le compte '%s' n'est pas verrouillé pour le pays", _login.c_str());
                 else if (!accountCountry.empty())
                 {
                     uint32 ip = inet_addr(ip_address.c_str());
@@ -426,18 +409,18 @@ bool AuthSocket::_HandleLogonChallenge()
                     if (PreparedQueryResult sessionCountryQuery = LoginDatabase.Query(stmt))
                     {
                         std::string loginCountry = (*sessionCountryQuery)[0].GetString();
-                        TC_LOG_DEBUG("serveur.authserveur", "[AuthChallenge] Account '%s' is locked to country: '%s' Player country is '%s'", _login.c_str(), accountCountry.c_str(), loginCountry.c_str());
+                        TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Le compte '%s' est verrouillé pour le pays: '%s' !Le pays du joueur est '%s'", _login.c_str(), accountCountry.c_str(), loginCountry.c_str());
                         if (loginCountry != accountCountry)
                         {
-                            TC_LOG_DEBUG("serveur.authserveur", "[AuthChallenge] Account country differs.");
+                            TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Le pays du compte diffère.");
                             pkt << uint8(WOW_FAIL_UNLOCKABLE_LOCK);
                             locked = true;
                         }
                         else
-                            TC_LOG_DEBUG("serveur.authserveur", "[AuthChallenge] Account country matches");
+                            TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Pays du compte correspond");
                     }
                     else
-                        TC_LOG_DEBUG("serveur.authserveur", "[AuthChallenge] IP2NATION Table empty");
+                        TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] la table IP2NATION est vide");
                 }
             }
 
@@ -455,12 +438,12 @@ bool AuthSocket::_HandleLogonChallenge()
                     if ((*banresult)[0].GetUInt32() == (*banresult)[1].GetUInt32())
                     {
                         pkt << uint8(WOW_FAIL_BANNED);
-                        TC_LOG_DEBUG("serveur.authserveur", "'%s:%d' [AuthChallenge] Banned account %s tried to login!", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str ());
+                        TC_LOG_DEBUG("serveur.authentification", "'%s:%d' [AuthChallenge] Compte %s banni essayé de vous identifier!", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str ());
                     }
                     else
                     {
                         pkt << uint8(WOW_FAIL_SUSPENDED);
-                        TC_LOG_DEBUG("serveur.authserveur", "'%s:%d' [AuthChallenge] Temporarily banned account %s tried to login!", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str ());
+                        TC_LOG_DEBUG("serveur.authentification", "'%s:%d' [AuthChallenge] Compte %s temporairement essayé de vous identifier!", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str ());
                     }
                 }
                 else
@@ -472,7 +455,7 @@ bool AuthSocket::_HandleLogonChallenge()
                     std::string databaseV = fields[6].GetString();
                     std::string databaseS = fields[7].GetString();
 
-                    TC_LOG_DEBUG("network", "database authentication values: v='%s' s='%s'", databaseV.c_str(), databaseS.c_str());
+                    TC_LOG_DEBUG("network", "Valeurs de base de données d'authentification: v='%s' s='%s'", databaseV.c_str(), databaseS.c_str());
 
                     // multiply with 2 since bytes are stored as hexstring
                     if (databaseV.size() != s_BYTE_SIZE * 2 || databaseS.size() != s_BYTE_SIZE * 2)
@@ -540,7 +523,7 @@ bool AuthSocket::_HandleLogonChallenge()
                     for (int i = 0; i < 4; ++i)
                         _localizationName[i] = ch->country[4-i-1];
 
-                    TC_LOG_DEBUG("serveur.authserveur", "'%s:%d' [AuthChallenge] account %s is using '%c%c%c%c' locale (%u)", socket().getRemoteAddress().c_str(), socket().getRemotePort(),
+                    TC_LOG_DEBUG("serveur.authentification", "'%s:%d' [AuthChallenge] compte %s est utilisé '%c%c%c%c' locale (%u)", socket().getRemoteAddress().c_str(), socket().getRemotePort(),
                             _login.c_str (), ch->country[3], ch->country[2], ch->country[1], ch->country[0], GetLocaleByName(_localizationName)
                         );
                 }
@@ -557,7 +540,7 @@ bool AuthSocket::_HandleLogonChallenge()
 // Logon Proof command handler
 bool AuthSocket::_HandleLogonProof()
 {
-    TC_LOG_DEBUG("serveur.authserveur", "Entering _HandleLogonProof");
+    TC_LOG_DEBUG("serveur.authentification", "Entering _HandleLogonProof");
     // Read the packet
     sAuthLogonProof_C lp;
 
@@ -568,7 +551,7 @@ bool AuthSocket::_HandleLogonProof()
     if (_expversion == NO_VALID_EXP_FLAG)
     {
         // Check if we have the appropriate patch on the disk
-        TC_LOG_DEBUG("network", "Client with invalid version, patching is not implemented");
+        TC_LOG_DEBUG("network", "Client avec la version non valide, le patch n'est pas appliqué");
         socket().shutdown();
         return true;
     }
@@ -652,7 +635,7 @@ bool AuthSocket::_HandleLogonProof()
     // Check if SRP6 results match (password is correct), else send an error
     if (!memcmp(M.AsByteArray().get(), lp.M1, 20))
     {
-        TC_LOG_DEBUG("serveur.authserveur", "'%s:%d' User '%s' successfully authenticated", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str());
+        TC_LOG_DEBUG("serveur.authentification", "'%s:%d' Utilisateur '%s' authentifié avec succès", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str());
 
         // Update the sessionkey, last_ip, last login time and reset number of failed logins in the account table for this account
         // No SQL injection (escaped user name) and IP address as received by socket
@@ -720,7 +703,7 @@ bool AuthSocket::_HandleLogonProof()
         char data[4] = { AUTH_LOGON_PROOF, WOW_FAIL_UNKNOWN_ACCOUNT, 3, 0 };
         socket().send(data, sizeof(data));
 
-        TC_LOG_DEBUG("serveur.authserveur", "'%s:%d' [AuthChallenge] account %s tried to login with invalid password!", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str ());
+        TC_LOG_DEBUG("serveur.authentification", "'%s:%d' [AuthChallenge] Le compte %s à essayé de se connecter avec un mot de passe incorrect!", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str ());
 
         uint32 MaxWrongPassCount = sConfigMgr->GetIntDefault("WrongPass.MaxCount", 0);
         if (MaxWrongPassCount > 0)
@@ -750,7 +733,7 @@ bool AuthSocket::_HandleLogonProof()
                         stmt->setUInt32(1, WrongPassBanTime);
                         LoginDatabase.Execute(stmt);
 
-                        TC_LOG_DEBUG("serveur.authserveur", "'%s:%d' [AuthChallenge] account %s got banned for '%u' seconds because it failed to authenticate '%u' times",
+                        TC_LOG_DEBUG("serveur.authentification", "'%s:%d' [AuthChallenge] Le compte %s a été banni pour '%u' secondes, car il n'a pas pu s'authentifier '%u' fois",
                             socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str(), WrongPassBanTime, failed_logins);
                     }
                     else
@@ -760,7 +743,7 @@ bool AuthSocket::_HandleLogonProof()
                         stmt->setUInt32(1, WrongPassBanTime);
                         LoginDatabase.Execute(stmt);
 
-                        TC_LOG_DEBUG("serveur.authserveur", "'%s:%d' [AuthChallenge] IP %s got banned for '%u' seconds because account %s failed to authenticate '%u' times",
+                        TC_LOG_DEBUG("serveur.authentification", "'%s:%d' [AuthChallenge] IP %s a été banni pour '%u' secondes parce que le compte %s n'a pas pu s'authentifier '%u' fois",
                             socket().getRemoteAddress().c_str(), socket().getRemotePort(), socket().getRemoteAddress().c_str(), WrongPassBanTime, _login.c_str(), failed_logins);
                     }
                 }
@@ -774,7 +757,7 @@ bool AuthSocket::_HandleLogonProof()
 // Reconnect Challenge command handler
 bool AuthSocket::_HandleReconnectChallenge()
 {
-    TC_LOG_DEBUG("serveur.authserveur", "Entering _HandleReconnectChallenge");
+    TC_LOG_DEBUG("serveur.authentification", "Entering _HandleReconnectChallenge");
     if (socket().recv_len() < sizeof(sAuthLogonChallenge_C))
         return false;
 
@@ -789,7 +772,7 @@ bool AuthSocket::_HandleReconnectChallenge()
 #endif
 
     uint16 remaining = ((sAuthLogonChallenge_C *)&buf[0])->size;
-    TC_LOG_DEBUG("serveur.authserveur", "[ReconnectChallenge] got header, body is %#04x bytes", remaining);
+    TC_LOG_DEBUG("serveur.authentification", "[ReconnectChallenge] L'entête obtenu pour le corps est de %#04x bytes", remaining);
 
     if ((remaining < sizeof(sAuthLogonChallenge_C) - buf.size()) || (socket().recv_len() < remaining))
         return false;
@@ -801,8 +784,8 @@ bool AuthSocket::_HandleReconnectChallenge()
 
     // Read the remaining of the packet
     socket().recv((char *)&buf[4], remaining);
-    TC_LOG_DEBUG("serveur.authserveur", "[ReconnectChallenge] got full packet, %#04x bytes", ch->size);
-    TC_LOG_DEBUG("serveur.authserveur", "[ReconnectChallenge] name(%d): '%s'", ch->I_len, ch->I);
+    TC_LOG_DEBUG("serveur.authentification", "[ReconnectChallenge] a obtenu plein de paquets, %#04x bytes", ch->size);
+    TC_LOG_DEBUG("serveur.authentification", "[ReconnectChallenge] nom(%d): '%s'", ch->I_len, ch->I);
 
     _login = (const char*)ch->I;
 
@@ -813,7 +796,7 @@ bool AuthSocket::_HandleReconnectChallenge()
     // Stop if the account is not found
     if (!result)
     {
-        TC_LOG_ERROR("serveur.authserveur", "'%s:%d' [ERROR] user %s tried to login and we cannot find his session key in the database.", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str());
+        TC_LOG_ERROR("serveur.authentification", "'%s:%d' [ERROR] L'utilisateur %s à essayé de se connecter et nous ne pouvons pas trouver sa clé de session dans la base de données.", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str());
         socket().shutdown();
         return false;
     }
@@ -849,7 +832,7 @@ bool AuthSocket::_HandleReconnectChallenge()
 // Reconnect Proof command handler
 bool AuthSocket::_HandleReconnectProof()
 {
-    TC_LOG_DEBUG("serveur.authserveur", "Entering _HandleReconnectProof");
+    TC_LOG_DEBUG("serveur.authentification", "Entering _HandleReconnectProof");
     // Read the packet
     sAuthReconnectProof_C lp;
     if (!socket().recv((char *)&lp, sizeof(sAuthReconnectProof_C)))
@@ -880,7 +863,7 @@ bool AuthSocket::_HandleReconnectProof()
     }
     else
     {
-        TC_LOG_ERROR("serveur.authserveur", "'%s:%d' [ERROR] user %s tried to login, but session is invalid.", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str());
+        TC_LOG_ERROR("serveur.authentification", "'%s:%d' [ERROR] L'utilisateur %s a essayé de se connecter, mais la session est invalide.", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str());
         socket().shutdown();
         return false;
     }
@@ -895,7 +878,7 @@ ACE_INET_Addr const& AuthSocket::GetAddressForClient(Realm const& realm, ACE_INE
         if (realm.LocalAddress.is_loopback() || realm.ExternalAddress.is_loopback())
             return clientAddr;
 
-        // Assume that user connecting from the machine that authserveur is located on
+        // Assume that user connecting from the machine that authentification is located on
         // has all realms available in his local network
         return realm.LocalAddress;
     }
@@ -911,7 +894,7 @@ ACE_INET_Addr const& AuthSocket::GetAddressForClient(Realm const& realm, ACE_INE
 // Realm List command handler
 bool AuthSocket::_HandleRealmList()
 {
-    TC_LOG_DEBUG("serveur.authserveur", "Entering _HandleRealmList");
+    TC_LOG_DEBUG("serveur.authentification", "Entering _HandleRealmList");
     if (socket().recv_len() < 5)
         return false;
 
@@ -924,7 +907,7 @@ bool AuthSocket::_HandleRealmList()
     PreparedQueryResult result = LoginDatabase.Query(stmt);
     if (!result)
     {
-        TC_LOG_ERROR("serveur.authserveur", "'%s:%d' [ERROR] user %s tried to login but we cannot find him in the database.", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str());
+        TC_LOG_ERROR("serveur.authentification", "'%s:%d' [ERROR] L'utilisateur %s à essayé de se connecter mais nous ne pouvons pas le trouver dans la base de données.", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str());
         socket().shutdown();
         return false;
     }
@@ -1041,11 +1024,11 @@ bool AuthSocket::_HandleRealmList()
 // Resume patch transfer
 bool AuthSocket::_HandleXferResume()
 {
-    TC_LOG_DEBUG("serveur.authserveur", "Entering _HandleXferResume");
+    TC_LOG_DEBUG("serveur.authentification", "Entering _HandleXferResume");
     // Check packet length and patch existence
     if (socket().recv_len() < 9 || !pPatch) // FIXME: pPatch is never used
     {
-        TC_LOG_ERROR("serveur.authserveur", "Error while resuming patch transfer (wrong packet)");
+        TC_LOG_ERROR("serveur.authentification", "Erreur lors de la reprise de transfert de patch (paquet faux)");
         return false;
     }
 
@@ -1062,7 +1045,7 @@ bool AuthSocket::_HandleXferResume()
 // Cancel patch transfer
 bool AuthSocket::_HandleXferCancel()
 {
-    TC_LOG_DEBUG("serveur.authserveur", "Entering _HandleXferCancel");
+    TC_LOG_DEBUG("serveur.authentification", "Entering _HandleXferCancel");
 
     // Close and delete the socket
     socket().recv_skip(1);                                         //clear input buffer
@@ -1074,12 +1057,12 @@ bool AuthSocket::_HandleXferCancel()
 // Accept patch transfer
 bool AuthSocket::_HandleXferAccept()
 {
-    TC_LOG_DEBUG("serveur.authserveur", "Entering _HandleXferAccept");
+    TC_LOG_DEBUG("serveur.authentification", "Entering _HandleXferAccept");
 
     // Check packet length and patch existence
     if (!pPatch)
     {
-        TC_LOG_ERROR("serveur.authserveur", "Error while accepting patch transfer (wrong packet)");
+        TC_LOG_ERROR("serveur.authentification", "Erreur en acceptant le transfert de patch (paquet faux)");
         return false;
     }
 
@@ -1160,11 +1143,11 @@ void Patcher::LoadPatchMD5(char *szFileName)
     std::string path = "./patches/";
     path += szFileName;
     FILE* pPatch = fopen(path.c_str(), "rb");
-    TC_LOG_DEBUG("network", "Loading patch info from %s\n", path.c_str());
+    TC_LOG_DEBUG("network", "Chargement infos patch de %s\n", path.c_str());
 
     if (!pPatch)
     {
-        TC_LOG_ERROR("serveur.authserveur", "Error loading patch %s\n", path.c_str());
+        TC_LOG_ERROR("serveur.authentification", "Erreur de chargement du patch %s\n", path.c_str());
         return;
     }
 

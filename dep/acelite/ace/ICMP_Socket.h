@@ -94,7 +94,7 @@ protected:
                    int reuse_addr = 0);
 
   /// Wrapper around BSD-style @c bind system call.
-  int commun_open (ACE_Addr const & local);
+  int shared_open (ACE_Addr const & local);
 
   /// Calculates check-sum.
   unsigned short calculate_checksum (unsigned short* paddress,

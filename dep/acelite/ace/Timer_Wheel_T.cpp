@@ -445,7 +445,7 @@ ACE_Timer_Wheel_T<TYPE, FUNCTOR, ACE_LOCK, TIME_POLICY>::reschedule (ACE_Timer_N
   this->schedule_i (n, spoke, expire);
 }
 
-/// The commun scheduling functionality between schedule() and reschedule()
+/// The shared scheduling functionality between schedule() and reschedule()
 template <class TYPE, class FUNCTOR, class ACE_LOCK, typename TIME_POLICY> void
 ACE_Timer_Wheel_T<TYPE, FUNCTOR, ACE_LOCK, TIME_POLICY>::schedule_i
   (ACE_Timer_Node_T<TYPE>* n,

@@ -149,7 +149,7 @@ ACE_Metrics_Timeprobe<ACE_LOCK, ALLOCATOR>::probe_id (u_int id)
 }
 
 
-// Flush the ACE metrics timeprobe into commun memory.
+// Flush the ACE metrics timeprobe into shared memory.
 
 template <class ACE_LOCK, class ALLOCATOR> void
 ACE_Metrics_Timeprobe<ACE_LOCK, ALLOCATOR>::
@@ -219,7 +219,7 @@ ACE_Metrics_Cache<ACE_LOCK, ALLOCATOR>::allocator (void)
 }
 
 
-// Flush the ACE metrics cache into commun memory.
+// Flush the ACE metrics cache into shared memory.
 
 template <class ACE_LOCK, class ALLOCATOR> void
 ACE_Metrics_Cache<ACE_LOCK, ALLOCATOR>::

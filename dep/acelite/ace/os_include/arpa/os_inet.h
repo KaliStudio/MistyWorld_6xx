@@ -38,7 +38,7 @@
 
 /**
  * In some environments it is useful to swap the bytes on write, for
- * instance: a fast serveur can be feeding a lot of slow clients that
+ * instance: a fast server can be feeding a lot of slow clients that
  * happen to have the wrong byte order.
  * Because this is a rarely used feature we disable it by default to
  * minimize footprint.

@@ -151,7 +151,7 @@ ACE_DLL_Handle::open (const ACE_TCHAR *dll_name,
                             this->error ()->c_str ()));
 
 #if defined (AIX)
-              // AIX often puts the commun library file (most often named
+              // AIX often puts the shared library file (most often named
               // shr.o) inside an archive library. If this is an archive
               // library name, then try appending [shr.o] and retry.
               if (ACE_TString::npos != name->strstr (ACE_TEXT (".a")))

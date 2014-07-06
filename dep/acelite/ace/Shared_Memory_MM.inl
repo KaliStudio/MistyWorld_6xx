@@ -9,7 +9,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 ACE_INLINE const ACE_TCHAR *
 ACE_Shared_Memory_MM::filename (void) const
 {
-  return this->commun_memory_.filename ();
+  return this->shared_memory_.filename ();
 }
 
 ACE_INLINE int
@@ -21,7 +21,7 @@ ACE_Shared_Memory_MM::open (ACE_HANDLE handle,
                             ACE_OFF_T pos)
 {
   ACE_TRACE ("ACE_Shared_Memory_MM::open");
-  return commun_memory_.map (handle, length, prot, share, addr, pos);
+  return shared_memory_.map (handle, length, prot, share, addr, pos);
 }
 
 ACE_INLINE int
@@ -35,7 +35,7 @@ ACE_Shared_Memory_MM::open (const ACE_TCHAR *file_name,
                             ACE_OFF_T pos)
 {
   ACE_TRACE ("ACE_Shared_Memory_MM::open");
-  return commun_memory_.map (file_name, len, flags, mode,
+  return shared_memory_.map (file_name, len, flags, mode,
                              prot, share, addr, pos);
 }
 

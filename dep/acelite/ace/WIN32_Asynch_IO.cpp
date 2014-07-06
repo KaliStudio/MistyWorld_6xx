@@ -412,7 +412,7 @@ ACE_WIN32_Asynch_Read_Stream::read (ACE_Message_Block &message_block,
                   -1);
 
   // Shared read
-  int const return_val = this->commun_read (result);
+  int const return_val = this->shared_read (result);
 
   // Upon errors
   if (return_val == -1)
@@ -568,7 +568,7 @@ ACE_WIN32_Asynch_Read_Stream::~ACE_WIN32_Asynch_Read_Stream (void)
 }
 
 int
-ACE_WIN32_Asynch_Read_Stream::commun_read (ACE_WIN32_Asynch_Read_Stream_Result *result)
+ACE_WIN32_Asynch_Read_Stream::shared_read (ACE_WIN32_Asynch_Read_Stream_Result *result)
 {
   // ReadFile API limits us to DWORD range.
   if (result->bytes_to_read () > MAXDWORD)
@@ -843,7 +843,7 @@ ACE_WIN32_Asynch_Write_Stream::write (ACE_Message_Block &message_block,
                   -1);
 
   // Shared write
-  int const return_val = this->commun_write (result);
+  int const return_val = this->shared_write (result);
 
   // Upon errors
   if (return_val == -1)
@@ -995,7 +995,7 @@ ACE_WIN32_Asynch_Write_Stream::~ACE_WIN32_Asynch_Write_Stream (void)
 }
 
 int
-ACE_WIN32_Asynch_Write_Stream::commun_write (ACE_WIN32_Asynch_Write_Stream_Result *result)
+ACE_WIN32_Asynch_Write_Stream::shared_write (ACE_WIN32_Asynch_Write_Stream_Result *result)
 {
   u_long bytes_written;
   if (result->bytes_to_write () > MAXDWORD)
@@ -1304,7 +1304,7 @@ ACE_WIN32_Asynch_Read_File::read (ACE_Message_Block &message_block,
                   -1);
 
   // Shared read
-  int return_val = this->commun_read (result);
+  int return_val = this->shared_read (result);
 
   // Upon errors
   if (return_val == -1)
@@ -1704,7 +1704,7 @@ ACE_WIN32_Asynch_Write_File::write (ACE_Message_Block &message_block,
                   -1);
 
   // Shared write
-  int return_val = this->commun_write (result);
+  int return_val = this->shared_write (result);
 
   // Upon errors
   if (return_val == -1)

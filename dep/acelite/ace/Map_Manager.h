@@ -301,7 +301,7 @@ protected:
 
   /// Bind an entry (without finding first).  Must be called with locks
   /// held.
-  int commun_bind (const EXT_ID &ext_id,
+  int shared_bind (const EXT_ID &ext_id,
                    const INT_ID &int_id);
 
   /// Performs a rebinding of <ext_it> to @a int_id.  Also, recovers old
@@ -400,7 +400,7 @@ protected:
 #endif /* ACE_HAS_LAZY_MAP_MANAGER */
 
   /// Move helper.
-  void commun_move (ACE_UINT32 slot,
+  void shared_move (ACE_UINT32 slot,
                     ACE_Map_Entry<EXT_ID, INT_ID> &current_list,
                     ACE_UINT32 current_list_id,
                     ACE_Map_Entry<EXT_ID, INT_ID> &new_list,

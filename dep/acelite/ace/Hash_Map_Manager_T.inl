@@ -207,7 +207,7 @@ ACE_Hash_Map_Manager_Ex<EXT_ID, INT_ID, HASH_KEY, COMPARE_KEYS, ACE_LOCK>::find_
   ACE_Hash_Map_Entry<EXT_ID, INT_ID> *entry;
 
   size_t dummy;
-  if (this->commun_find (ext_id, entry, dummy) == -1)
+  if (this->shared_find (ext_id, entry, dummy) == -1)
     return -1;
   else
     {
@@ -222,7 +222,7 @@ ACE_Hash_Map_Manager_Ex<EXT_ID, INT_ID, HASH_KEY, COMPARE_KEYS, ACE_LOCK>::find_
   ACE_Hash_Map_Entry<EXT_ID, INT_ID> *entry;
 
   size_t dummy;
-  return this->commun_find (ext_id, entry, dummy);
+  return this->shared_find (ext_id, entry, dummy);
 }
 
 template <class EXT_ID, class INT_ID, class HASH_KEY, class COMPARE_KEYS, class ACE_LOCK> ACE_INLINE int
@@ -255,7 +255,7 @@ ACE_Hash_Map_Manager_Ex<EXT_ID, INT_ID, HASH_KEY, COMPARE_KEYS, ACE_LOCK>::find_
                                                                                    ACE_Hash_Map_Entry<EXT_ID, INT_ID> *&entry)
 {
   size_t dummy;
-  return this->commun_find (ext_id, entry, dummy);
+  return this->shared_find (ext_id, entry, dummy);
 }
 
 template <class EXT_ID, class INT_ID, class HASH_KEY, class COMPARE_KEYS, class ACE_LOCK> ACE_INLINE int
@@ -463,7 +463,7 @@ ACE_Hash_Map_Manager_Ex<EXT_ID,
 
   ACE_READ_GUARD (ACE_LOCK, ace_mon, this->lock_);
 
-  if (nc_this->commun_find (ext_id, entry, index) != -1)
+  if (nc_this->shared_find (ext_id, entry, index) != -1)
     pos = iterator (*nc_this, entry, index);
   else
     pos = nc_this->end ();

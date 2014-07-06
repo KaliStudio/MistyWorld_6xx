@@ -30,7 +30,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 /**
  * @class ACE_MEM_Addr
  *
- * @brief Defines a C++ wrapper facade for the commun memory transport
+ * @brief Defines a C++ wrapper facade for the shared memory transport
  * address family format.
  */
 class ACE_Export ACE_MEM_Addr : public ACE_Addr

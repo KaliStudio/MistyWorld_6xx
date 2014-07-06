@@ -15,7 +15,7 @@ ACE_SV_Shared_Memory::round_up (size_t len)
   return (len + ACE_SV_Shared_Memory::ALIGN_WORDB - 1) & ~(ACE_SV_Shared_Memory::ALIGN_WORDB - 1);
 }
 
-// Creates a commun memory segment of SIZE bytes. Does *not* attach
+// Creates a shared memory segment of SIZE bytes. Does *not* attach
 // this memory segment...
 
 ACE_INLINE int
@@ -38,7 +38,7 @@ ACE_SV_Shared_Memory::open (key_t external_id, size_t sz, int create, int perms)
 #endif /* ACE_WIN32 */
 }
 
-// Attachs to the commun memory segment.
+// Attachs to the shared memory segment.
 
 ACE_INLINE int
 ACE_SV_Shared_Memory::attach (void *virtual_addr, int flags)
@@ -54,7 +54,7 @@ ACE_SV_Shared_Memory::attach (void *virtual_addr, int flags)
 #endif /* ACE_WIN32 */
 }
 
-// Interface to the underlying commun memory control function.
+// Interface to the underlying shared memory control function.
 
 ACE_INLINE int
 ACE_SV_Shared_Memory::control (int cmd, void *buf)
@@ -78,7 +78,7 @@ ACE_SV_Shared_Memory::get_segment_size (void) const
   return this->size_;
 }
 
-// Removes the commun memory segment.
+// Removes the shared memory segment.
 
 ACE_INLINE int
 ACE_SV_Shared_Memory::remove (void)
@@ -91,7 +91,7 @@ ACE_SV_Shared_Memory::remove (void)
 #endif /* ACE_WIN32 */
 }
 
-// Detach the current binding between this->segment_ptr and the commun
+// Detach the current binding between this->segment_ptr and the shared
 // memory segment.
 
 ACE_INLINE int

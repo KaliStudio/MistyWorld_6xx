@@ -192,7 +192,7 @@ ACE_DLL::symbol (const ACE_TCHAR *sym_name, int ignore_errors)
 }
 
 // The library is closed using the ACE_SHLIB_HANDLE object, i.e., the
-// commun object is now disassociated form the current process.
+// shared object is now disassociated form the current process.
 
 int
 ACE_DLL::close (void)

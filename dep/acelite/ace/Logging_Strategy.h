@@ -42,7 +42,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
  * If logging records are output to a file, the file can be set
  * to a maximum size and repeatedly split into new files.  The
  * log file size can be limited at any logging point (i.e.,
- * application, client logging daemon, or serveur logging daemon)
+ * application, client logging daemon, or server logging daemon)
  * by specifying the -i @param sample_interval_in_secs and -m
  * @param max_size_in_KB options for the Logging_Strategy class in a
  * svc.conf file.

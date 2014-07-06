@@ -181,12 +181,12 @@ ACE_Token::~ACE_Token (void)
 }
 
 int
-ACE_Token::commun_acquire (void (*sleep_hook_func)(void *),
+ACE_Token::shared_acquire (void (*sleep_hook_func)(void *),
                            void *arg,
                            ACE_Time_Value *timeout,
                            ACE_Token_Op_Type op_type)
 {
-  ACE_TRACE ("ACE_Token::commun_acquire");
+  ACE_TRACE ("ACE_Token::shared_acquire");
   ACE_GUARD_RETURN (ACE_Thread_Mutex, ace_mon, this->lock_, -1);
 
 #if defined (ACE_TOKEN_DEBUGGING)
@@ -293,7 +293,7 @@ ACE_Token::commun_acquire (void (*sleep_hook_func)(void *),
   queue->remove_entry (&my_entry);
 
 #if defined (ACE_TOKEN_DEBUGGING)
-  ACE_DEBUG ((LM_DEBUG, "(%t) ACE_Token::commun_acquire (UNBLOCKED)\n"));
+  ACE_DEBUG ((LM_DEBUG, "(%t) ACE_Token::shared_acquire (UNBLOCKED)\n"));
 #endif /* ACE_TOKEN_DEBUGGING */
 
   // If timeout occured
@@ -334,7 +334,7 @@ int
 ACE_Token::acquire (ACE_Time_Value *timeout)
 {
   ACE_TRACE ("ACE_Token::acquire");
-  return this->commun_acquire (0, 0, timeout, ACE_Token::WRITE_TOKEN);
+  return this->shared_acquire (0, 0, timeout, ACE_Token::WRITE_TOKEN);
 }
 
 // Acquire the token, sleeping until it is obtained or until <timeout>
@@ -346,7 +346,7 @@ ACE_Token::acquire (void (*sleep_hook_func)(void *),
                     ACE_Time_Value *timeout)
 {
   ACE_TRACE ("ACE_Token::acquire");
-  return this->commun_acquire (sleep_hook_func, arg, timeout, ACE_Token::WRITE_TOKEN);
+  return this->shared_acquire (sleep_hook_func, arg, timeout, ACE_Token::WRITE_TOKEN);
 }
 
 // Try to renew the token.

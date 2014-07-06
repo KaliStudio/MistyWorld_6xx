@@ -290,14 +290,14 @@ public:
 protected:
   /// Perform operations that ensure the socket is opened using
   /// BSD-style semantics (no QoS).
-  int commun_open (ACE_SOCK_SEQPACK_Association &new_association,
+  int shared_open (ACE_SOCK_SEQPACK_Association &new_association,
                    int protocol_family,
                    int protocol,
                    int reuse_addr);
 
   /// Perform operations that ensure the socket is opened using
   /// QoS-enabled semantics.
-  int commun_open (ACE_SOCK_SEQPACK_Association &new_association,
+  int shared_open (ACE_SOCK_SEQPACK_Association &new_association,
                    int protocol_family,
                    int protocol,
                    ACE_Protocol_Info *protocolinfo,
@@ -306,16 +306,16 @@ protected:
                    int reuse_addr);
 
   /// Perform operations that must be called before <ACE_OS::connect>.
-  int commun_connect_start (ACE_SOCK_SEQPACK_Association &new_association,
+  int shared_connect_start (ACE_SOCK_SEQPACK_Association &new_association,
                             const ACE_Time_Value *timeout,
                             const ACE_Addr &local_sap);
 
-  int commun_connect_start (ACE_SOCK_SEQPACK_Association &new_association,
+  int shared_connect_start (ACE_SOCK_SEQPACK_Association &new_association,
                             const ACE_Time_Value *timeout,
                             const ACE_Multihomed_INET_Addr &local_sap);
 
   /// Perform operations that must be called after <ACE_OS::connect>.
-  int commun_connect_finish (ACE_SOCK_SEQPACK_Association &new_association,
+  int shared_connect_finish (ACE_SOCK_SEQPACK_Association &new_association,
                              const ACE_Time_Value *timeout,
                              int result);
 };

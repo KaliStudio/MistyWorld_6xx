@@ -38,7 +38,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
  * the reason that all of ACE doesn't use polymorphic locks is
  * that (1) they add ~20% extra overhead for virtual function
  * calls and (2) objects with virtual functions can't be placed
- * into commun memory.
+ * into shared memory.
  */
 class ACE_Export ACE_Lock
 {

@@ -155,7 +155,7 @@ public:
   // = This should be protected but some C++ compilers complain...
 public:
 #if defined (ACE_HAS_PTHREADS) || defined(ACE_HAS_STHREADS)
-  /// This lock resides in commun memory.
+  /// This lock resides in shared memory.
   ACE_mutex_t *process_lock_;
 
   /**

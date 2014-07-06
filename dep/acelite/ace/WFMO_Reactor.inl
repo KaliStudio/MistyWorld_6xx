@@ -519,7 +519,7 @@ ACE_INLINE int
 ACE_WFMO_Reactor::register_handler (ACE_Event_Handler *event_handler,
                                     ACE_HANDLE event_handle)
 {
-  // This GUARD is necessary since we are updating commun state.
+  // This GUARD is necessary since we are updating shared state.
   ACE_GUARD_RETURN (ACE_Process_Mutex, ace_mon, this->lock_, -1);
 
   return this->handler_rep_.bind_i (0,
@@ -534,7 +534,7 @@ ACE_INLINE int
 ACE_WFMO_Reactor::register_handler (ACE_Event_Handler *event_handler,
                                     ACE_Reactor_Mask mask)
 {
-  // This GUARD is necessary since we are updating commun state.
+  // This GUARD is necessary since we are updating shared state.
   ACE_GUARD_RETURN (ACE_Process_Mutex, ace_mon, this->lock_, -1);
 
   return this->register_handler_i (ACE_INVALID_HANDLE,
@@ -548,7 +548,7 @@ ACE_WFMO_Reactor::register_handler (ACE_HANDLE io_handle,
                                     ACE_Event_Handler *event_handler,
                                     ACE_Reactor_Mask mask)
 {
-  // This GUARD is necessary since we are updating commun state.
+  // This GUARD is necessary since we are updating shared state.
   ACE_GUARD_RETURN (ACE_Process_Mutex, ace_mon, this->lock_, -1);
 
   return this->register_handler_i (ACE_INVALID_HANDLE,
@@ -563,7 +563,7 @@ ACE_WFMO_Reactor::register_handler (ACE_HANDLE event_handle,
                                     ACE_Event_Handler *event_handler,
                                     ACE_Reactor_Mask mask)
 {
-  // This GUARD is necessary since we are updating commun state.
+  // This GUARD is necessary since we are updating shared state.
   ACE_GUARD_RETURN (ACE_Process_Mutex, ace_mon, this->lock_, -1);
 
   return this->register_handler_i (event_handle,
@@ -577,7 +577,7 @@ ACE_WFMO_Reactor::register_handler (const ACE_Handle_Set &handles,
                                     ACE_Event_Handler *handler,
                                     ACE_Reactor_Mask mask)
 {
-  // This GUARD is necessary since we are updating commun state.
+  // This GUARD is necessary since we are updating shared state.
   ACE_GUARD_RETURN (ACE_Process_Mutex, ace_mon, this->lock_, -1);
 
   ACE_Handle_Set_Iterator handle_iter (handles);
@@ -597,7 +597,7 @@ ACE_INLINE int
 ACE_WFMO_Reactor::schedule_wakeup (ACE_HANDLE io_handle,
                                    ACE_Reactor_Mask masks_to_be_added)
 {
-  // This GUARD is necessary since we are updating commun state.
+  // This GUARD is necessary since we are updating shared state.
   ACE_GUARD_RETURN (ACE_Process_Mutex, ace_mon, this->lock_, -1);
 
   return this->mask_ops_i (io_handle,
@@ -609,7 +609,7 @@ ACE_INLINE int
 ACE_WFMO_Reactor::schedule_wakeup (ACE_Event_Handler *event_handler,
                                    ACE_Reactor_Mask masks_to_be_added)
 {
-  // This GUARD is necessary since we are updating commun state.
+  // This GUARD is necessary since we are updating shared state.
   ACE_GUARD_RETURN (ACE_Process_Mutex, ace_mon, this->lock_, -1);
 
   return this->mask_ops_i (event_handler->get_handle (),
@@ -621,7 +621,7 @@ ACE_INLINE int
 ACE_WFMO_Reactor::cancel_wakeup (ACE_HANDLE io_handle,
                                  ACE_Reactor_Mask masks_to_be_removed)
 {
-  // This GUARD is necessary since we are updating commun state.
+  // This GUARD is necessary since we are updating shared state.
   ACE_GUARD_RETURN (ACE_Process_Mutex, ace_mon, this->lock_, -1);
 
   return this->mask_ops_i (io_handle,
@@ -633,7 +633,7 @@ ACE_INLINE int
 ACE_WFMO_Reactor::cancel_wakeup (ACE_Event_Handler *event_handler,
                                  ACE_Reactor_Mask masks_to_be_removed)
 {
-  // This GUARD is necessary since we are updating commun state.
+  // This GUARD is necessary since we are updating shared state.
   ACE_GUARD_RETURN (ACE_Process_Mutex, ace_mon, this->lock_, -1);
 
   return this->mask_ops_i (event_handler->get_handle (),

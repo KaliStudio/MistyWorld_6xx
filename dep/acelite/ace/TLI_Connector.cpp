@@ -168,7 +168,7 @@ ACE_TLI_Connector::connect (ACE_TLI_Stream &new_stream,
             new_stream.rcvdis ();
         }
     }
-  // Do a blocking connect to the serveur.
+  // Do a blocking connect to the server.
   else if (ACE_OS::t_connect (new_stream.get_handle (), callptr, 0) == -1)
     result = -1;
 

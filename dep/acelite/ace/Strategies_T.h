@@ -223,7 +223,7 @@ protected:
   /// Name of the DLL to dynamically link.
   ACE_TCHAR dll_name_[MAXPATHLEN + 1];
 
-  /// Name of the factory function in the commun library to use to
+  /// Name of the factory function in the shared library to use to
   /// obtain a pointer to the new SVC_HANDLER.
   ACE_TCHAR factory_function_[MAXPATHLEN + 1];
 
@@ -559,7 +559,7 @@ protected:
  * connection establishment strategy for a SVC_HANDLER.
  *
  * This class provides a strategy that manages active
- * connection establishment to a serveur.
+ * connection establishment to a server.
  */
 template <class SVC_HANDLER, ACE_PEER_CONNECTOR_1>
 class ACE_Connect_Strategy

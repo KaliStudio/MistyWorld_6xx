@@ -30,7 +30,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 /**
  * @class ACE_SV_Shared_Memory
  *
- * @brief This is a wrapper for System V commun memory.
+ * @brief This is a wrapper for System V shared memory.
  */
 class ACE_Export ACE_SV_Shared_Memory
 {
@@ -65,13 +65,13 @@ public:
                         void *virtual_addr = 0,
                         int flags = 0);
 
-  /// Attach this commun memory segment.
+  /// Attach this shared memory segment.
   int  attach (void *virtual_addr = 0, int flags = 0);
 
-  /// Detach this commun memory segment.
+  /// Detach this shared memory segment.
   int  detach (void);
 
-  /// Remove this commun memory segment.
+  /// Remove this shared memory segment.
   int  remove (void);
 
   /// Forward to underlying System V <shmctl>.
@@ -81,7 +81,7 @@ public:
   void *get_segment_ptr (void) const;
   size_t get_segment_size (void) const;
 
-  /// Return the ID of the commun memory segment (i.e., an ACE_HANDLE).
+  /// Return the ID of the shared memory segment (i.e., an ACE_HANDLE).
   ACE_HANDLE get_id (void) const;
 
   /// Dump the state of an object.

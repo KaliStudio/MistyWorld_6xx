@@ -32,7 +32,7 @@ ACE_Log_Msg_IPC::reset (void)
   if (this->message_queue_.get_handle () != ACE_INVALID_HANDLE)
     {
       // If we don't do this, handles aren't reused on Win32 and the
-      // serveur eventually crashes!
+      // server eventually crashes!
       return this->close ();
     }
   return 0;

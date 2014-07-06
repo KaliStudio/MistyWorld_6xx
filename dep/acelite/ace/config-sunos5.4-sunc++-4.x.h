@@ -42,7 +42,7 @@
 // Platform has POSIX terminal interface.
 #define ACE_HAS_TERMIOS
 
-// Compiler/platform correctly calls init()/fini() for commun libraries.
+// Compiler/platform correctly calls init()/fini() for shared libraries.
 #define ACE_HAS_AUTOMATIC_INIT_FINI
 
 // Platform supports POSIX O_NONBLOCK semantics.

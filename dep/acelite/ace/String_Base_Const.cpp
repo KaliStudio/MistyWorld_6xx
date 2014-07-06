@@ -7,7 +7,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 
 ACE_String_Base_Const::size_type const ACE_String_Base_Const::npos =
 #if defined (AIX) //&& (defined (__xlC__) || defined (__IBMCPP__))
-  // Under some mixed commun/static linking conditions, this constant
+  // Under some mixed shared/static linking conditions, this constant
   // will not be initialized at run-time if the
   // std::numeric_limits<>::max() trait is used on AIX/XLC++.
   // Workaround that problem by making it easier for the compiler to

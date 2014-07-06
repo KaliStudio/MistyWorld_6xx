@@ -100,7 +100,7 @@ typedef ACE_Atomic_Op<ACE_PROCESS_MUTEX, int> ACE_INT;
 * Control_Block
 
   Only the first ACE_Malloc instance that uses
-  the commun memory will initialize the control block because all
+  the shared memory will initialize the control block because all
   later instances are supposed to share the memory with the first
   instance.  The following diagram shows the initial value of a
   Control_Block.

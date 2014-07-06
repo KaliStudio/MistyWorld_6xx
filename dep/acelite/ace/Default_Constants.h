@@ -154,7 +154,7 @@
 #   define ACE_DEFAULT_LOCAL_PORT_STR "20005"
 # endif /* ACE_DEFAULT_LOCAL_PORT_STR */
 
-// Used for the name serveur.
+// Used for the name server.
 # if !defined (ACE_DEFAULT_NAME_SERVER_PORT)
 #   define ACE_DEFAULT_NAME_SERVER_PORT 20006
 # endif /* ACE_DEFAULT_NAME_SERVER_PORT */
@@ -163,7 +163,7 @@
 #   define ACE_DEFAULT_NAME_SERVER_PORT_STR "20006"
 # endif /* ACE_DEFAULT_NAME_SERVER_PORT_STR */
 
-// Used for the token serveur.
+// Used for the token server.
 # if !defined (ACE_DEFAULT_TOKEN_SERVER_PORT)
 #   define ACE_DEFAULT_TOKEN_SERVER_PORT 20007
 # endif /* ACE_DEFAULT_TOKEN_SERVER_PORT */
@@ -172,7 +172,7 @@
 #   define ACE_DEFAULT_TOKEN_SERVER_PORT_STR "20007"
 # endif /* ACE_DEFAULT_TOKEN_SERVER_PORT_STR */
 
-// Used for the logging serveur.
+// Used for the logging server.
 # if !defined (ACE_DEFAULT_LOGGING_SERVER_PORT)
 #   define ACE_DEFAULT_LOGGING_SERVER_PORT 20008
 # endif /* ACE_DEFAULT_LOGGING_SERVER_PORT */
@@ -181,7 +181,7 @@
 #   define ACE_DEFAULT_LOGGING_SERVER_PORT_STR "20008"
 # endif /* ACE_DEFAULT_LOGGING_SERVER_PORT_STR */
 
-// Used for the logging serveur.
+// Used for the logging server.
 # if !defined (ACE_DEFAULT_THR_LOGGING_SERVER_PORT)
 #   define ACE_DEFAULT_THR_LOGGING_SERVER_PORT 20008
 # endif /* ACE_DEFAULT_THR_LOGGING_SERVER_PORT */
@@ -190,7 +190,7 @@
 #   define ACE_DEFAULT_THR_LOGGING_SERVER_PORT_STR "20008"
 # endif /* ACE_DEFAULT_THR_LOGGING_SERVER_PORT_STR */
 
-// Used for the time serveur.
+// Used for the time server.
 # if !defined (ACE_DEFAULT_TIME_SERVER_PORT)
 #   define ACE_DEFAULT_TIME_SERVER_PORT 20009
 # endif /* ACE_DEFAULT_TIME_SERVER_PORT */
@@ -227,7 +227,7 @@
 
 # if !defined (ACE_DEFAULT_LOGGER_KEY)
 #   if (ACE_HAS_STREAM_LOG_MSG_IPC == 1)
-#     define ACE_DEFAULT_LOGGER_KEY ACE_TEXT ("/tmp/serveur_daemon")
+#     define ACE_DEFAULT_LOGGER_KEY ACE_TEXT ("/tmp/server_daemon")
 #   else
 #     define ACE_DEFAULT_LOGGER_KEY ACE_TEXT ("localhost:20012")
 #   endif /* ACE_HAS_STREAM_LOG_MSG_IPC==1 */
@@ -263,29 +263,29 @@
 #   endif /*ACE_HAS_IPV6*/
 # endif /* ACE_DEFAULT_SERVER_HOST */
 
-// Default commun memory key
+// Default shared memory key
 # if !defined (ACE_DEFAULT_SHM_KEY)
 #   define ACE_DEFAULT_SHM_KEY 1234
 # endif /* ACE_DEFAULT_SHM_KEY */
 
-// Default address for commun memory mapped files and SYSV commun memory
+// Default address for shared memory mapped files and SYSV shared memory
 // (defaults to 64 M).
 # if !defined (ACE_DEFAULT_BASE_ADDR)
 #   define ACE_DEFAULT_BASE_ADDR ((char *) (64 * 1024 * 1024))
 # endif /* ACE_DEFAULT_BASE_ADDR */
 
-// Default segment size used by SYSV commun memory (128 K)
+// Default segment size used by SYSV shared memory (128 K)
 # if !defined (ACE_DEFAULT_SEGMENT_SIZE)
 #   define ACE_DEFAULT_SEGMENT_SIZE 1024 * 128
 # endif /* ACE_DEFAULT_SEGMENT_SIZE */
 
-// Maximum number of SYSV commun memory segments
+// Maximum number of SYSV shared memory segments
 // (does anyone know how to figure out the right values?!)
 # if !defined (ACE_DEFAULT_MAX_SEGMENTS)
 #   define ACE_DEFAULT_MAX_SEGMENTS 6
 # endif /* ACE_DEFAULT_MAX_SEGMENTS */
 
-// Name of the map that's stored in commun memory.
+// Name of the map that's stored in shared memory.
 # if !defined (ACE_NAME_SERVER_MAP)
 #   define ACE_NAME_SERVER_MAP "Name Server Map"
 # endif /* ACE_NAME_SERVER_MAP */
@@ -545,7 +545,7 @@
 #endif /* ACE_DEFAULT_SVC_CONF */
 
 #if !defined (ACE_LOGGER_KEY)
-#  define ACE_LOGGER_KEY ACE_TEXT ("/tmp/serveur_daemon")
+#  define ACE_LOGGER_KEY ACE_TEXT ("/tmp/server_daemon")
 #endif /* ACE_LOGGER_KEY */
 
 // Theses defines are used by the ACE Name Server.

@@ -77,7 +77,7 @@ ACE_UPIPE_Connector::connect (ACE_UPIPE_Stream &new_stream,
       // Wait for confirmation of stream linking.
       ACE_Message_Block *mb_p = 0;
 
-      // Our part is done, wait for serveur to confirm connection.
+      // Our part is done, wait for server to confirm connection.
       result = new_stream.recv (mb_p, 0);
 
       // Do *not* coalesce the following two checks for result == -1.
@@ -85,7 +85,7 @@ ACE_UPIPE_Connector::connect (ACE_UPIPE_Stream &new_stream,
       if (result == -1)
           ACE_ERROR ((LM_ERROR,
                       ACE_TEXT ("ACE_UPIPE_Connector %p\n"),
-                      ACE_TEXT ("no confirmation from serveur")));
+                      ACE_TEXT ("no confirmation from server")));
       else
         // Close down the new_stream at this point in order to
         // conserve handles.  Note that we don't need the SPIPE

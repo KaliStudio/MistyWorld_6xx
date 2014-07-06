@@ -373,7 +373,7 @@ public:
 protected:
   /// This is the method which does the real work and is there so that
   /// the ACE_Asynch_Read_File class can use it too.
-  int commun_read (ACE_WIN32_Asynch_Read_Stream_Result *result);
+  int shared_read (ACE_WIN32_Asynch_Read_Stream_Result *result);
 };
 
 /**
@@ -552,7 +552,7 @@ public:
 protected:
   /// This is the method which does the real work and is there so that
   /// the ACE_Asynch_Write_File class can use it too.
-  int commun_write (ACE_WIN32_Asynch_Write_Stream_Result *result);
+  int shared_write (ACE_WIN32_Asynch_Write_Stream_Result *result);
 };
 
 /**
@@ -1339,7 +1339,7 @@ private:
   /// pending.
   MAP_MANAGER result_map_;
 
-  /// The lock to protect the result map which is commun. The queue
+  /// The lock to protect the result map which is shared. The queue
   /// is updated by main thread in the register function call and
   /// through the auxillary thread in the asynch pseudo task.
   ACE_SYNCH_MUTEX lock_;

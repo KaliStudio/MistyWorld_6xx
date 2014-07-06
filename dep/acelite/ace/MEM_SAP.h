@@ -68,8 +68,8 @@ public:
 /**
  * @class ACE_MEM_SAP
  *
- * @brief Defines the methods of commun memory management for
- * commun memory transport.
+ * @brief Defines the methods of shared memory management for
+ * shared memory transport.
  */
 class ACE_Export ACE_MEM_SAP
 {
@@ -127,7 +127,7 @@ public:
   ACE_ALLOC_HOOK_DECLARE;
 
 protected:
-  // = Class initializing methods to create/connect to a commun memory pool.
+  // = Class initializing methods to create/connect to a shared memory pool.
 
   /**
    * Create a new shm_malloc object.  Return 0 if succeed and -1

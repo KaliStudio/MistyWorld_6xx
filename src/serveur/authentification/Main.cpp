@@ -38,9 +38,9 @@ void StopDB();
 
 bool stopEvent = false;                                     // Setting it to true stops the serveur
 
-LoginDatabaseWorkerPool LoginDatabase;                      // Accessor to the authserveur database
+LoginDatabaseWorkerPool LoginDatabase;                      // Accessor to the authentification database
 
-/// Handle authserveur's termination signals
+/// Handle authentification's termination signals
 class AuthServerSignalHandler : public Trinity::SignalHandler
 {
 public:
@@ -59,8 +59,8 @@ public:
 /// Print out the usage string for this program on the console.
 void usage(const char* prog)
 {
-    TC_LOG_INFO("serveur.authserveur", "Usage: \n %s [<options>]\n"
-        "    -c config_file           use config_file as configuration file\n\r",
+    TC_LOG_INFO("serveur.authentification", "Utilisation: \n %s [<options>]\n"
+        "    -c config_file           utiliser config_file comme fichier de configuration\n\r",
         prog);
 }
 
@@ -76,7 +76,7 @@ extern int main(int argc, char** argv)
         {
             if (++count >= argc)
             {
-                printf("Runtime-Error: -c option requires an input argument\n");
+                printf("Runtime-Error: -c option nécessite un argument d'entrée\n");
                 usage(argv[0]);
                 return 1;
             }
@@ -88,25 +88,25 @@ extern int main(int argc, char** argv)
 
     if (!sConfigMgr->LoadInitial(configFile))
     {
-        printf("Invalid or missing configuration file : %s\n", configFile);
-        printf("Verify that the file exists and has \'[authserveur]\' written in the top of the file!\n");
+        printf("Fichier de configuration incorrect ou manquant : %s\n", configFile);
+        printf("Vérifiez que le fichier existe et a \'[authentification]\' écrite dans la partie supérieure du dossier!\n");
         return 1;
     }
 
-    TC_LOG_INFO("serveur.authserveur", "%s (authserveur)", _FULLVERSION);
-    TC_LOG_INFO("serveur.authserveur", "<Ctrl-C> pour stopper.\n");
+    TC_LOG_INFO("serveur.authentification", "%s (authentification)", _FULLVERSION);
+    TC_LOG_INFO("serveur.authentification", "<Ctrl-C> pour stopper.\n");
     
-	TC_LOG_INFO("serveur.authserveur", " _____ _     _            _ _ _         _   _");
-	TC_LOG_INFO("serveur.authserveur", "|     |_|___| |_ _ _     | | | |___ _ _| |_| |");
-	TC_LOG_INFO("serveur.authserveur", "| | | | |_ -|  _| | |    | | | | . | '_| | . |");
-	TC_LOG_INFO("serveur.authserveur", "|_|_|_|_|___|_| |_  |    |_____|___|_| |_|___|");
-	TC_LOG_INFO("serveur.authserveur", "            |___|                         ");
-	TC_LOG_INFO("serveur.authserveur", "Project Misty World 2014(c) Emulateur WoW");
-	TC_LOG_INFO("serveur.authserveur", "<http://misty-world.site88.net/> \n");
+	TC_LOG_INFO("serveur.authentification", " _____ _     _            _ _ _         _   _");
+	TC_LOG_INFO("serveur.authentification", "|     |_|___| |_ _ _     | | | |___ _ _| |_| |");
+	TC_LOG_INFO("serveur.authentification", "| | | | |_ -|  _| | |    | | | | . | '_| | . |");
+	TC_LOG_INFO("serveur.authentification", "|_|_|_|_|___|_| |_  |    |_____|___|_| |_|___|");
+	TC_LOG_INFO("serveur.authentification", "            |___|                         ");
+	TC_LOG_INFO("serveur.authentification", "Project Misty World 2014(c) Emulateur WoW");
+	TC_LOG_INFO("serveur.authentification", "<http://misty-world.site88.net/> \n");
 
-    TC_LOG_INFO("serveur.authserveur", "Utilisant le fichier de configuration %s.", configFile);
+    TC_LOG_INFO("serveur.authentification", "Utilisant le fichier de configuration %s.", configFile);
 
-    TC_LOG_WARN("serveur.authserveur", "%s (Librarie: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));
+    TC_LOG_WARN("serveur.authentification", "%s (Librarie: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));
 
 #if defined (ACE_HAS_EVENT_POLL) || defined (ACE_HAS_DEV_POLL)
     ACE_Reactor::instance(new ACE_Reactor(new ACE_Dev_Poll_Reactor(ACE::max_handles(), 1), 1), true);
@@ -114,17 +114,17 @@ extern int main(int argc, char** argv)
     ACE_Reactor::instance(new ACE_Reactor(new ACE_TP_Reactor(), true), true);
 #endif
 
-    TC_LOG_DEBUG("serveur.authserveur", "Max allowed open files is %d", ACE::max_handles());
+    TC_LOG_DEBUG("serveur.authentification", "Le maximum de fichier ouvert est de %d", ACE::max_handles());
 
-    // authserveur PID file creation
+    // authentification PID file creation
     std::string pidFile = sConfigMgr->GetStringDefault("PidFile", "");
     if (!pidFile.empty())
     {
         if (uint32 pid = CreatePIDFile(pidFile))
-            TC_LOG_INFO("serveur.authserveur", "Daemon PID: %u\n", pid);
+            TC_LOG_INFO("serveur.authentification", "Daemon PID: %u\n", pid);
         else
         {
-            TC_LOG_ERROR("serveur.authserveur", "Cannot create PID file %s.\n", pidFile.c_str());
+            TC_LOG_ERROR("serveur.authentification", "Vous ne pouvez pas de créer le fichier PID %s.\n", pidFile.c_str());
             return 1;
         }
     }
@@ -137,7 +137,7 @@ extern int main(int argc, char** argv)
     sRealmList->Initialize(sConfigMgr->GetIntDefault("RealmsStateUpdateDelay", 20));
     if (sRealmList->size() == 0)
     {
-        TC_LOG_ERROR("serveur.authserveur", "No valid realms specified.");
+        TC_LOG_ERROR("serveur.authentification", "Pas de royaumes valides spécifiés.");
         return 1;
     }
 
@@ -147,7 +147,7 @@ extern int main(int argc, char** argv)
     int32 rmport = sConfigMgr->GetIntDefault("RealmServerPort", 3724);
     if (rmport < 0 || rmport > 0xFFFF)
     {
-        TC_LOG_ERROR("serveur.authserveur", "Specified port out of allowed range (1-65535)");
+        TC_LOG_ERROR("serveur.authentification", "Port spécifié sur la plage autorisée (1-65535)");
         return 1;
     }
 
@@ -157,14 +157,14 @@ extern int main(int argc, char** argv)
 
     if (acceptor.open(bind_addr, ACE_Reactor::instance(), ACE_NONBLOCK) == -1)
     {
-        TC_LOG_ERROR("serveur.authserveur", "Auth serveur can not bind to %s:%d", bind_ip.c_str(), rmport);
+        TC_LOG_ERROR("serveur.authentification", "Le serveur d`authentification ne peut pas se lier à %s:%d", bind_ip.c_str(), rmport);
         return 1;
     }
 
     // Initialize the signal handlers
     AuthServerSignalHandler SignalINT, SignalTERM;
 
-    // Register authserveurs's signal handlers
+    // Register authentifications's signal handlers
     ACE_Sig_Handler Handler;
     Handler.register_handler(SIGINT, &SignalINT);
     Handler.register_handler(SIGTERM, &SignalTERM);
@@ -187,20 +187,20 @@ extern int main(int argc, char** argv)
                 ULONG_PTR currentAffinity = affinity & appAff;            // remove non accessible processors
 
                 if (!currentAffinity)
-                    TC_LOG_ERROR("serveur.authserveur", "Processors marked in UseProcessors bitmask (hex) %x are not accessible for the authserveur. Accessible processors bitmask (hex): %x", affinity, appAff);
+                    TC_LOG_ERROR("serveur.authentification", "Les processeurs marqués dans UseProcessors bitmask (hex) %x ne sont pas accessibles pour l'authentification. Processeurs accessibles bitmask (hex): %x", affinity, appAff);
                 else if (SetProcessAffinityMask(hProcess, currentAffinity))
-                    TC_LOG_INFO("serveur.authserveur", "Using processors (bitmask, hex): %x", currentAffinity);
+                    TC_LOG_INFO("serveur.authentification", "Utilisation des processeurs (bitmask, hex): %x", currentAffinity);
                 else
-                    TC_LOG_ERROR("serveur.authserveur", "Can't set used processors (hex): %x", currentAffinity);
+                    TC_LOG_ERROR("serveur.authentification", "Impossible de définir les processeurs utilisés (hex): %x", currentAffinity);
             }
         }
 
         if (highPriority)
         {
             if (SetPriorityClass(hProcess, HIGH_PRIORITY_CLASS))
-                TC_LOG_INFO("serveur.authserveur", "authserveur process priority class set to HIGH");
+                TC_LOG_INFO("serveur.authentification", "processus d'authentification niveau de priorité passe en niveau HAUT");
             else
-                TC_LOG_ERROR("serveur.authserveur", "Can't set authserveur process priority class.");
+                TC_LOG_ERROR("serveur.authentification", "Impossible de définir les le processus d'authentification niveau de priorité.");
         }
     }
 #elif __linux__ // Linux
@@ -215,21 +215,21 @@ extern int main(int argc, char** argv)
                 CPU_SET(i, &mask);
 
         if (sched_setaffinity(0, sizeof(mask), &mask))
-            TC_LOG_ERROR("serveur.authserveur", "Can't set used processors (hex): %x, error: %s", affinity, strerror(errno));
+            TC_LOG_ERROR("serveur.authentification", "Can't set used processors (hex): %x, error: %s", affinity, strerror(errno));
         else
         {
             CPU_ZERO(&mask);
             sched_getaffinity(0, sizeof(mask), &mask);
-            TC_LOG_INFO("serveur.authserveur", "Using processors (bitmask, hex): %x", *(uint32*)(&mask));
+            TC_LOG_INFO("serveur.authentification", "Using processors (bitmask, hex): %x", *(uint32*)(&mask));
         }
     }
 
     if (highPriority)
     {
         if (setpriority(PRIO_PROCESS, 0, PROCESS_HIGH_PRIORITY))
-            TC_LOG_ERROR("serveur.authserveur", "Can't set authserveur process priority class, error: %s", strerror(errno));
+            TC_LOG_ERROR("serveur.authentification", "Can't set authentification process priority class, error: %s", strerror(errno));
         else
-            TC_LOG_INFO("serveur.authserveur", "authserveur process priority class set to %i", getpriority(PRIO_PROCESS, 0));
+            TC_LOG_INFO("serveur.authentification", "authentification process priority class set to %i", getpriority(PRIO_PROCESS, 0));
     }
 
 #endif
@@ -250,7 +250,7 @@ extern int main(int argc, char** argv)
         if ((++loopCounter) == numLoops)
         {
             loopCounter = 0;
-            TC_LOG_INFO("serveur.authserveur", "Ping MySQL to keep connection alive");
+            TC_LOG_INFO("serveur.authentification", "Ping MySQL pour garder la connexion active");
             LoginDatabase.KeepAlive();
         }
     }
@@ -258,7 +258,7 @@ extern int main(int argc, char** argv)
     // Close the Database Pool and library
     StopDB();
 
-    TC_LOG_INFO("serveur.authserveur", "Halting process...");
+    TC_LOG_INFO("serveur.authentification", "Arrêt du processus...");
     return 0;
 }
 
@@ -270,32 +270,32 @@ bool StartDB()
     std::string dbstring = sConfigMgr->GetStringDefault("LoginDatabaseInfo", "");
     if (dbstring.empty())
     {
-        TC_LOG_ERROR("serveur.authserveur", "Database not specified");
+        TC_LOG_ERROR("serveur.authentification", "Base de données non spécifiée");
         return false;
     }
 
     int32 worker_threads = sConfigMgr->GetIntDefault("LoginDatabase.WorkerThreads", 1);
     if (worker_threads < 1 || worker_threads > 32)
     {
-        TC_LOG_ERROR("serveur.authserveur", "Improper value specified for LoginDatabase.WorkerThreads, defaulting to 1.");
+        TC_LOG_ERROR("serveur.authentification", "Valeur incorrecte spécifiée pour la base de données de connexion.Fils de travail, par défaut à 1.");
         worker_threads = 1;
     }
 
     int32 synch_threads = sConfigMgr->GetIntDefault("LoginDatabase.SynchThreads", 1);
     if (synch_threads < 1 || synch_threads > 32)
     {
-        TC_LOG_ERROR("serveur.authserveur", "Improper value specified for LoginDatabase.SynchThreads, defaulting to 1.");
+        TC_LOG_ERROR("serveur.authentification", "Valeur incorrecte spécifiée pour la base de données de connexion. Synchronisation du fils, par défaut à 1.");
         synch_threads = 1;
     }
  
-    // NOTE: While authserveur is singlethreaded you should keep synch_threads == 1. Increasing it is just silly since only 1 will be used ever.
+    // NOTE: While authentification is singlethreaded you should keep synch_threads == 1. Increasing it is just silly since only 1 will be used ever.
     if (!LoginDatabase.Open(dbstring, uint8(worker_threads), uint8(synch_threads)))
     {
-        TC_LOG_ERROR("serveur.authserveur", "Cannot connect to database");
+        TC_LOG_ERROR("serveur.authentification", "Impossible de se connecter à la base de données");
         return false;
     }
 
-    TC_LOG_INFO("serveur.authserveur", "Started auth database connection pool.");
+    TC_LOG_INFO("serveur.authentification", "Regroupement de connexion de base de données d'authentification commencé.");
     sLog->SetRealmId(0); // Enables DB appenders when realm is set.
     return true;
 }

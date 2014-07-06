@@ -77,7 +77,7 @@ ACE_END_VERSIONED_NAMESPACE_DECL
 // Turn a number into a string.
 # define ACE_ITOA(X) #X
 
-// Create a string of a serveur address with a "host:port" format.
+// Create a string of a server address with a "host:port" format.
 # define ACE_SERVER_ADDRESS(H,P) H ACE_TEXT(":") P
 
 // A couple useful inline functions for checking whether bits are
@@ -516,7 +516,7 @@ extern ACE_Static_Svc_Descriptor ace_svc_desc_##SERVICE_CLASS ;
  * on platforms that do not require such directives.
  * The first argument (EXPORT_NAME) is the prefix for this export
  * macro, the full name is formed by appending _Export.
- * ACE provides outils to generate header files that define the macro
+ * ACE provides tools to generate header files that define the macro
  * correctly on all platforms, please see
  * $ACE_ROOT/bin/generate_export_file.pl
  *

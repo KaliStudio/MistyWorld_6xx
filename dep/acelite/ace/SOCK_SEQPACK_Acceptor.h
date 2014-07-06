@@ -148,13 +148,13 @@ public:
 protected:
   /// Perform operations that must occur before <ACE_OS::accept> is
   /// called.
-  int commun_accept_start (ACE_Time_Value *timeout,
+  int shared_accept_start (ACE_Time_Value *timeout,
                            bool restart,
                            int &in_blocking_mode) const;
 
   /// Perform operations that must occur after <ACE_OS::accept> is
   /// called.
-  int commun_accept_finish (ACE_SOCK_SEQPACK_Association new_association,
+  int shared_accept_finish (ACE_SOCK_SEQPACK_Association new_association,
                             int in_blocking_mode,
                             bool reset_new_handle) const;
 
@@ -163,13 +163,13 @@ protected:
    * both the QoS-enabled <open> method and the BSD-style <open>
    * method.
    */
-  int commun_open (const ACE_Addr &local_sap,
+  int shared_open (const ACE_Addr &local_sap,
                    int protocol_family,
                    int backlog);
 
   /// Multihomed version of same.
 
-  int commun_open (const ACE_Multihomed_INET_Addr &local_sap,
+  int shared_open (const ACE_Multihomed_INET_Addr &local_sap,
                    int protocol_family,
                    int backlog);
 

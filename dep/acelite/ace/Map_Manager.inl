@@ -211,7 +211,7 @@ ACE_Map_Manager<EXT_ID, INT_ID, ACE_LOCK>::mutex (void)
 template <class EXT_ID, class INT_ID, class ACE_LOCK> ACE_INLINE void
 ACE_Map_Manager<EXT_ID, INT_ID, ACE_LOCK>::move_from_free_list_to_occupied_list (ACE_UINT32 slot)
 {
-  this->commun_move (slot,
+  this->shared_move (slot,
                      this->free_list_,
                      this->free_list_id (),
                      this->occupied_list_,
@@ -221,7 +221,7 @@ ACE_Map_Manager<EXT_ID, INT_ID, ACE_LOCK>::move_from_free_list_to_occupied_list 
 template <class EXT_ID, class INT_ID, class ACE_LOCK> ACE_INLINE void
 ACE_Map_Manager<EXT_ID, INT_ID, ACE_LOCK>::move_from_occupied_list_to_free_list (ACE_UINT32 slot)
 {
-  this->commun_move (slot,
+  this->shared_move (slot,
                      this->occupied_list_,
                      this->occupied_list_id (),
                      this->free_list_,

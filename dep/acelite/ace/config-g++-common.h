@@ -91,7 +91,7 @@
 #endif /* ! ACE_LACKS_PRAGMA_ONCE */
 
 // Take advantage of G++ (>= 4.x) visibility attributes to generate
-// improved commun library binaries.
+// improved shared library binaries.
 #if (__GNUC__ >= 4) && !defined (__MINGW32__) && !defined (ACE_HAS_CEGCC)
 
 # if defined (ACE_HAS_CUSTOM_EXPORT_MACROS) && ACE_HAS_CUSTOM_EXPORT_MACROS == 0

@@ -46,7 +46,7 @@ class ACE_Static_Svc_Descriptor;
  * pid, but by it's argv[0]. So different processes (in UNIX
  * syntax) may access the same NameBindings), global for all
  * processes running on one host or global for all processes on
- * the net (that know the address of the net name serveur
+ * the net (that know the address of the net name server
  * socket). Strings may be plain character strings or Wide
  * character strings. A Name Binding consists of a name string
  * (that's the key), a value string and an optional type string
@@ -72,7 +72,7 @@ public:
   /**
    * Specifies the scope of this namespace, opens and memory-maps the
    * associated file (if accessible) or contacts the dedicated name
-   * serveur process for NET_LOCAL namespace. Note that @a light
+   * server process for NET_LOCAL namespace. Note that @a light
    * specifies whether or not we want to use
    * ACE_Lite_MMap_Memory_Pool. By default we use ACE_MMap_Memory_Pool.
    */
@@ -81,7 +81,7 @@ public:
   /**
    * Specifies the scope of this namespace, opens and memory-maps the
    * associated file (if accessible) or contacts the dedicated name
-   * serveur process for NET_LOCAL namespace. Note that @a light
+   * server process for NET_LOCAL namespace. Note that @a light
    * specifies whether or not we want to use
    * ACE_Lite_MMap_Memory_Pool. By default we use ACE_MMap_Memory_Pool.
    */
@@ -261,13 +261,13 @@ private:
   /// Holds the local hostname.
   ACE_TCHAR hostname_[MAXHOSTNAMELEN + 1];
 
-  /// Holds name of net name serveur.
-  const ACE_TCHAR *netnameserveur_host_;
+  /// Holds name of net name server.
+  const ACE_TCHAR *netnameserver_host_;
 
-  /// Holds port number of the net name serveur.
-  int netnameserveur_port_;
+  /// Holds port number of the net name server.
+  int netnameserver_port_;
 
-  /// 1 if we're on the same local machine as the name serveur, else 0.
+  /// 1 if we're on the same local machine as the name server, else 0.
   int local (void);
 
 };
@@ -289,10 +289,10 @@ public:
                    ACE_TCHAR *argv[]);
 
   /// Set the port number
-  void nameserveur_port (int port);
+  void nameserver_port (int port);
 
   /// Get the port number
-  int nameserveur_port (void);
+  int nameserver_port (void);
 
   /// Get the context
   ACE_Naming_Context::Context_Scope_Type context (void);
@@ -301,10 +301,10 @@ public:
   void context (ACE_Naming_Context::Context_Scope_Type);
 
   /// Set the host name
-  void nameserveur_host (const ACE_TCHAR *host);
+  void nameserver_host (const ACE_TCHAR *host);
 
   /// Get the host name
-  const ACE_TCHAR *nameserveur_host (void);
+  const ACE_TCHAR *nameserver_host (void);
 
   /// Set name space directory
   void namespace_dir (const ACE_TCHAR *dir);
@@ -352,11 +352,11 @@ private:
   /// Use Win32 Registry
   bool use_registry_;
 
-  /// Port to connect to nameserveur process.
-  int nameserveur_port_;
+  /// Port to connect to nameserver process.
+  int nameserver_port_;
 
-  /// Hostname of nameserveur.
-  const ACE_TCHAR *nameserveur_host_;
+  /// Hostname of nameserver.
+  const ACE_TCHAR *nameserver_host_;
 
   /// Directory to hold name_bindings.
   ACE_TCHAR *namespace_dir_;

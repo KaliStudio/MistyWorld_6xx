@@ -141,7 +141,7 @@ ACE_Mutex::remove (void)
   int result = 0;
 #if defined (ACE_HAS_PTHREADS) || defined (ACE_HAS_STHREADS)
   // In the case of a interprocess mutex, the owner is the first
-  // process that created the commun memory object. In this case, the
+  // process that created the shared memory object. In this case, the
   // lockname_ pointer will be non-zero (points to allocated memory
   // for the name).  Owner or not, the memory needs to be unmapped
   // from the process.  If we are the owner, the file used for

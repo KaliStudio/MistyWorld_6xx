@@ -35,7 +35,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
  * @brief A proxy that keeps track of the relative offset of a "pointer"
  * from its base address.
  * This class makes it possible to transparently use "pointers" in
- * commun memory as easily as programming with pointers to local
+ * shared memory as easily as programming with pointers to local
  * memory.  In particular, we don't need to ensure that the base
  * addresses of all the pointers are mapped into separate
  * processes at the same absolute memory base address.
@@ -152,7 +152,7 @@ protected:
  * "pointer" from its base address.
  *
  * This class makes it possible to transparently use "pointers" in
- * commun memory as easily as programming with pointers to local
+ * shared memory as easily as programming with pointers to local
  * memory by overloading the C++ delegation operator ->().
  */
 template <class CONCRETE>

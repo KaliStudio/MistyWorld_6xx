@@ -82,7 +82,7 @@ private:
   /// Length of the string.
   size_t len_;
 
-  /// This actually points into commun/persistent memory.
+  /// This actually points into shared/persistent memory.
   ACE_WCHAR_T *rep_;
 
   /// Should rep_ be deleted when destructed (only used

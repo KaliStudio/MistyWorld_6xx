@@ -1,21 +1,4 @@
-/*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation; either version 3 of the License, or (at your
- * option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program. If not, see <http://www.gnu.org/licenses/>.
- */
 
 #include "Common.h"
 #include "Language.h"
@@ -1006,7 +989,30 @@ void WorldSession::HandlePetitionShowListOpcode(WorldPacket& recvData)
 
     ObjectGuid guid;
 
-    // Obsolute
+	guid[1] = recvData.ReadBit();
+	guid[7] = recvData.ReadBit();
+	guid[2] = recvData.ReadBit();
+	guid[5] = recvData.ReadBit();
+	guid[4] = recvData.ReadBit();
+	guid[0] = recvData.ReadBit();
+	guid[3] = recvData.ReadBit();
+	guid[6] = recvData.ReadBit();
+
+	recvData.ReadByteSeq(guid[6]);
+	recvData.ReadByteSeq(guid[3]);
+	recvData.ReadByteSeq(guid[2]);
+	recvData.ReadByteSeq(guid[4]);
+	recvData.ReadByteSeq(guid[1]);
+	recvData.ReadByteSeq(guid[7]);
+	recvData.ReadByteSeq(guid[5]);
+	recvData.ReadByteSeq(guid[0]);
+
+	Creature* unit = GetPlayer()->GetNPCIfCanInteractWith(guid, UNIT_NPC_FLAG_PETITIONER);
+	if (!unit)
+	{
+		TC_LOG_DEBUG("network", "WORLD: HandlePetitionerShowListOpcode - Unit (GUID: %u) not found or you can't interact with him.", uint32(GUID_LOPART(guid)));
+		return;
+	}
 
     SendPetitionShowList(guid);
 }

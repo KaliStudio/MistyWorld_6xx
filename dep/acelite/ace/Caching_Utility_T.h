@@ -228,7 +228,7 @@ protected:
   /**
    * Find the entry with minimum caching attributes.  This is handler
    * specific since this utility is to be used very specifically for
-   * handler who have caching_attributes for serveur side acched
+   * handler who have caching_attributes for server side acched
    * connection management.
    */
   void minimum (CONTAINER &container,
@@ -283,7 +283,7 @@ protected:
   /**
    * Find the entry with minimum caching attributes.  This is handler
    * specific since this utility is to be used very specifically for
-   * handler who have caching_attributes for serveur side acched
+   * handler who have caching_attributes for server side acched
    * connection management.@note Here it is a no-op.
    */
   void minimum (CONTAINER &container,

@@ -6,7 +6,7 @@
  *
  *  $Id: Name_Proxy.h 80826 2008-03-04 14:51:23Z wotte $
  *
- *  Proxy for dealing with remote serveur process managing NET_LOCAL
+ *  Proxy for dealing with remote server process managing NET_LOCAL
  *  Name_Bindings.
  *
  *
@@ -39,7 +39,7 @@ ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 /**
  * @class ACE_Name_Proxy
  *
- * @brief Proxy for dealing with remote serveur process managing NET_LOCAL
+ * @brief Proxy for dealing with remote server process managing NET_LOCAL
  * NameBindings.
  *
  * Shields applications from details of interacting with the
@@ -72,7 +72,7 @@ public:
   /// Obtain underlying handle.
   virtual ACE_HANDLE get_handle (void) const;
 
-  /// Close down the connection to the serveur.
+  /// Close down the connection to the server.
   virtual ~ACE_Name_Proxy (void);
 
   /// Dump the state of the object;

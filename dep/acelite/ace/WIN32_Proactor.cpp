@@ -610,7 +610,7 @@ ACE_WIN32_Proactor::handle_events (unsigned long milli_seconds)
       // if "result_err" is 0 than
       //     It is normal OS/WIN32 AIO completion.
       //     We have cleared asynch_result->error_
-      //     during commun_read/commun_write.
+      //     during shared_read/shared_write.
       //     The real error code is already stored in "errno",
       //     so copy "errno" value to the "result_err"
       //     and pass this "result_err" code

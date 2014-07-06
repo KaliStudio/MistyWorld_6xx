@@ -116,7 +116,7 @@ ACE_DLL_Strategy<SVC_HANDLER>::make_svc_handler (SVC_HANDLER *&sh)
 {
   ACE_TRACE ("ACE_DLL_Strategy<SVC_HANDLER>::make_svc_handler");
 
-  // Open the commun library.
+  // Open the shared library.
   ACE_SHLIB_HANDLE handle = ACE_OS::dlopen (this->dll_name_);
 
   // Extract the factory function.
@@ -731,7 +731,7 @@ ACE_Cached_Connect_Strategy<SVC_HANDLER, ACE_PEER_CONNECTOR_2, MUTEX>::find_or_c
   REFCOUNTED_HASH_RECYCLABLE_ADDRESS search_addr (remote_addr);
 
   // Try to find the address in the cache.  Only if we don't find it
-  // do we create a new <SVC_HANDLER> and connect it with the serveur.
+  // do we create a new <SVC_HANDLER> and connect it with the server.
   if (this->find (search_addr, entry) == -1)
     {
       // Set the flag

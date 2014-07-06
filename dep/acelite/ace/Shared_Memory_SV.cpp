@@ -25,7 +25,7 @@ ACE_Shared_Memory_SV::ACE_Shared_Memory_SV (key_t id,
                                             int perms,
                                             void *addr,
                                             int flags)
-  : commun_memory_ (id, length, create, perms, addr, flags)
+  : shared_memory_ (id, length, create, perms, addr, flags)
 {
   ACE_TRACE ("ACE_Shared_Memory_SV::ACE_Shared_Memory_SV");
 }
@@ -38,39 +38,39 @@ ACE_Shared_Memory_SV::get_segment_size (void) const
   ACE_TRACE ("ACE_Shared_Memory_SV::get_segment_size");
   // This cast is ok since the 'open' method for this class allows only
   // an 'int' size. Therefore, this case should not lose information.
-  return this->commun_memory_.get_segment_size ();
+  return this->shared_memory_.get_segment_size ();
 }
 
-// Removes the commun memory segment.
+// Removes the shared memory segment.
 
 int
 ACE_Shared_Memory_SV::remove (void)
 {
   ACE_TRACE ("ACE_Shared_Memory_SV::remove");
-  return commun_memory_.remove ();
+  return shared_memory_.remove ();
 }
 
-// Closes (detaches) the commun memory segment.
+// Closes (detaches) the shared memory segment.
 
 int
 ACE_Shared_Memory_SV::close (void)
 {
   ACE_TRACE ("ACE_Shared_Memory_SV::close");
-  return commun_memory_.detach ();
+  return shared_memory_.detach ();
 }
 
 void *
 ACE_Shared_Memory_SV::malloc (size_t)
 {
   ACE_TRACE ("ACE_Shared_Memory_SV::malloc");
-  return this->commun_memory_.get_segment_ptr ();
+  return this->shared_memory_.get_segment_ptr ();
 }
 
 ACE_HANDLE
 ACE_Shared_Memory_SV::get_id (void) const
 {
   ACE_TRACE ("ACE_Shared_Memory_SV::get_id");
-  return this->commun_memory_.get_id ();
+  return this->shared_memory_.get_id ();
 }
 
 int

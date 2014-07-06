@@ -156,7 +156,7 @@ ACE_OS::condattr_init (ACE_condattr_t &attributes, int type)
   if (
       ACE_ADAPT_RETVAL (pthread_condattr_init (&attributes), result) == 0
 #     if defined (_POSIX_THREAD_PROCESS_SHARED) && !defined (ACE_LACKS_CONDATTR_PSHARED)
-      && ACE_ADAPT_RETVAL (pthread_condattr_setpcommun (&attributes, type),
+      && ACE_ADAPT_RETVAL (pthread_condattr_setpshared (&attributes, type),
                            result) == 0
 #     endif /* _POSIX_THREAD_PROCESS_SHARED && ! ACE_LACKS_CONDATTR_PSHARED */
       )
@@ -1317,7 +1317,7 @@ ACE_OS::rwlock_init (ACE_rwlock_t *rw,
   pthread_rwlockattr_t attr;
   pthread_rwlockattr_init (&attr);
 #    if !defined (ACE_LACKS_RWLOCKATTR_PSHARED)
-  pthread_rwlockattr_setpcommun (&attr, (type == USYNC_THREAD ?
+  pthread_rwlockattr_setpshared (&attr, (type == USYNC_THREAD ?
                                          PTHREAD_PROCESS_PRIVATE :
                                          PTHREAD_PROCESS_SHARED));
 #    else
@@ -1474,7 +1474,7 @@ ACE_OS::sema_init (ACE_sema_t *s,
         }
       else
         {
-          // We own this commun memory object!  Let's set its
+          // We own this shared memory object!  Let's set its
           // size.
           if (ACE_OS::ftruncate (fd,
                                  sizeof (ACE_sema_t)) == -1)
@@ -1593,7 +1593,7 @@ ACE_OS::sema_init (ACE_sema_t *s,
     else
       creator = true; // remember we created it for initialization at end
 
-  // for processcommun semaphores remember who we are to be able to remove
+  // for processshared semaphores remember who we are to be able to remove
   // the FIFO when we're done with it
   if (type == USYNC_PROCESS)
     {
@@ -1631,7 +1631,7 @@ ACE_OS::sema_init (ACE_sema_t *s,
   // we completely set it up (the opened handles will keep it active until we close
   // thos down). This way we're protected against unexpected crashes as far as removal
   // is concerned.
-  // Unfortunately this does not work for processcommun FIFOs since as soon as we
+  // Unfortunately this does not work for processshared FIFOs since as soon as we
   // have unlinked the semaphore no other process will be able to open it anymore.
   if (type == USYNC_THREAD)
     {
