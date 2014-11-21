@@ -1,6 +1,6 @@
 /*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+
  * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
  * Copyright (C) 2006-2014 ScriptDev2 <https://github.com/scriptdev2/scriptdev2/>
  *
@@ -119,7 +119,7 @@ class OrbsDespawner : public BasicEvent
 
         bool Execute(uint64 /*currTime*/, uint32 /*diff*/)
         {
-            Trinity::CreatureWorker<OrbsDespawner> worker(_creature, *this);
+            TRINITY::CreatureWorker<OrbsDespawner> worker(_creature, *this);
             _creature->VisitNearbyGridObject(5000.0f, worker);
             return true;
         }

@@ -1,6 +1,6 @@
 /*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+
  * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -112,7 +112,7 @@ char const* CONF_mpq_dbc_list[] =
     "misc.MPQ"
 };
 
-uint32 const Builds[] = {16016, 16048, 16057, 16309, 16357, 16516, 16650, 16844, 16965, 17116, 17266, 17325, 17345, 17538, 17645, 17688, 17898, 18443, 18443};
+uint32 const Builds[] = {16016, 16048, 16057, 16309, 16357, 16516, 16650, 16844, 16965, 17116, 17266, 17325, 17345, 17538, 17645, 17688, 17898, 18273, 18443};
 #define NEW_BASE_SET_BUILD  16016
 
 char const* Locales[] =
@@ -167,11 +167,11 @@ void Usage(char const* prg)
     printf(
         "Utilisation:\n"\
         "%s -[var] [value]\n"\
-        "-i définit le chemin d`entrée\n"\
-        "-o définit le chemin de sortie\n"\
+        "-i dÃ©finit le chemin d`entrÃ©e\n"\
+        "-o dÃ©finit le chemin de sortie\n"\
         "-e extraire uniquement MAP(1)/DBC(2) - standard: both(3)\n"\
-        "-f hauteur stocké sous forme de int (moins la taille de la carte, mais a perdu une certaine précision) 1 par défaut\n"\
-        "-b objectif de construction (défaut %u)\n"\
+        "-f hauteur stockÃ© sous forme de int (moins la taille de la carte, mais a perdu une certaine prÃ©cision) 1 par dÃ©faut\n"\
+        "-b objectif de construction (dÃ©faut %u)\n"\
         "Exemple: %s -f 0 -i \"c:\\gamex\\gamex\"", prg, CONF_TargetBuild, prg);
     exit(1);
 }
@@ -304,7 +304,7 @@ uint32 ReadMapDBC()
     }
 
     SFileCloseFile(dbcFile);
-    printf("Terminé! (%u maps chargée)\n", uint32(map_count));
+    printf("TerminÃ©! (%u maps chargÃ©e)\n", uint32(map_count));
     return map_count;
 }
 
@@ -379,7 +379,7 @@ void ReadLiquidTypeTableDBC()
     for (uint32 x = 0; x < LiqType_count; ++x)
         LiqType[dbc.getRecord(x).getUInt(0)] = dbc.getRecord(x).getUInt(3);
 
-    printf("Terminé! (%lu LiqTypes charg\x82)\n", LiqType_count);
+    printf("TerminÃ©! (%lu LiqTypes charg\x82)\n", LiqType_count);
 }
 
 //
@@ -388,7 +388,7 @@ void ReadLiquidTypeTableDBC()
 
 // Map file format data
 static char const* MAP_MAGIC         = "MAPS";
-static char const* MAP_VERSION_MAGIC = "v1.6"; //v1.3
+static char const* MAP_VERSION_MAGIC = "v1.4"; //v1.3
 static char const* MAP_AREA_MAGIC    = "AREA";
 static char const* MAP_HEIGHT_MAGIC  = "MHGT";
 static char const* MAP_LIQUID_MAGIC  = "MLIQ";
@@ -971,7 +971,7 @@ bool ConvertADT(char *filename, char *filename2, int /*cell_y*/, int /*cell_x*/,
     FILE* output = fopen(filename2, "wb");
     if (!output)
     {
-        printf("Vous ne pouvez pas créer le fichier de sortie '%s'\n", filename2);
+        printf("Vous ne pouvez pas crÃ©er le fichier de sortie '%s'\n", filename2);
         return false;
     }
     fwrite(&map, sizeof(map), 1, output);
@@ -1081,7 +1081,7 @@ bool ExtractFile(HANDLE fileInArchive, char const* filename)
     FILE* output = fopen(filename, "wb");
     if(!output)
     {
-        printf("Vous ne pouvez pas créer le fichier de sortie '%s'\n", filename);
+        printf("Vous ne pouvez pas crÃ©er le fichier de sortie '%s'\n", filename);
         return false;
     }
 

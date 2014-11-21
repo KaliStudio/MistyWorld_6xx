@@ -1,6 +1,6 @@
 /*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+
  * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -61,7 +61,7 @@
 HANDLE WorldMpq = NULL;
 HANDLE LocaleMpq = NULL;
 
-uint32 CONF_TargetBuild = 17538;              // 5.4.1.17538
+uint32 CONF_TargetBuild = 18443;              // 6.0.1 18443
 
 // List MPQ for extract maps from
 char const* CONF_mpq_list[]=
@@ -75,7 +75,7 @@ char const* CONF_mpq_list[]=
     "expansion4.MPQ", // added in 6.x.x
 };
 
-uint32 const Builds[] = {16016, 16048, 16057, 16309, 16357, 16516, 16650, 16844, 16965, 17116, 17266, 17345, 17538, 0};
+uint32 const Builds[] = {16016, 16048, 16057, 16309, 16357, 16516, 16650, 16844, 16965, 17116, 17266, 17345, 17538, 18273, 18443, 0};
 #define LAST_DBC_IN_DATA_BUILD 15595    // after this build mpqs with dbc are back to locale folder
 #define NEW_BASE_SET_BUILD 16016 // 15211
 

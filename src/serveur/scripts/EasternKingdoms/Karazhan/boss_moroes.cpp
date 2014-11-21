@@ -1,6 +1,6 @@
 /*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+
  * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
  * Copyright (C) 2006-2014 ScriptDev2 <https://github.com/scriptdev2/scriptdev2/>
  *
@@ -191,7 +191,7 @@ public:
                 for (uint8 i = 0; i < 6; ++i)
                     AddList.push_back(Adds[i]);
 
-                Trinity::Containers::RandomResizeList(AddList, 4);
+                TRINITY::Containers::RandomResizeList(AddList, 4);
 
                 uint8 i = 0;
                 for (std::list<uint32>::const_iterator itr = AddList.begin(); itr != AddList.end() && i < 4; ++itr, ++i)

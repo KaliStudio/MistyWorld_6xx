@@ -1,5 +1,4 @@
 
-
 #ifndef _TOTP_H
 #define _TOPT_H
 

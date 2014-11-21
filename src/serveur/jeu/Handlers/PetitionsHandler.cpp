@@ -316,7 +316,7 @@ void WorldSession::HandlePetitionQueryOpcode(WorldPacket& recvData)
     uint32 guildguid;
     ObjectGuid petitionGuid;
 
-    recvData >> guildguid;                                 // in Trinity always same as GUID_LOPART(petitionguid)
+    recvData >> guildguid;                                 // in TRINITY always same as GUID_LOPART(petitionguid)
 
     petitionGuid[2] = recvData.ReadBit();
     petitionGuid[3] = recvData.ReadBit();
@@ -367,7 +367,7 @@ void WorldSession::SendPetitionQueryOpcode(uint64 petitionGuid)
     }
 
     WorldPacket data(SMSG_PETITION_QUERY_RESPONSE, (4+8+name.size()+1+1+4*12+2+10));
-    data << uint32(GUID_LOPART(petitionGuid));              // guild/team guid (in Trinity always same as GUID_LOPART(petition guid)
+    data << uint32(GUID_LOPART(petitionGuid));              // guild/team guid (in TRINITY always same as GUID_LOPART(petition guid)
     data.WriteBit(1); // hasData;
 
     for (int i = 0; i < 10; i++)

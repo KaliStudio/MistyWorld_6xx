@@ -1,240 +1,239 @@
-###############################################
-#   SkyFire Auth Server configuration file    #
-###############################################
-[authserveur]
+############################################################################
+#   Misty WOrld fichier de configuration du serveur d'authentification     #
+############################################################################
+[authentification]
 
 ###################################################################################################
 # SECTION INDEX
 #
-#    EXAMPLE CONFIG
-#    AUTH SERVER SETTINGS
-#    MYSQL SETTINGS
-#    LOGGING SYSTEM SETTINGS
+#    EXEMPLE DE CONFIGURATION
+#    REGLAGES DU SERVEUR AUTHENTIFICATION
+#    REGLAGES MYSQL
+#    REGLAGES DU SYSTEME DE JOURNALISATION
 #
 ###################################################################################################
 
 ###################################################################################################
-# EXAMPLE CONFIG
+# EXEMPLE DE CONFIGURATION
 #
 #    Variable
-#        Description: Brief description what the variable is doing.
-#        Important:   Annotation for important things about this variable.
-#        Example:     "Example, i.e. if the value is a string"
-#        Default:     10 - (Enabled|Comment|Variable name in case of grouped config options)
-#                     0  - (Disabled|Comment|Variable name in case of grouped config options)
+#        Description: Brève description de ce que la variable fait.
+#        Important:   Annotation des détails importants à propos cette variable.
+#        Exemple:     "Exemple, c'est à dire si la valeur est une chaîne"
+#        Défaut:     10 - (Enabled|Comment|Nom de la variable dans le cas des options de configuration groupés)
+#                     0  - (Disabled|Comment|Nom de la variable dans le cas des options de configuration groupés)
 #
-# Note to developers:
-# - Copy this example to keep the formatting.
-# - Line breaks should be at column 100.
+# Note aux développeurs:
+# - Copiez cet exemple pour garder la forme.
+# - Les sauts de ligne doivent être à la colonne 100.
 ###################################################################################################
 
 ###################################################################################################
-# AUTH SERVER SETTINGS
+# REGLAGES DU SERVEUR AUTHENTIFICATION
 #
 #    LogsDir
-#        Description: Logs directory setting.
-#        Important:   LogsDir needs to be quoted, as the string might contain space characters.
-#                     Logs directory must exists, or log file creation will be disabled.
-#        Default:     "" - (Log files will be stored in the current path)
+#        Description: réglage de répertoire de Logs.
+#        Important: LogsDir doit être cité, tant que la chaîne peut contenir des espaces.
+#                     Le répertoire Logs doit existez, ou la création du fichier journal sera désactivée.
+#        Défaut:     "" - (Les fichiers journaux sont stockés dans le répertoire courant)
 
 LogsDir = ""
 
 #
-#    MaxPingTime
-#        Description: Time (in minutes) between database pings.
-#        Default:     30
+#    DureeMaxPing
+#        Description: Le temps (en minutes) entre les pings de base de données.
+#        Défaut:     30
 
-MaxPingTime = 30
+DureeMaxPing = 30
 
 #
-#    RealmServerPort
-#        Description: TCP port to reach the auth serveur.
-#        Default:     3724
+#    PortDuServeurRoyaume
+#        Description: Port TCP pour atteindre le serveur d'authentification.
+#        Défaut:     3724
 
-RealmServerPort = 3724
+PortDuServeurRoyaume = 3724
 
 #
 #
 #    BindIP
-#        Description: Bind auth serveur to IP/hostname
-#        Default:     "0.0.0.0" - (Bind to all IPs on the system)
+#        Description: Bind serveur d'authentification IP/nom d'hôte
+#        Défaut:     "0.0.0.0" - (Lier à toutes les adresses IP sur le système)
 
 BindIP = "0.0.0.0"
 
 #
 #    PidFile
-#        Description: Auth serveur PID file.
-#        Example:     "./authserveur.pid"  - (Enabled)
-#        Default:     ""                  - (Disabled)
+#        Description: Fichier authentification PID du serveur.
+#        Exemple:     "./authserveur.pid"  - (Activé)
+#        Défaut:     ""                  - (Désactivé)
 
 PidFile = ""
 
 #
 #    UseProcessors
-#        Description: Processors mask for Windows and Linux based multi-processor systems.
-#        Example:     A computer with 2 CPUs:
-#                     1 - 1st CPU only, 2 - 2nd CPU only, 3 - 1st and 2nd CPU, because 1 | 2 is 3
-#        Default:     0  - (Selected by OS)
-#                     1+ - (Bit mask value of selected processors)
+#        Description: masque des processeurs pour les systèmes multi-processeurs basés sur Windows et Linux.
+#        Exemple:     Un ordinateur avec deux processeurs:
+#                     1 - 1er CPU uniquement, 2 - 2e CPU uniquement, 3 - 1er et 2 CPU, car 1 | 2 sont 3
+#        Défaut:     0  - (Sélectionné par OS)
+#                     1+ - (Valeur de masque de bits des processeurs sélectionnés)
 
-UseProcessors = 0
-
-#
-#    ProcessPriority
-#        Description: Process priority setting for Windows and Linux based systems.
-#        Details:     On Linux, a nice value of -15 is used. (requires superuser). On Windows, process is set to HIGH class.
-#        Default:     0 - (Normal)
-#                     1 - (High)
-
-ProcessPriority = 0
+UtiliserProcesseurs = 0
 
 #
-#    RealmsStateUpdateDelay
-#        Description: Time (in seconds) between realm list updates.
-#        Default:     20 - (Enabled)
-#                     0  - (Disabled)
+#    PrioritéDuProcessus
+#        Description: Réglage des priorités du processus pour les systèmes basés sur Windows et Linux.
+#        Détails: Sous Linux, une valeur de -15 est utilisé. (nécessite superutilisateur). Sous Windows, le processus est réglé sur priorité HAUTE.
+#        Défaut:     0 - (Normal)
+#                     1 - (Haute)
 
-RealmsStateUpdateDelay = 20
-
-#
-#    WrongPass.MaxCount
-#        Description: Number of login attemps with wrong password before the account or IP will be
-#                     banned.
-#        Default:     0  - (Disabled)
-#                     1+ - (Enabled)
-
-WrongPass.MaxCount = 0
+PrioriteDuProcessus = 0
 
 #
-#    WrongPass.BanTime
-#        Description: Time (in seconds) for banning account or IP for invalid login attempts.
-#        Default:     600 - (10 minutes)
-#                     0   - (Permanent ban)
+#    DelaiDeMiseAJourDuStatusDuRoyaume
+#        Description: Le temps (en secondes) entre les mises à jour de la liste des royaumes.
+#        Défaut:     20 - (Activé)
+#                     0  - (Désactivé)
 
-WrongPass.BanTime = 600
+DelaiDeMiseAJourDuStatusDuRoyaume = 20
+
+# 
+#    PasseErronees.NombreMax
+#        Description: Nombre d'essais de connexion avec un mot de passe incorrect avant que le compte ou IP soit bannie.
+#        Défaut:     0  - (Désactivé)
+#                     1+ - (Activé
+
+PasseErronees.NombreMax = 0
 
 #
-#    WrongPass.BanType
-#        Description: Ban type for invalid login attempts.
-#        Default:     0 - (Ban IP)
-#                     1 - (Ban Account)
+#    PasseErronees.TempsDeBan
+#        Description: le temps (en seconde) de bannissement de compte ou IP pour tentatives de connexion non valides.
+#        Défaut:     600 - (10 minutes)
+#                     0   - (Interdiction permanente)
 
-WrongPass.BanType = 0
+PasseErronees.TempsDeBan = 600
+
+#
+#    PasseErronees.TypeDeBan
+#        Description: Type de Ban pour les tentatives de connexion non valides.
+#        Défaut:     0 - (Ban IP)
+#                     1 - (Ban Compte)
+
+PasseErronees.TypeDeBan = 0
 
 #
 ###################################################################################################
 
 ###################################################################################################
-# MYSQL SETTINGS
+# REGLAGES MYSQL
 #
-#    LoginDatabaseInfo
-#        Description: Database connection settings for the realm serveur.
-#        Example:     "hostname;port;username;password;database"
-#                     ".;somenumber;username;password;database" - (Use named pipes on Windows
-#                                                                 "enable-named-pipe" to [mysqld]
+#    InfoBaseDeDonneesConnexion
+#        Description: Paramètres de la base de données connexion pour le serveur royaume.
+#        Exemple:     "hôte;port;NomUtilisateur;MotDePasse;BaseDeDonnees"
+#                     ".;nombre;NomUtilisateur;MotDePasse;BaseDeDonnees" - (utiliser des noms de conduites sous Windows
+#                                                                 "activer-nom-conduite" pour [mysqld] dans la
 #                                                                 section my.ini)
-#                     ".;/path/to/unix_socket;username;password;database" - (use Unix sockets on
+#                     ".;/patch/pour/unix_socket;NomUtilisateur;MotDePasse;BaseDeDonnees" - (utiliser sockets Unix sur
 #                                                                           Unix/Linux)
-#        Default:     "127.0.0.1;3306;skyfire;skyfire;auth"
+#        Défaut:     "127.0.0.1;3306;MistyWorld;MistyWorld;authentification"
 
-LoginDatabaseInfo = "127.0.0.1;3306;skyfire;skyfire;auth"
+InfoBaseDeDonneesConnexion = "127.0.0.1;3306;MistyWorld;MistyWorld;authentification"
 
 #
-#    LoginDatabase.WorkerThreads
-#        Description: The amount of worker threads spawned to handle asynchronous (delayed) MySQL
-#                     statements. Each worker thread is mirrored with its own connection to the
-#        Default:     1
+#    BaseDeDonneesConnexion.FilDeProduction
+#        Description: La quantité de fil de production engendré pour traiter (retardées) les déclarations MySQL asynchrones.
+#						       Chaque fil de production est mis en miroir avec sa propre connexion à
+#        Défaut:     1
 
-LoginDatabase.WorkerThreads = 1
+BaseDeDonneesConnexion.FilDeProduction = 1
 
 #
 ###################################################################################################
 
 ###################################################################################################
 #
-#  LOGGING SYSTEM SETTINGS
+#  REGLAGES DU SYSTEME DE JOURNALISATION
 #
-#  Appender config values: Given a appender "name"
-#    Appender.name
-#        Description: Defines 'where to log'
-#        Format:      Type,LogLevel,Flags,optional1,optional2,optional3
+#  Valeurs de configuration de l'attacheur: Donner un "nom" à l'attacheur
+#    Appender.nom
+#        Description: Définit 'où enregistrer'
+#        Format:      Type,NiveauDeLog,Drapeaux,optionnel1,optionnel2,optionnel3
 #
 #                     Type
-#                         0 - (None)
+#                         0 - (Aucun)
 #                         1 - (Console)
-#                         2 - (File)
+#                         2 - (Fichier)
 #                         3 - (DB)
 #
-#                     LogLevel
-#                         0 - (Disabled)
+#                     NiveauDeLog
+#                         0 - (Désactivé)
 #                         1 - (Trace)
 #                         2 - (Debug)
 #                         3 - (Info)
-#                         4 - (Warn)
-#                         5 - (Error)
+#                         4 - (Avertir)
+#                         5 - (Erreur)
 #                         6 - (Fatal)
 #
-#                     Flags:
-#                         0 - None
-#                         1 - Prefix Timestamp to the text
-#                         2 - Prefix Log Level to the text
-#                         4 - Prefix Log Filter type to the text
-#                         8 - Append timestamp to the log file name. Format: YYYY-MM-DD_HH-MM-SS (Only used with Type = 2)
-#                        16 - Make a backup of existing file before overwrite (Only used with Mode = w)
+#                     Drapeaux:
+#                         0 - Aucun
+#                         1 - Préfixe Horodatage au texte
+#                         2 - Préfixe niveau de log au texte
+#                         4 - Préfixe type de filtre de au texte
+#                         8 - Ajouter horodatage au nom du fichier journal. Format: YYYY-MM-DD_HH-MM-SS (Utilisé uniquement avec le type = 2)
+#                        16 -Faire une sauvegarde de fichier existant avant d'écraser (Utilisé uniquement avec le mode = w)
 #
-#                     Colors (read as optional1 if Type = Console)
-#                         Format: "fatal error warn info debug trace"
-#                         0 - BLACK
-#                         1 - RED
-#                         2 - GREEN
-#                         3 - BROWN
-#                         4 - BLUE
+#                     Couleurs (lire comme Optionnel1 si le type = Console)
+#                         Format: "fatale erreur avertir infos débogage trace"
+#                         0 - NOIR
+#                         1 - ROUGE
+#                         2 - VERT
+#                         3 - MARRON
+#                         4 - BLEU
 #                         5 - MAGENTA
 #                         6 - CYAN
-#                         7 - GREY
-#                         8 - YELLOW
-#                         9 - LRED
-#                        10 - LGREEN
-#                        11 - LBLUE
+#                         7 - GRIS
+#                         8 - JAUNE
+#                         9 - LROUGE
+#                        10 - LVERT
+#                        11 - LBLEU
 #                        12 - LMAGENTA
 #                        13 - LCYAN
-#                        14 - WHITE
-#                         Example: "13 11 9 5 3 1"
+#                        14 - BLANC
+#                         Exemple: "13 11 9 5 3 1"
 #
-#                     File: Name of the file (read as optional1 if Type = File)
-#                         Allows to use one "%s" to create dynamic files
+#                     Fichier: Nom du fichier (lire comme Optionnel1 si Type = fichier)
+#                         Permet d'utiliser un "%s" pour créer des fichiers dynamiques
 #
-#                     Mode: Mode to open the file (read as optional2 if Type = File)
-#                          a - (Append)
-#                          w - (Overwrite)
+#                     Mode: Mode pour ouvrir le fichier (lire comme Optionnel2 si Type = fichier)
+#                          a - (annexer)
+#                          w - (Remplacer)
 #
-#                     MaxFileSize: Maximum file size of the log file before creating a new log file
-#                     (read as optional3 if Type = File)
-#                         Size is measured in bytes expressed in a 64-bit unsigned integer.
-#                         Maximum value is 4294967295 (4 gb). Leave blank for no limit.
-#                         NOTE: Does not work with dynamic filenames.
-#                         Example:  536870912 (512 mb)
+#                     MaxFileSize: Taille maximale du fichier journal avant de créer un nouveau fichier journal
+#                     (lire comme optionnel3 si Type = Fichier)
+#                         La taille est mesurée en octets exprimés en un entier non signé 64 bits.
+#                         Valeur maximale est de 4294967295 (4 Go). Laissez ce champ vide pour aucune limite.
+#                         REMARQUE: Ne fonctionne pas avec les noms de fichiers dynamiques.
+#                         Exemple:  536870912 (512 mb)
 #
 
 Appender.Console=1,2,0
 Appender.Auth=2,2,0,Auth.log,w
 
-#  Logger config values: Given a logger "name"
-#    Logger.name
-#        Description: Defines 'What to log'
-#        Format:      LogLevel,AppenderList
+#  Valeurs de configuration de l'enregistreur: Donner un "nom" à l'enregistreur
+#    Logger.nom
+#        Description: Définit 'Ce qu'il faut enregistrer'
+#        Format:      NiveauDeLog,ListeAAttacher
 #
-#                     LogLevel
-#                         0 - (Disabled)
+#                     NiveauDeLog
+#                         0 - (Désactivé)
 #                         1 - (Trace)
 #                         2 - (Debug)
 #                         3 - (Info)
-#                         4 - (Warn)
-#                         5 - (Error)
+#                         4 - (Avertir)
+#                         5 - (Erreur)
 #                         6 - (Fatal)
 #
-#                     AppenderList: List of appenders linked to logger
-#                     (Using spaces as separator).
+#                     ListeAAttacher: Liste des attache liés à l'historique
+#                     (Utiliser des espaces comme séparateur).
 #
 
 Logger.root=3,Console Auth

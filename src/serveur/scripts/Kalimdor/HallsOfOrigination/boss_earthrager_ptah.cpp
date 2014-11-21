@@ -1,6 +1,6 @@
 /*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+
  * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
  * Copyright (C) 2006-2014 ScriptDev2 <https://github.com/scriptdev2/scriptdev2/>
  *
@@ -164,7 +164,7 @@ public:
                 GetCreatureListWithEntryInGrid(stalkers, me, NPC_BEETLE_STALKER, 100.0f);
                 std::list<Creature*> beetlers = stalkers;
 
-                Trinity::Containers::RandomResizeList(beetlers, 9); // Holds the summoners of Jeweled Scarab
+                TRINITY::Containers::RandomResizeList(beetlers, 9); // Holds the summoners of Jeweled Scarab
 
                 for (std::list<Creature*>::iterator itr = beetlers.begin(); itr != beetlers.end(); ++itr)
                 {
@@ -174,7 +174,7 @@ public:
                     (*itr)->m_Events.AddEvent(new SummonScarab((*itr), instance), (*itr)->m_Events.CalculateTime(5000));
                 }
 
-                Trinity::Containers::RandomResizeList(stalkers, 2); // Holds the summoners of Dustbone Horror
+                TRINITY::Containers::RandomResizeList(stalkers, 2); // Holds the summoners of Dustbone Horror
 
                 for (std::list<Creature*>::iterator itr = stalkers.begin(); itr != stalkers.end(); ++itr)
                     (*itr)->CastSpell((*itr), SPELL_SUMMON_DUSTBONE_HORROR);
@@ -286,7 +286,7 @@ class spell_earthrager_ptah_flame_bolt : public SpellScriptLoader
 
             void FilterTargets(std::list<WorldObject*>& targets)
             {
-                Trinity::Containers::RandomResizeList(targets, GetCaster()->GetMap()->IsHeroic() ? 3 : 2);
+                TRINITY::Containers::RandomResizeList(targets, GetCaster()->GetMap()->IsHeroic() ? 3 : 2);
             }
 
             void Register() OVERRIDE

@@ -1,6 +1,6 @@
 /*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+
  * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
  * Copyright (C) 2006-2014 ScriptDev2 <https://github.com/scriptdev2/scriptdev2/>
  *
@@ -186,9 +186,9 @@ class boss_mandokir : public CreatureScript
                     {
                         std::list<Creature*> creatures;
                         GetCreatureListWithEntryInGrid(creatures, me, NPC_CHAINED_SPIRIT, 200.0f);
-                        creatures.remove_if(Trinity::AnyDeadUnitCheck());
-                        creatures.remove_if(Trinity::UnitAuraCheck(true, SPELL_OHGAN_ORDERS_TRIGGER));
-                        Trinity::Containers::RandomResizeList(creatures, 1);
+                        creatures.remove_if(TRINITY::AnyDeadUnitCheck());
+                        creatures.remove_if(TRINITY::UnitAuraCheck(true, SPELL_OHGAN_ORDERS_TRIGGER));
+                        TRINITY::Containers::RandomResizeList(creatures, 1);
                         if (creatures.empty())
                             return;
 
@@ -444,7 +444,7 @@ class spell_mandokir_decapitate : public SpellScriptLoader
                 if (targets.empty())
                     return;
 
-                WorldObject* target = Trinity::Containers::SelectRandomContainerElement(targets);
+                WorldObject* target = TRINITY::Containers::SelectRandomContainerElement(targets);
                 targets.clear();
                 targets.push_back(target);
             }
@@ -575,7 +575,7 @@ class spell_mandokir_devastating_slam : public SpellScriptLoader
                 if (targets.empty())
                     return;
 
-                WorldObject* target = Trinity::Containers::SelectRandomContainerElement(targets);
+                WorldObject* target = TRINITY::Containers::SelectRandomContainerElement(targets);
                 targets.clear();
                 targets.push_back(target);
             }
@@ -632,7 +632,7 @@ class spell_mandokir_ohgan_orders : public SpellScriptLoader
                 if (targets.empty())
                     return;
 
-                WorldObject* target = Trinity::Containers::SelectRandomContainerElement(targets);
+                WorldObject* target = TRINITY::Containers::SelectRandomContainerElement(targets);
                 targets.clear();
                 targets.push_back(target);
             }

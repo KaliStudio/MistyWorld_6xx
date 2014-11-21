@@ -1,6 +1,6 @@
 /*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+
  * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
  * Copyright (C) 2006-2014 ScriptDev2 <https://github.com/scriptdev2/scriptdev2/>
  *
@@ -218,14 +218,14 @@ class boss_festergut : public CreatureScript
                                 if (melee.empty())
                                     break;
 
-                                Unit* target = Trinity::Containers::SelectRandomContainerElement(melee);
+                                Unit* target = TRINITY::Containers::SelectRandomContainerElement(melee);
                                 ranged.push_back(target);
                                 melee.remove(target);
                             }
 
                             if (!ranged.empty())
                             {
-                                Trinity::Containers::RandomResizeList(ranged, RAID_MODE<uint32>(1, 3, 1, 3));
+                                TRINITY::Containers::RandomResizeList(ranged, RAID_MODE<uint32>(1, 3, 1, 3));
                                 for (std::list<Unit*>::iterator itr = ranged.begin(); itr != ranged.end(); ++itr)
                                     DoCast(*itr, SPELL_VILE_GAS);
                             }

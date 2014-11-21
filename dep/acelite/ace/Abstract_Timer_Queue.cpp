@@ -12,9 +12,9 @@
 
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 
-// Even though the destructor is pure virtual you must provide an
-// implementation.  Most people know this, but sometimes we all
-// forget, and we might be tempted to remove this code.
+// Même si le destructeur est pur virtuel vous devez fournir une
+// mise en oeuvre. La plupart des gens le savent, mais parfois nous avons tous
+// oublier, et nous pourrions être tentés de supprimer ce code.
 template<typename TYPE>
 ACE_Abstract_Timer_Queue<TYPE>::
 ~ACE_Abstract_Timer_Queue ()

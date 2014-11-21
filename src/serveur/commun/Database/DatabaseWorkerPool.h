@@ -40,8 +40,8 @@ class DatabaseWorkerPool
             memset(_connectionCount, 0, sizeof(_connectionCount));
             _connections.resize(IDX_SIZE);
 
-            WPFatal(mysql_thread_safe(), "La bibliothèque MySQL utilisée n'est pas sécurisée.");
-            WPFatal(mysql_get_client_version() >= MIN_MYSQL_CLIENT_VERSION, "MistyWorld ne prend pas en charge les versions de MySQL inférieur à 5.1");
+            WPFatal(mysql_thread_safe(), "La bibliothÃ¨que MySQL utilisÃ©e n'est pas sÃ©curisÃ©e.");
+            WPFatal(mysql_get_client_version() >= MIN_MYSQL_CLIENT_VERSION, "MistyWorld ne prend pas en charge les versions de MySQL infÃ©rieur Ã  5.1");
         }
 
         ~DatabaseWorkerPool()
@@ -53,7 +53,7 @@ class DatabaseWorkerPool
             bool res = true;
             _connectionInfo = MySQLConnectionInfo(infoString);
 
-            TC_LOG_INFO("sql.driver", "Ouverture de la base de données externe '%s'. Connexions asynchrones: %u, Connexions synchrones: %u.",
+            TC_LOG_INFO("sql.driver", "Ouverture de la base de donnÃ©es externe '%s'. Connexions asynchrones: %u, Connexions synchrones: %u.",
                 GetDatabaseName(), async_threads, synch_threads);
 
             //! Open asynchronous connections (delayed operations)
@@ -63,7 +63,7 @@ class DatabaseWorkerPool
                 T* t = new T(_queue, _connectionInfo);
                 res &= t->Open();
                 if (res) // only check mysql version if connection is valid
-                    WPFatal(mysql_get_serveur_version(t->GetHandle()) >= MIN_MYSQL_SERVER_VERSION, "MistyWorld ne prend pas en charge les versions de MySQL inférieur à 5.1");
+                    WPFatal(mysql_get_serveur_version(t->GetHandle()) >= MIN_MYSQL_SERVER_VERSION, "MistyWorld ne prend pas en charge les versions de MySQL infÃ©rieur Ã  5.1");
                 _connections[IDX_ASYNC][i] = t;
                 ++_connectionCount[IDX_ASYNC];
             }
@@ -79,17 +79,17 @@ class DatabaseWorkerPool
             }
 
             if (res)
-                TC_LOG_INFO("sql.driver", "La base de données externe '%s' ouverte avec succès. %u connexions en cours d'exécution.", GetDatabaseName(),
+                TC_LOG_INFO("sql.driver", "La base de donnÃ©es externe '%s' ouverte avec succÃ¨s. %u connexions en cours d'exÃ©cution.", GetDatabaseName(),
                     (_connectionCount[IDX_SYNCH] + _connectionCount[IDX_ASYNC]));
             else
-                TC_LOG_ERROR("sql.driver", "La base de données externe %s NON ouverte. Il y avait des erreurs d'ouverture aux connexions MySQL. Vérifiez votre SQLDriverLogFile "
+                TC_LOG_ERROR("sql.driver", "La base de donnÃ©es externe %s NON ouverte. Il y avait des erreurs d'ouverture aux connexions MySQL. VÃ©rifiez votre SQLDriverLogFile "
                     "for specific errors.", GetDatabaseName());
             return res;
         }
 
         void Close()
         {
-            TC_LOG_INFO("sql.driver", "Fermeture de la base de données extérieure '%s'.", GetDatabaseName());
+            TC_LOG_INFO("sql.driver", "Fermeture de la base de donnÃ©es extÃ©rieure '%s'.", GetDatabaseName());
 
             //! Shuts down delaythreads for this connection pool by underlying deactivate().
             //! The next dequeue attempt in the worker thread tasks will result in an error,
@@ -105,7 +105,7 @@ class DatabaseWorkerPool
                 t->Close();         //! Closes the actualy MySQL connection.
             }
 
-            TC_LOG_INFO("sql.driver", "Connexions asynchrones sur les base de données externe  '%s' terminées. Procéder à des connexions synchrones.",
+            TC_LOG_INFO("sql.driver", "Connexions asynchrones sur les base de donnÃ©es externe  '%s' terminÃ©es. ProcÃ©der Ã  des connexions synchrones.",
                 GetDatabaseName());
 
             //! Shut down the synchronous connections
@@ -118,7 +118,7 @@ class DatabaseWorkerPool
             //! Deletes the ACE_Activation_Queue object and its underlying ACE_Message_Queue
             delete _queue;
 
-            TC_LOG_INFO("sql.driver", "Toutes les connexions à la base de données externe '%s' fermé.", GetDatabaseName());
+            TC_LOG_INFO("sql.driver", "Toutes les connexions Ã  la base de donnÃ©es externe '%s' fermÃ©.", GetDatabaseName());
         }
 
         /**

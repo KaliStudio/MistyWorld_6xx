@@ -1,6 +1,6 @@
 /*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+
  * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
  * Copyright (C) 2006-2014 ScriptDev2 <https://github.com/scriptdev2/scriptdev2/>
  *
@@ -146,7 +146,7 @@ class boss_emalon : public CreatureScript
                         case EVENT_OVERCHARGE:
                             if (!summons.empty())
                             {
-                                Creature* minion = Unit::GetCreature(*me, Trinity::Containers::SelectRandomContainerElement(summons));
+                                Creature* minion = Unit::GetCreature(*me, TRINITY::Containers::SelectRandomContainerElement(summons));
                                 if (minion && minion->IsAlive())
                                 {
                                     minion->CastSpell(me, SPELL_OVERCHARGED, true);

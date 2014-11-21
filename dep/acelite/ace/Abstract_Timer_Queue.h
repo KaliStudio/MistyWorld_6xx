@@ -4,63 +4,45 @@
 #define ACE_ABSTRACT_TIMER_QUEUE_H
 
 #include /**/ "ace/pre.h"
-/**
- * @file Abstract_Timer_Queue.h
- *
- * @author Carlos O'Ryan <coryan@atdesk.com>
- *
- * Based on classes and files developed by Doug Schmidt, Darrell
- * Brunsch, Irfan Pyarali and a cast of thousands.
- */
+
 
 ACE_BEGIN_VERSIONED_NAMESPACE_DECL
 
-// Forward declares
+// avant déclarée
 class ACE_Time_Value;
 class ACE_Command_Base;
 template<typename TYPE> class ACE_Timer_Queue_Iterator_T;
 template<typename TYPE> class ACE_Timer_Node_T;
 
-/**
- * @class ACE_Abstract_Timer_Queue
- *
- * @brief Base class for all timer queues of a single type.
- *
- * This is a base class for all the timer queues, regardless of
- * locking strategy, upcall mechanism, internal implementation, etc.
- * The class was motivated by bug 3706:
- *    http://bugzilla.dre.vanderbilt.edu/show_bug.cgi?id=3706
- * In short, the Reactor (and potentially other classes) want to refer
- * to timer queues regardless of the implementation internals.
- */
+
 template<typename TYPE>
 class ACE_Abstract_Timer_Queue
 {
 public:
-  /// Destructor
+  /// Destructeur
   virtual ~ACE_Abstract_Timer_Queue (void) = 0;
 
-  /// True if queue is empty, else false.
+  /// True si la file d'attente est vide, sinon false.
   virtual bool is_empty (void) const = 0;
 
-  /// Returns the time of the earlier node in the Timer_Queue.  Must
-  /// be called on a non-empty queue.
+  /// Renvoie l'heure du nœud plus tôt dans la file d'attente minuterie. il faut
+  /// être appelé sur une file d'attente non vide.
   virtual const ACE_Time_Value &earliest_time (void) const = 0;
 
   /**
-   * Schedule @a type that will expire at @a future_time, which is
-   * specified in absolute time.  If it expires then @a act is passed
-   * in as the value to the <functor>.  If @a interval is != to
-   * ACE_Time_Value::zero then it is used to reschedule the @a type
-   * automatically, using relative time to the current <gettimeofday>.
-   * This method returns a <timer_id> that uniquely identifies the the
-   * @a type entry in an internal list.  This <timer_id> can be used to
-   * cancel the timer before it expires.  The cancellation ensures
-   * that <timer_ids> are unique up to values of greater than 2
-   * billion timers.  As long as timers don't stay around longer than
-   * this there should be no problems with accidentally deleting the
-   * wrong timer.  Returns -1 on failure (which is guaranteed never to
-   * be a valid <timer_id>).
+   * Le calendrier est @a un type qui expirera à @a future_time, qui est
+   * spécifiée en temps absolu. S'il expire alors @a une loi est adoptée
+   * en tant que valeur à <functor>.  Si @a un intervalle est != à
+   * ACE_Time_Value::zero alors il est utilisé pour reporter @a type
+   * automatiquement, en utilisant le temps par rapport au courant <gettimeofday>.
+   * Cette méthode renvoie une <timer_id> qui identifie de façon unique le
+   * @a type entrée dans une liste interne.  Ce <timer_id> peut être utilisé pour
+   * annuler la minuterie avant son expiration. L'annulation assure
+   * le <timer_ids> sont uniques jusqu'à des valeurs supérieures à 2
+   * milliard de minuteries.  Tant que des minuteries ne restent pas plus longtemps que
+   * cela, il devrait y avoir aucun problème avec la suppression accidentelle de la
+   * minuterie erroné.  Retourne -1 en cas d'échec (qui est garanti de ne jamais
+   * être valable <timer_id>).
    */
   virtual long schedule (const TYPE &type,
                          const void *act,
@@ -68,20 +50,20 @@ public:
                          const ACE_Time_Value &interval = ACE_Time_Value::zero) = 0;
 
   /**
-   * Run the <functor> for all timers whose values are <= @a current_time.
-   * This does not account for <timer_skew>.  Returns the number of
-   * timers canceled.
+   * Exécutez le <functor> pour tous les compteurs dont les valeurs sont <= @a current_time.
+   * Cela ne tient pas compte de <timer_skew>. Retourne le nombre de
+   * minuteries annulés.
    */
   virtual int expire (const ACE_Time_Value &current_time) = 0;
 
   /**
-   * Run the <functor> for all timers whose values are <=
-   * <ACE_OS::gettimeofday>.  Also accounts for <timer_skew>.
+   * Exécutez le <functor> pour tous les compteurs dont les valeurs sont <=
+   * <ACE_OS::gettimeofday>.  Représente également <timer_skew>.
    *
-   * Depending on the resolution of the underlying OS the system calls
-   * like select()/poll() might return at time different than that is
-   * specified in the timeout. Suppose the OS guarantees a resolution of t ms.
-   * The timeline will look like
+   * Selon la résolution de l'OS sous-jacent les appels système
+   * comme  select()/poll() pourrait revenir au heure différente de qui est
+   * spécifiée dans le délai. Supposons que le système d'exploitation garantit une résolution de t ms.
+   * Le calendrier va ressembler
    *
    *             A                   B
    *             |                   |
@@ -90,129 +72,129 @@ public:
    *  t             t             t             t             t
    *
    *
-   * If you specify a timeout value of A, then the timeout will not occur
-   * at A but at the next interval of the timer, which is later than
-   * that is expected. Similarly, if your timeout value is equal to B,
-   * then the timeout will occur at interval after B. Now depending upon the
-   * resolution of your timeouts and the accuracy of the timeouts
-   * needed for your application, you should set the value of
-   * <timer_skew>. In the above case, if you want the timeout A to fire
-   * no later than A, then you should specify your <timer_skew> to be
+   * Si vous spécifiez une valeur de délai d'attente de A, le délai d'attente ne se produira pas
+   * à A, mais à l'intervalle suivant de la minuterie, qui est plus tard que
+   * que l'on attend. De même, si votre valeur d'expiration est égal à B,
+   * alors le délai aura lieu à intervalle après B. Maintenant en fonction de la
+   * résolution de vos délais d'attente et la précision des délais d'attente
+   * nécessaire pour votre application, vous devez définir la valeur de
+   * <timer_skew>. Dans le cas ci-dessus, si vous voulez que le délai d'attente de A à feu
+   * au plus tard A, alors vous devriez spécifier votre <timer_skew> comme
    * A % t.
    *
-   * The timeout value should be specified via the macro ACE_TIMER_SKEW
-   * in your config.h file. The default value is zero.
+   * La valeur de temporisation doit être spécifiée par la macro ACE_TIMER_SKEW
+   * dans votre fichier config.h. La valeur par défaut est zéro.
    *
-   * Things get interesting if the t before the timeout value B is zero
-   * i.e your timeout is less than the interval. In that case, you are
-   * almost sure of not getting the desired timeout behaviour. Maybe you
-   * should look for a better OS :-)
+   * Les choses deviennent intéressantes si le t avant que la valeur du délai d'attente B soit à zéro
+   * Soit votre délai est inférieur à l'intervalle. Dans ce cas, vous êtes
+   * presque sûr de ne pas avoir le comportement d'attente souhaité. peut-être que vous
+   * devrait trouver un meilleur système d'exploitation :-)
    *
-   *  Returns the number of timers canceled.
+   *  Retourne le nombre de minuteries annulé.
    */
   virtual int expire (void) = 0;
 
   /**
-   * A couple of classes using Timer_Queues need to dispatch a single
-   * event at a time.  But before they dispatch the event they need to
-   * release a lock, signal other threads, etc.
+   * Un couple de classes en utilisant Timer_Queues a besoin d'envoyer un seul
+   * événement à la fois. Mais avant de distribuer l'événement dont ils ont besoin pour
+   * relâche un verrou, signaler d'autres fils, etc
    *
-   * This member function should be used in that case.  The additional
-   * operations to be called just before dispatching the event, and
-   * only if an event will be dispatched, are encapsulated in the
-   * ACE_Command_Base object.
+   * Cette fonction de membre doit être utilisé dans ce cas. Les opérations supplémentaires
+   * doivent être appelés juste avant l'envoi de l'événement, et
+   * seulement si un événement est envoyé, et encapsulé dans l'objet
+   * ACE_Command_Base.
    */
   virtual int expire_single(ACE_Command_Base & pre_dispatch_command) = 0;
 
   /**
-   * Resets the interval of the timer represented by @a timer_id to
-   * @a interval, which is specified in relative time to the current
-   * <gettimeofday>.  If @a interval is equal to
-   * ACE_Time_Value::zero, the timer will become a non-rescheduling
-   * timer.  Returns 0 if successful, -1 if not.
+   * Remet l'intervalle de la minuterie représenté par @a timer_id à 
+   * @a intervalle, qui est spécifié dans le temps par rapport au courant 
+   * <gettimeofday>.  Si @a l'intervalle est égal à 
+   * ACE_Time_Value::zero, la minuterie sera une minuterie non rééchelonnement.
+   * Renvoie 0 en cas de succès, -1 sinon.
    */
   virtual int reset_interval (long timer_id,
                               const ACE_Time_Value &interval) = 0;
 
   /**
-   * Cancel all timer associated with @a type.  If
-   * @a dont_call_handle_close is 0 then the <functor> will be invoked,
-   * which typically invokes the <handle_close> hook.  Returns number
-   * of timers cancelled.
+   * Annuler tous minuterie associée à un type @a. Si
+   * @a dont_call_handle_close est 0, alors le <functor> sera invoqué,
+   * qui invoque généralement le crochet de <handle_close>. Retourne le nombre
+   * de minuteries annulés.
    */
   virtual int cancel (const TYPE &type,
                       int dont_call_handle_close = 1) = 0;
 
   /**
-   * Cancel the single timer that matches the @a timer_id value (which
-   * was returned from the <schedule> method).  If act is non-NULL
-   * then it will be set to point to the ``magic cookie'' argument
-   * passed in when the timer was registered.  This makes it possible
-   * to free up the memory and avoid memory leaks.  If
-   * @a dont_call_handle_close is 0 then the <functor> will be invoked,
-   * which typically calls the <handle_close> hook.  Returns 1 if
-   * cancellation succeeded and 0 if the @a timer_id wasn't found.
+  * Annuler la minuterie unique qui correspond à la valeur de @a timer_id (qui
+  * a été renvoyée par la méthode de <schedule>). Si acte est non-NULL
+  * Il sera mis au point à l'argument `` magic cookie''
+  * Passé lorsque la minuterie a été enregistrée. Il est ainsi possible
+  * Pour libérer de la mémoire et éviter les fuites de mémoire. si
+  * @a Une dont_call_handle_close est 0, alors le <functor> sera invoqué,
+  * Qui appelle généralement le crochet de <handle_close>. Retourne 1 si
+  * Annulation réussie et à 0 si le @a un timer_id n'a pas été trouvé.
    */
   virtual int cancel (long timer_id,
                       const void **act = 0,
                       int dont_call_handle_close = 1) = 0;
 
   /**
-   * Close timer queue. Cancels all timers.
+   * Fermer la minuterie file d'attente. Annule tous les compteurs.
    */
   virtual int close (void) = 0;
 
   /**
-   * Returns the current time of day.  This method allows different
-   * implementations of the timer queue to use special high resolution
-   * timers.
+  * Renvoie l'heure actuelle de la journée. Cette méthode permet à différents
+  * implémentations de la file d'attente de minuterie à utiliser une haute résolution spéciale
+  * Minuteries.
    */
   virtual ACE_Time_Value gettimeofday (void) = 0;
 
   /**
-   * Allows applications to control how the timer queue gets the time
-   * of day.
-   * @deprecated Use TIME_POLICY support instead. See Timer_Queue_T.h
+  * Permet aux applications de contrôler la façon dont la file d'attente de minuterie obtient le temps
+  * De la journée.
+  * @ Deprecated Utilisez support TIME_POLICY place. voir Timer_Queue_T.h
    */
   virtual void gettimeofday (ACE_Time_Value (*gettimeofday)(void)) = 0;
 
-  /// Determine the next event to timeout.  Returns @a max if there are
-  /// no pending timers or if all pending timers are longer than max.
-  /// This method acquires a lock internally since it modifies internal state.
+  /// Déterminer le prochain événement de dépassement du délai.Retours @a max s'il existe 
+  /// Pas de chronomètre en suspens ou si tous les compteurs en attente sont plus longs que max.
+  /// Cette méthode pose un verrou interne car il modifie l'état interne.
   virtual ACE_Time_Value *calculate_timeout (ACE_Time_Value *max) = 0;
 
   /**
-   * Determine the next event to timeout.  Returns @a max if there are
-   * no pending timers or if all pending timers are longer than max.
-   * <the_timeout> should be a pointer to storage for the timeout value,
-   * and this value is also returned.  This method does not acquire a
-   * lock internally since it doesn't modify internal state.  If you
-   * need to call this method when the queue is being modified
-   * concurrently, however, you should make sure to acquire the <mutex()>
-   * externally before making the call.
+  * Déterminer le prochain événement de dépassement du délai. Retours @a max s'il existe
+  * Pas de chronomètres en suspens ou si tous les compteurs en attente sont plus longs que max.
+  * <the_timeout> Doit être un pointeur vers le stockage de la valeur de délai d'attente,
+  * Et cette valeur est également renvoyée. Cette méthode ne fait pas l'acquisition d'un
+  * Verrou en interne car il ne modifie pas l'état interne. Si vous avez
+  * Besoin d'appeler cette méthode lorsque la file d'attente est en cours de modification
+  * En même temps, cependant, vous devez vous assurer d'acquérir la <mutex()>
+  * À l'extérieur avant de faire l'appel.
    */
   virtual ACE_Time_Value *calculate_timeout (ACE_Time_Value *max,
                                              ACE_Time_Value *the_timeout) = 0;
 
   /**
-   * Return the current time, using the right time policy and any
-   * timer skew defined in derived classes.
+  * Retour l'heure actuelle, en utilisant la politique de moment opportun et tout
+  * Minuterie obliquité défini dans les classes dérivées.
    */
   virtual ACE_Time_Value current_time() = 0;
 
-  /// Type of Iterator.
+  /// Type de itérateur.
   typedef ACE_Timer_Queue_Iterator_T<TYPE> ITERATOR;
 
-  /// Returns a pointer to this ACE_Timer_Queue's iterator.
+  /// Renvoie un pointeur sur l'itérateur de ACE_Timer_Queue.
   virtual ITERATOR & iter (void) = 0;
 
-  /// Removes the earliest node from the queue and returns it
+  /// Supprime le premier noeud de la file d'attente et le renvoie
   virtual ACE_Timer_Node_T<TYPE> *remove_first (void) = 0;
 
-  /// Reads the earliest node from the queue and returns it.
+  /// Lit le premier nœud de la file d'attente et le renvoie.
   virtual ACE_Timer_Node_T<TYPE> *get_first (void) = 0;
 
-  /// Dump the state of a object.
+  /// Vider l'état ​​d'un objet.
   virtual void dump (void) const = 0;
 };
 

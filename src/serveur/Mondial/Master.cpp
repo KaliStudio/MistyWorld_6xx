@@ -1,25 +1,3 @@
-/*
-
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation; either version 3 of the License, or (at your
- * option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program. If not, see <http://www.gnu.org/licenses/>.
- */
-
-/** \file
-    \ingroup Trinityd
-*/
 
 #include <ace/Sig_Handler.h>
 
@@ -59,7 +37,7 @@ extern int m_ServiceStatus;
 #endif
 
 /// Handle Mondials's termination signals
-class WorldServerSignalHandler : public Trinity::SignalHandler
+class MondialSignalHandler : public TRINITY::SignalHandler
 {
     public:
         virtual void HandleSignal(int sigNum)
@@ -96,7 +74,7 @@ public:
         if (!_delaytime)
             return;
 
-        TC_LOG_INFO("serveur.Mondial", "Starting up anti-freeze thread (%u seconds max stuck time)...", _delaytime/1000);
+        TC_LOG_INFO("server.Mondial", "Démarrage du fil anti-freeze (%u secondes max de temps bloqué)...", _delaytime/1000);
         _loops = 0;
         _lastChange = 0;
         while (!World::IsStopped())
@@ -113,11 +91,11 @@ public:
             // possible freeze
             else if (getMSTimeDiff(_lastChange, curtime) > _delaytime)
             {
-                TC_LOG_ERROR("serveur.Mondial", "World Thread hangs, kicking out serveur!");
+                TC_LOG_ERROR("server.Mondial", "Sujet mondiale se bloque, déportant les serveur!");
                 ASSERT(false);
             }
         }
-        TC_LOG_INFO("serveur.Mondial", "Anti-freeze thread exiting without problems.");
+        TC_LOG_INFO("server.Mondial", "Fil Anti-freeze sortie sans problèmes.");
     }
 };
 
@@ -128,16 +106,16 @@ int Master::Run()
     BigNumber seed1;
     seed1.SetRand(16 * 8);
 
-    TC_LOG_INFO("serveur.Mondial", "%s (Mondial-daemon)", _FULLVERSION);
-    TC_LOG_INFO("serveur.Mondial", "<Ctrl-C> to stop.\n");
+	TC_LOG_INFO("server.Mondial", "%s (Mondial-daemon)", _FULLVERSION);
+	TC_LOG_INFO("server.Mondial", "<Ctrl-C> to stop.\n");
 
-	TC_LOG_INFO("serveur.Mondial", " _____ _     _            _ _ _         _   _");
-	TC_LOG_INFO("serveur.Mondial", "|     |_|___| |_ _ _     | | | |___ _ _| |_| |");
-	TC_LOG_INFO("serveur.Mondial", "| | | | |_ -|  _| | |    | | | | . | '_| | . |");
-	TC_LOG_INFO("serveur.Mondial", "|_|_|_|_|___|_| |_  |    |_____|___|_| |_|___|");
-	TC_LOG_INFO("serveur.Mondial", "          	 |___|                         ");
-	TC_LOG_INFO("serveur.Mondial", "Projet Misty World 2014(c) Emulateur WoW");
-	TC_LOG_INFO("serveur.Mondial", "<http://misty-world.site88.net/> \n");
+	TC_LOG_INFO("server.Mondial", " _____ _     _            _ _ _         _   _");
+	TC_LOG_INFO("server.Mondial", "|     |_|___| |_ _ _     | | | |___ _ _| |_| |");
+	TC_LOG_INFO("server.Mondial", "| | | | |_ -|  _| | |    | | | | . | '_| | . |");
+	TC_LOG_INFO("server.Mondial", "|_|_|_|_|___|_| |_  |    |_____|___|_| |_|___|");
+	TC_LOG_INFO("server.Mondial", "          	|___|                         ");
+	TC_LOG_INFO("server.Mondial", "Projet Misty World 2014(c) Emulateur WoW");
+	TC_LOG_INFO("server.Mondial", "<http://misty-world.site88.net/> \n");
 
 
     /// Mondial PID file creation
@@ -145,10 +123,10 @@ int Master::Run()
     if (!pidFile.empty())
     {
         if (uint32 pid = CreatePIDFile(pidFile))
-            TC_LOG_INFO("serveur.Mondial", "Daemon PID: %u\n", pid);
+            TC_LOG_INFO("server.Mondial", "Daemon PID: %u\n", pid);
         else
         {
-            TC_LOG_ERROR("serveur.Mondial", "Cannot create PID file %s.\n", pidFile.c_str());
+            TC_LOG_ERROR("server.Mondial", "Vous ne pouvez pas créer de fichier PID %s.\n", pidFile.c_str());
             return 1;
         }
     }
@@ -157,16 +135,16 @@ int Master::Run()
     if (!_StartDB())
         return 1;
 
-    // set serveur offline (not connectable)
+    // set server offline (not connectable)
     LoginDatabase.DirectPExecute("UPDATE realmlist SET flag = (flag & ~%u) | %u WHERE id = '%d'", REALM_FLAG_OFFLINE, REALM_FLAG_INVALID, realmID);
 
     ///- Initialize the World
     sWorld->SetInitialWorldSettings();
 
     ///- Initialize the signal handlers
-    WorldServerSignalHandler signalINT, signalTERM;
+    MondialSignalHandler signalINT, signalTERM;
     #ifdef _WIN32
-    WorldServerSignalHandler signalBREAK;
+    MondialSignalHandler signalBREAK;
     #endif /* _WIN32 */
 
     ///- Register Mondial's signal handlers
@@ -213,20 +191,20 @@ int Master::Run()
                 ULONG_PTR currentAffinity = affinity & appAff;            // remove non accessible processors
 
                 if (!currentAffinity)
-                    TC_LOG_ERROR("serveur.Mondial", "Processors marked in UseProcessors bitmask (hex) %x are not accessible for the Mondial. Accessible processors bitmask (hex): %x", affinity, appAff);
+                    TC_LOG_ERROR("server.Mondial", "Processeurs marqués comme utilisant des processeurs masque de bits (hex) %x ne sont pas accessibles pour le Mondial. Processeurs accessible masque de bits (hex): %x", affinity, appAff);
                 else if (SetProcessAffinityMask(hProcess, currentAffinity))
-                    TC_LOG_INFO("serveur.Mondial", "Using processors (bitmask, hex): %x", currentAffinity);
+                    TC_LOG_INFO("server.Mondial", "Utilisation des processeurs (bitmask, hex): %x", currentAffinity);
                 else
-                    TC_LOG_ERROR("serveur.Mondial", "Can't set used processors (hex): %x", currentAffinity);
+                    TC_LOG_ERROR("server.Mondial", "Impossible de définir les processeurs utilisés (hex): %x", currentAffinity);
             }
         }
 
         if (highPriority)
         {
             if (SetPriorityClass(hProcess, HIGH_PRIORITY_CLASS))
-                TC_LOG_INFO("serveur.Mondial", "Mondial process priority class set to HIGH");
+                TC_LOG_INFO("server.Mondial", "Niveau de priorité du processus mondial passe en niveau HAUT");
             else
-                TC_LOG_ERROR("serveur.Mondial", "Can't set Mondial process priority class.");
+                TC_LOG_ERROR("server.Mondial", "Impossible de définir le niveau de priorité du processus Mondial .");
         }
     }
 #elif __linux__ // Linux
@@ -241,21 +219,21 @@ int Master::Run()
                 CPU_SET(i, &mask);
 
         if (sched_setaffinity(0, sizeof(mask), &mask))
-            TC_LOG_ERROR("serveur.Mondial", "Can't set used processors (hex): %x, error: %s", affinity, strerror(errno));
+			TC_LOG_ERROR("server.Mondial", "Vous ne pouvez pas définir le processeurs utilisés (hex):%x, erreur:%s", affinity, strerror(errno));
         else
         {
             CPU_ZERO(&mask);
             sched_getaffinity(0, sizeof(mask), &mask);
-            TC_LOG_INFO("serveur.Mondial", "Using processors (bitmask, hex): %x", *(uint32*)(&mask));
+            TC_LOG_INFO("server.Mondial", "Utilisation des processeurs (bitmask, hex): %x", *(uint32*)(&mask));
         }
     }
 
     if (highPriority)
     {
         if (setpriority(PRIO_PROCESS, 0, PROCESS_HIGH_PRIORITY))
-            TC_LOG_ERROR("serveur.Mondial", "Can't set Mondial process priority class, error: %s", strerror(errno));
+            TC_LOG_ERROR("server.Mondial", "Impossible de définir le niveau de priorité du processus Mondial, erreur: %s", strerror(errno));
         else
-            TC_LOG_INFO("serveur.Mondial", "Mondial process priority class set to %i", getpriority(PRIO_PROCESS, 0));
+            TC_LOG_INFO("server.Mondial", "Niveau de priorité du processus Mondial définie à %i", getpriority(PRIO_PROCESS, 0));
     }
 
 #endif
@@ -285,15 +263,15 @@ int Master::Run()
 
     if (sWorldSocketMgr->StartNetwork(worldPort, bindIp.c_str()) == -1)
     {
-        TC_LOG_ERROR("serveur.Mondial", "Failed to start network");
+        TC_LOG_ERROR("server.Mondial", "Impossible de démarrer le réseau");
         World::StopNow(ERROR_EXIT_CODE);
-        // go down and shutdown the serveur
+        // go down and shutdown the server
     }
 
-    // set serveur online (allow connecting now)
+    // set server online (allow connecting now)
     LoginDatabase.DirectPExecute("UPDATE realmlist SET flag = flag & ~%u, population = 0 WHERE id = '%u'", REALM_FLAG_INVALID, realmID);
 
-    TC_LOG_INFO("serveur.Mondial", "%s (Mondial-daemon) ready...", _FULLVERSION);
+    TC_LOG_INFO("server.Mondial", "%s (Mondial-daemon) prêt...", _FULLVERSION);
 
     // when the main thread closes the singletons get unloaded
     // since worldrunnable uses them, it will crash if unloaded after master
@@ -307,7 +285,7 @@ int Master::Run()
         delete soapThread;
     }
 
-    // set serveur offline
+    // set server offline
     LoginDatabase.DirectPExecute("UPDATE realmlist SET flag = flag | %u WHERE id = '%d'", REALM_FLAG_OFFLINE, realmID);
 
     ///- Clean database before leaving
@@ -315,7 +293,7 @@ int Master::Run()
 
     _StopDB();
 
-    TC_LOG_INFO("serveur.Mondial", "Halting process...");
+    TC_LOG_INFO("server.Mondial", "Arrêt du processus...");
 
     if (cliThread)
     {
@@ -387,15 +365,15 @@ bool Master::_StartDB()
     dbString = sConfigMgr->GetStringDefault("WorldDatabaseInfo", "");
     if (dbString.empty())
     {
-        TC_LOG_ERROR("serveur.Mondial", "World database not specified in configuration file");
+        TC_LOG_ERROR("server.Mondial", "Base de données mondiale n'est pas spécifié dans le fichier de configuration");
         return false;
     }
 
     asyncThreads = uint8(sConfigMgr->GetIntDefault("WorldDatabase.WorkerThreads", 1));
     if (asyncThreads < 1 || asyncThreads > 32)
     {
-        TC_LOG_ERROR("serveur.Mondial", "World database: invalid number of worker threads specified. "
-            "Please pick a value between 1 and 32.");
+        TC_LOG_ERROR("server.Mondial", "Base de données mondiale: nombre invalide de fil spécifié. "
+            "S'il vous plaît choisir une valeur comprise entre 1 et 32.");
         return false;
     }
 
@@ -403,7 +381,7 @@ bool Master::_StartDB()
     ///- Initialize the world database
     if (!WorldDatabase.Open(dbString, asyncThreads, synchThreads))
     {
-        TC_LOG_ERROR("serveur.Mondial", "Cannot connect to world database %s", dbString.c_str());
+        TC_LOG_ERROR("server.Mondial", "Impossible de se connecter à la base de données mondiale %s", dbString.c_str());
         return false;
     }
 
@@ -411,15 +389,15 @@ bool Master::_StartDB()
     dbString = sConfigMgr->GetStringDefault("CharacterDatabaseInfo", "");
     if (dbString.empty())
     {
-        TC_LOG_ERROR("serveur.Mondial", "Character database not specified in configuration file");
+        TC_LOG_ERROR("server.Mondial", "Base de données de caractère non spécifié dans le fichier de configuration");
         return false;
     }
 
     asyncThreads = uint8(sConfigMgr->GetIntDefault("CharacterDatabase.WorkerThreads", 1));
     if (asyncThreads < 1 || asyncThreads > 32)
     {
-        TC_LOG_ERROR("serveur.Mondial", "Character database: invalid number of worker threads specified. "
-            "Please pick a value between 1 and 32.");
+        TC_LOG_ERROR("server.Mondial", "Base de données de caractère: nombre invalide de fil spécifié. "
+            "S'il vous plaît choisir une valeur comprise entre 1 et 32.");
         return false;
     }
 
@@ -428,7 +406,7 @@ bool Master::_StartDB()
     ///- Initialize the Character database
     if (!CharacterDatabase.Open(dbString, asyncThreads, synchThreads))
     {
-        TC_LOG_ERROR("serveur.Mondial", "Cannot connect to Character database %s", dbString.c_str());
+        TC_LOG_ERROR("server.Mondial", "Impossible de se connecter à la base de données de caractère %s", dbString.c_str());
         return false;
     }
 
@@ -436,15 +414,15 @@ bool Master::_StartDB()
     dbString = sConfigMgr->GetStringDefault("LoginDatabaseInfo", "");
     if (dbString.empty())
     {
-        TC_LOG_ERROR("serveur.Mondial", "Login database not specified in configuration file");
+        TC_LOG_ERROR("server.Mondial", "Base de données de connexion n'est pas spécifié dans le fichier de configuration");
         return false;
     }
 
     asyncThreads = uint8(sConfigMgr->GetIntDefault("LoginDatabase.WorkerThreads", 1));
     if (asyncThreads < 1 || asyncThreads > 32)
     {
-        TC_LOG_ERROR("serveur.Mondial", "Login database: invalid number of worker threads specified. "
-            "Please pick a value between 1 and 32.");
+        TC_LOG_ERROR("server.Mondial", "Base de données de connexion: nombre invalide de fil spécifié. "
+            "S'il vous plaît choisir une valeur comprise entre 1 et 32.");
         return false;
     }
 
@@ -452,7 +430,7 @@ bool Master::_StartDB()
     ///- Initialise the login database
     if (!LoginDatabase.Open(dbString, asyncThreads, synchThreads))
     {
-        TC_LOG_ERROR("serveur.Mondial", "Cannot connect to login database %s", dbString.c_str());
+        TC_LOG_ERROR("server.Mondial", "Impossible de se connecter à la base de données de connexion %s", dbString.c_str());
         return false;
     }
 
@@ -460,7 +438,7 @@ bool Master::_StartDB()
     realmID = sConfigMgr->GetIntDefault("RealmID", 0);
     if (!realmID)
     {
-        TC_LOG_ERROR("serveur.Mondial", "Realm ID not defined in configuration file");
+        TC_LOG_ERROR("server.Mondial", "ID de Royaume n'est pas définie dans le fichier de configuration");
         return false;
     }
 
@@ -477,7 +455,7 @@ bool Master::_StartDB()
         while (result->NextRow());
     }
 
-    TC_LOG_INFO("serveur.Mondial", "Realm running as realm ID %d", realmID);
+    TC_LOG_INFO("server.Mondial", "Royaume lancé avec l'ID de royaume %d", realmID);
 
     ///- Clean the database before starting
     ClearOnlineAccounts();
@@ -487,7 +465,7 @@ bool Master::_StartDB()
 
     sWorld->LoadDBVersion();
 
-    TC_LOG_INFO("serveur.Mondial", "Using World DB: %s", sWorld->GetDBVersion());
+    TC_LOG_INFO("server.Mondial", "Utilisation de la DB mondiale: %s", sWorld->GetDBVersion());
     return true;
 }
 
@@ -509,6 +487,6 @@ void Master::ClearOnlineAccounts()
     // Reset online status for all characters
     CharacterDatabase.DirectExecute("UPDATE characters SET online = 0 WHERE online <> 0");
 
-    // Battleground instance ids reset at serveur restart
+    // Battleground instance ids reset at server restart
     CharacterDatabase.DirectExecute("UPDATE character_battleground_data SET instanceId = 0");
 }

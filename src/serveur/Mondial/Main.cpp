@@ -1,23 +1,6 @@
-/*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
- * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation; either version 3 of the License, or (at your
- * option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program. If not, see <http://www.gnu.org/licenses/>.
- */
 
-/// \addtogroup Trinityd Trinity Daemon
+/// \addtogroup Trinityd TRINITY Daemon
 /// @{
 /// \file
 
@@ -61,18 +44,18 @@ uint32 realmID;                                             ///< Id of the realm
 /// Print out the usage string for this program on the console.
 void usage(const char* prog)
 {
-    printf("Usage:\n");
+    printf("Utilisation:\n");
     printf(" %s [<options>]\n", prog);
-    printf("    -c config_file           use config_file as configuration file\n");
+    printf("    -c config_file           utiliser config_file comme fichier de configuration\n");
 #ifdef _WIN32
     printf("    Running as service functions:\n");
-    printf("    --service                run as service\n");
-    printf("    -s install               install service\n");
-    printf("    -s uninstall             uninstall service\n");
+    printf("    --service                gérer comme service\n");
+    printf("    -s install               installer le service\n");
+    printf("    -s uninstall             désinstaller le service\n");
 #endif
 }
 
-/// Launch the Trinity serveur
+/// Launch the TRINITY server
 extern int main(int argc, char** argv)
 {
     ///- Command line parsing to get the configuration file name
@@ -84,7 +67,7 @@ extern int main(int argc, char** argv)
         {
             if (++c >= argc)
             {
-                printf("Runtime-Error: -c option requires an input argument");
+                printf("Runtime-Error: -c option nécessite un argument d'entrée");
                 usage(argv[0]);
                 return 1;
             }
@@ -97,7 +80,7 @@ extern int main(int argc, char** argv)
         {
             if (++c >= argc)
             {
-                printf("Runtime-Error: -s option requires an input argument");
+                printf("Runtime-Error: -s option nécessite un argument d'entrée");
                 usage(argv[0]);
                 return 1;
             }
@@ -105,18 +88,18 @@ extern int main(int argc, char** argv)
             if (strcmp(argv[c], "install") == 0)
             {
                 if (WinServiceInstall())
-                    printf("Installing service\n");
+                    printf("Installation du service\n");
                 return 1;
             }
             else if (strcmp(argv[c], "uninstall") == 0)
             {
                 if (WinServiceUninstall())
-                    printf("Uninstalling service\n");
+                    printf("Désinstallation du service\n");
                 return 1;
             }
             else
             {
-                printf("Runtime-Error: unsupported option %s", argv[c]);
+                printf("Runtime-Error: Option non prise en charge %s", argv[c]);
                 usage(argv[0]);
                 return 1;
             }
@@ -130,15 +113,15 @@ extern int main(int argc, char** argv)
 
     if (!sConfigMgr->LoadInitial(cfg_file))
     {
-        printf("Invalid or missing configuration file : %s\n", cfg_file);
-        printf("Verify that the file exists and has \'[Mondial]' written in the top of the file!\n");
+        printf("Fichier de configuration incorrect ou manquant : %s\n", cfg_file);
+        printf("Vérifiez que le fichier existe et est \'[Mondial]' écrite dans la partie supérieure du dossier!\n");
         return 1;
     }
 
-    TC_LOG_INFO("serveur.Mondial", "Using configuration file %s.", cfg_file);
+    TC_LOG_INFO("server.Mondial", "Utilisant le fichier de configuration %s.", cfg_file);
 
-    TC_LOG_INFO("serveur.Mondial", "Using SSL version: %s (library: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));
-    TC_LOG_INFO("serveur.Mondial", "Using ACE version: %s", ACE_VERSION);
+    TC_LOG_INFO("server.Mondial", "Utilisant la version SSL: %s (librarie: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));
+    TC_LOG_INFO("server.Mondial", "Utilisant la version ACE: %s", ACE_VERSION);
 
     ///- and run the 'Master'
     /// @todo Why do we need this 'Master'? Can't all of this be in the Main as for Realmd?

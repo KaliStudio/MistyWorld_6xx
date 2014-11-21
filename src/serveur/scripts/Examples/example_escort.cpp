@@ -1,6 +1,6 @@
 /*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+
  * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
  * Copyright (C) 2006-2014 ScriptDev2 <https://github.com/scriptdev2/scriptdev2/>
  *
@@ -233,10 +233,10 @@ class example_escort : public CreatureScript
                         pEscortAI->Start(false, true, player->GetGUID());
                     break;
                 default:
-                    return false;                                   // nothing defined      -> trinity core handling
+                    return false;                                   // nothing defined      -> TRINITY core handling
             }
 
-            return true;                                            // no default handling  -> prevent trinity core handling
+            return true;                                            // no default handling  -> prevent TRINITY core handling
         }
 };
 

@@ -1,6 +1,6 @@
 /*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+
  * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -694,7 +694,7 @@ class Spell
 #endif
 };
 
-namespace Trinity
+namespace TRINITY
 {
     struct WorldObjectSpellTargetCheck
     {

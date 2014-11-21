@@ -1,6 +1,6 @@
 /*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+
  * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
  * Copyright (C) 2006-2014 ScriptDev2 <https://github.com/scriptdev2/scriptdev2/>
  *
@@ -226,7 +226,7 @@ class instance_ahnkahet : public InstanceMapScript
                         if (vInitiands.empty())
                             return 0;
 
-                        return Trinity::Containers::SelectRandomContainerElement(vInitiands);
+                        return TRINITY::Containers::SelectRandomContainerElement(vInitiands);
                     }
                     case DATA_ADD_JEDOGA_OPFER:
                         return JedogaSacrifices;

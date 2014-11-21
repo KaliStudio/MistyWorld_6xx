@@ -335,10 +335,10 @@ void WheatyExceptionReport::PrintSystemInfo()
     TCHAR sString[1024];
     _tprintf(_T("//=====================================================\r\n"));
     if (_GetProcessorName(sString, countof(sString)))
-        _tprintf(_T("*** Hardware ***\r\nProcesseur: %s\r\nNombre de Processeurs: %d\r\nMémoire physique: %d KB (disponible: %d KB)\r\nEngager limite de charge: %d KB\r\n"),
+        _tprintf(_T("*** Hardware ***\r\nProcesseur: %s\r\nNombre de Processeurs: %d\r\nMÃ©moire physique: %d KB (disponible: %d KB)\r\nEngager limite de charge: %d KB\r\n"),
             sString, SystemInfo.dwNumberOfProcessors, MemoryStatus.dwTotalPhys/0x400, MemoryStatus.dwAvailPhys/0x400, MemoryStatus.dwTotalPageFile/0x400);
     else
-        _tprintf(_T("*** Hardware ***\r\nProcesseur: <unknown>\r\nNombre de Processeurs: %d\r\nMémoire physique: %d KB (disponible: %d KB)\r\nEngager limite de charge: %d KB\r\n"),
+        _tprintf(_T("*** Hardware ***\r\nProcesseur: <unknown>\r\nNombre de Processeurs: %d\r\nMÃ©moire physique: %d KB (disponible: %d KB)\r\nEngager limite de charge: %d KB\r\n"),
             SystemInfo.dwNumberOfProcessors, MemoryStatus.dwTotalPhys/0x400, MemoryStatus.dwAvailPhys/0x400, MemoryStatus.dwTotalPageFile/0x400);
 
     if (_GetWindowsVersion(sString, countof(sString)))
@@ -426,12 +426,12 @@ PEXCEPTION_POINTERS pExceptionInfo)
         section, offset);
 
 #ifdef _M_IX86
-    _tprintf(_T("Adresse de défaut:  %08X %02X:%08X %s\r\n"),
+    _tprintf(_T("Adresse de dÃ©faut:  %08X %02X:%08X %s\r\n"),
         pExceptionRecord->ExceptionAddress,
         section, offset, szFaultingModule);
 #endif
 #ifdef _M_X64
-    _tprintf(_T("Adresse de défaut:  %016I64X %02X:%016I64X %s\r\n"),
+    _tprintf(_T("Adresse de dÃ©faut:  %016I64X %02X:%016I64X %s\r\n"),
         pExceptionRecord->ExceptionAddress,
         section, offset, szFaultingModule);
 #endif
@@ -485,7 +485,7 @@ PEXCEPTION_POINTERS pExceptionInfo)
 //    #ifdef _M_IX86                                          // X86 Only!
 
     _tprintf(_T("========================\r\n"));
-    _tprintf(_T("Variables locales et paramètres\r\n"));
+    _tprintf(_T("Variables locales et paramÃ¨tres\r\n"));
 
     trashableContext = *pCtx;
     WriteStackDetails(&trashableContext, true, NULL);
@@ -756,7 +756,7 @@ PVOID         UserContext)
     }
     __except(1)
     {
-        _tprintf(_T("renvoyé au symbole %s\r\n"), pSymInfo->Name);
+        _tprintf(_T("renvoyÃ© au symbole %s\r\n"), pSymInfo->Name);
     }
 
     return TRUE;

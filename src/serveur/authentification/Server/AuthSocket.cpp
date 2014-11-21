@@ -195,7 +195,7 @@ AuthSocket::~AuthSocket(void) { }
 // Accept the connection
 void AuthSocket::OnAccept(void)
 {
-    TC_LOG_DEBUG("serveur.authentification", "'%s:%d' connexion accepté", socket().getRemoteAddress().c_str(), socket().getRemotePort());
+    TC_LOG_DEBUG("serveur.authentification", "'%s:%d' connexion acceptÃ©", socket().getRemoteAddress().c_str(), socket().getRemotePort());
 }
 
 void AuthSocket::OnClose(void)
@@ -232,11 +232,11 @@ void AuthSocket::OnRead()
         {
             if ((uint8)table[i].cmd == _cmd && (table[i].status == STATUS_CONNECTED || (_authed && table[i].status == STATUS_AUTHED)))
             {
-                TC_LOG_DEBUG("serveur.authentification", "Des données obtenu pour cmd %u recv longueur %u", (uint32)_cmd, (uint32)socket().recv_len());
+                TC_LOG_DEBUG("serveur.authentification", "Des donnÃ©es obtenu pour cmd %u recv longueur %u", (uint32)_cmd, (uint32)socket().recv_len());
 
                 if (!(*this.*table[i].handler)())
                 {
-                    TC_LOG_DEBUG("serveur.authentification", "Gestionnaire de commande a échoué pour cmd %u recv longueur %u", (uint32)_cmd, (uint32)socket().recv_len());
+                    TC_LOG_DEBUG("serveur.authentification", "Gestionnaire de commande a Ã©chouÃ© pour cmd %u recv longueur %u", (uint32)_cmd, (uint32)socket().recv_len());
                     return;
                 }
                 break;
@@ -310,7 +310,7 @@ bool AuthSocket::_HandleLogonChallenge()
 #endif
 
     uint16 remaining = ((sAuthLogonChallenge_C *)&buf[0])->size;
-    TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Entête obtenu, corps de %#04x bytes", remaining);
+    TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] EntÃªte obtenu, corps de %#04x bytes", remaining);
 
     if ((remaining < sizeof(sAuthLogonChallenge_C) - buf.size()) || (socket().recv_len() < remaining))
         return false;
@@ -381,12 +381,12 @@ bool AuthSocket::_HandleLogonChallenge()
             bool locked = false;
             if (fields[2].GetUInt8() == 1)                  // if ip is locked
             {
-                TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Compte '%s' est verrouillé avec IP - '%s'", _login.c_str(), fields[3].GetCString());
+                TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Compte '%s' est verrouillÃ© avec IP - '%s'", _login.c_str(), fields[3].GetCString());
                 TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Adresse du joueur est '%s'", ip_address.c_str());
 
                 if (strcmp(fields[4].GetCString(), ip_address.c_str()) != 0)
                 {
-                    TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] IP du compte différente");
+                    TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] IP du compte diffÃ©rente");
                     pkt << uint8(WOW_FAIL_LOCKED_ENFORCED);
                     locked = true;
                 }
@@ -395,10 +395,10 @@ bool AuthSocket::_HandleLogonChallenge()
             }
             else
             {
-                TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Le compte '%s' n'est pas verrouillé pour IP", _login.c_str());
+                TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Le compte '%s' n'est pas verrouillÃ© pour IP", _login.c_str());
                 std::string accountCountry = fields[3].GetString();
                 if (accountCountry.empty() || accountCountry == "00")
-                    TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Le compte '%s' n'est pas verrouillé pour le pays", _login.c_str());
+                    TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Le compte '%s' n'est pas verrouillÃ© pour le pays", _login.c_str());
                 else if (!accountCountry.empty())
                 {
                     uint32 ip = inet_addr(ip_address.c_str());
@@ -409,10 +409,10 @@ bool AuthSocket::_HandleLogonChallenge()
                     if (PreparedQueryResult sessionCountryQuery = LoginDatabase.Query(stmt))
                     {
                         std::string loginCountry = (*sessionCountryQuery)[0].GetString();
-                        TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Le compte '%s' est verrouillé pour le pays: '%s' !Le pays du joueur est '%s'", _login.c_str(), accountCountry.c_str(), loginCountry.c_str());
+                        TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Le compte '%s' est verrouillÃ© pour le pays: '%s' !Le pays du joueur est '%s'", _login.c_str(), accountCountry.c_str(), loginCountry.c_str());
                         if (loginCountry != accountCountry)
                         {
-                            TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Le pays du compte diffère.");
+                            TC_LOG_DEBUG("serveur.authentification", "[AuthChallenge] Le pays du compte diffÃ¨re.");
                             pkt << uint8(WOW_FAIL_UNLOCKABLE_LOCK);
                             locked = true;
                         }
@@ -438,12 +438,12 @@ bool AuthSocket::_HandleLogonChallenge()
                     if ((*banresult)[0].GetUInt32() == (*banresult)[1].GetUInt32())
                     {
                         pkt << uint8(WOW_FAIL_BANNED);
-                        TC_LOG_DEBUG("serveur.authentification", "'%s:%d' [AuthChallenge] Compte %s banni essayé de vous identifier!", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str ());
+                        TC_LOG_DEBUG("serveur.authentification", "'%s:%d' [AuthChallenge] Compte %s banni essayÃ© de vous identifier!", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str ());
                     }
                     else
                     {
                         pkt << uint8(WOW_FAIL_SUSPENDED);
-                        TC_LOG_DEBUG("serveur.authentification", "'%s:%d' [AuthChallenge] Compte %s temporairement essayé de vous identifier!", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str ());
+                        TC_LOG_DEBUG("serveur.authentification", "'%s:%d' [AuthChallenge] Compte %s temporairement essayÃ© de vous identifier!", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str ());
                     }
                 }
                 else
@@ -455,7 +455,7 @@ bool AuthSocket::_HandleLogonChallenge()
                     std::string databaseV = fields[6].GetString();
                     std::string databaseS = fields[7].GetString();
 
-                    TC_LOG_DEBUG("network", "Valeurs de base de données d'authentification: v='%s' s='%s'", databaseV.c_str(), databaseS.c_str());
+                    TC_LOG_DEBUG("network", "Valeurs de base de donnÃ©es d'authentification: v='%s' s='%s'", databaseV.c_str(), databaseS.c_str());
 
                     // multiply with 2 since bytes are stored as hexstring
                     if (databaseV.size() != s_BYTE_SIZE * 2 || databaseS.size() != s_BYTE_SIZE * 2)
@@ -523,7 +523,7 @@ bool AuthSocket::_HandleLogonChallenge()
                     for (int i = 0; i < 4; ++i)
                         _localizationName[i] = ch->country[4-i-1];
 
-                    TC_LOG_DEBUG("serveur.authentification", "'%s:%d' [AuthChallenge] compte %s est utilisé '%c%c%c%c' locale (%u)", socket().getRemoteAddress().c_str(), socket().getRemotePort(),
+                    TC_LOG_DEBUG("serveur.authentification", "'%s:%d' [AuthChallenge] compte %s est utilisÃ© '%c%c%c%c' locale (%u)", socket().getRemoteAddress().c_str(), socket().getRemotePort(),
                             _login.c_str (), ch->country[3], ch->country[2], ch->country[1], ch->country[0], GetLocaleByName(_localizationName)
                         );
                 }
@@ -551,7 +551,7 @@ bool AuthSocket::_HandleLogonProof()
     if (_expversion == NO_VALID_EXP_FLAG)
     {
         // Check if we have the appropriate patch on the disk
-        TC_LOG_DEBUG("network", "Client avec la version non valide, le patch n'est pas appliqué");
+        TC_LOG_DEBUG("network", "Client avec la version non valide, le patch n'est pas appliquÃ©");
         socket().shutdown();
         return true;
     }
@@ -635,7 +635,7 @@ bool AuthSocket::_HandleLogonProof()
     // Check if SRP6 results match (password is correct), else send an error
     if (!memcmp(M.AsByteArray().get(), lp.M1, 20))
     {
-        TC_LOG_DEBUG("serveur.authentification", "'%s:%d' Utilisateur '%s' authentifié avec succès", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str());
+        TC_LOG_DEBUG("serveur.authentification", "'%s:%d' Utilisateur '%s' authentifiÃ© avec succÃ¨s", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str());
 
         // Update the sessionkey, last_ip, last login time and reset number of failed logins in the account table for this account
         // No SQL injection (escaped user name) and IP address as received by socket
@@ -703,9 +703,9 @@ bool AuthSocket::_HandleLogonProof()
         char data[4] = { AUTH_LOGON_PROOF, WOW_FAIL_UNKNOWN_ACCOUNT, 3, 0 };
         socket().send(data, sizeof(data));
 
-        TC_LOG_DEBUG("serveur.authentification", "'%s:%d' [AuthChallenge] Le compte %s à essayé de se connecter avec un mot de passe incorrect!", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str ());
+        TC_LOG_DEBUG("serveur.authentification", "'%s:%d' [AuthChallenge] Le compte %s Ã  essayÃ© de se connecter avec un mot de passe incorrect!", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str ());
 
-        uint32 MaxWrongPassCount = sConfigMgr->GetIntDefault("WrongPass.MaxCount", 0);
+        uint32 MaxWrongPassCount = sConfigMgr->GetIntDefault("PasseErronees.NombreMax", 0);
         if (MaxWrongPassCount > 0)
         {
             //Increment number of failed logins by one and if it reaches the limit temporarily ban that account or IP
@@ -722,8 +722,8 @@ bool AuthSocket::_HandleLogonProof()
 
                 if (failed_logins >= MaxWrongPassCount)
                 {
-                    uint32 WrongPassBanTime = sConfigMgr->GetIntDefault("WrongPass.BanTime", 600);
-                    bool WrongPassBanType = sConfigMgr->GetBoolDefault("WrongPass.BanType", false);
+                    uint32 WrongPassBanTime = sConfigMgr->GetIntDefault("PasseErronees.TempsDeBan", 600);
+                    bool WrongPassBanType = sConfigMgr->GetBoolDefault("PasseErronees.TypeDeBan", false);
 
                     if (WrongPassBanType)
                     {
@@ -733,7 +733,7 @@ bool AuthSocket::_HandleLogonProof()
                         stmt->setUInt32(1, WrongPassBanTime);
                         LoginDatabase.Execute(stmt);
 
-                        TC_LOG_DEBUG("serveur.authentification", "'%s:%d' [AuthChallenge] Le compte %s a été banni pour '%u' secondes, car il n'a pas pu s'authentifier '%u' fois",
+                        TC_LOG_DEBUG("serveur.authentification", "'%s:%d' [AuthChallenge] Le compte %s a Ã©tÃ© banni pour '%u' secondes, car il n'a pas pu s'authentifier '%u' fois",
                             socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str(), WrongPassBanTime, failed_logins);
                     }
                     else
@@ -743,7 +743,7 @@ bool AuthSocket::_HandleLogonProof()
                         stmt->setUInt32(1, WrongPassBanTime);
                         LoginDatabase.Execute(stmt);
 
-                        TC_LOG_DEBUG("serveur.authentification", "'%s:%d' [AuthChallenge] IP %s a été banni pour '%u' secondes parce que le compte %s n'a pas pu s'authentifier '%u' fois",
+                        TC_LOG_DEBUG("serveur.authentification", "'%s:%d' [AuthChallenge] IP %s a Ã©tÃ© banni pour '%u' secondes parce que le compte %s n'a pas pu s'authentifier '%u' fois",
                             socket().getRemoteAddress().c_str(), socket().getRemotePort(), socket().getRemoteAddress().c_str(), WrongPassBanTime, _login.c_str(), failed_logins);
                     }
                 }
@@ -772,7 +772,7 @@ bool AuthSocket::_HandleReconnectChallenge()
 #endif
 
     uint16 remaining = ((sAuthLogonChallenge_C *)&buf[0])->size;
-    TC_LOG_DEBUG("serveur.authentification", "[ReconnectChallenge] L'entête obtenu pour le corps est de %#04x bytes", remaining);
+    TC_LOG_DEBUG("serveur.authentification", "[ReconnectChallenge] L'entÃªte obtenu pour le corps est de %#04x bytes", remaining);
 
     if ((remaining < sizeof(sAuthLogonChallenge_C) - buf.size()) || (socket().recv_len() < remaining))
         return false;
@@ -796,7 +796,7 @@ bool AuthSocket::_HandleReconnectChallenge()
     // Stop if the account is not found
     if (!result)
     {
-        TC_LOG_ERROR("serveur.authentification", "'%s:%d' [ERROR] L'utilisateur %s à essayé de se connecter et nous ne pouvons pas trouver sa clé de session dans la base de données.", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str());
+        TC_LOG_ERROR("serveur.authentification", "'%s:%d' [ERROR] L'utilisateur %s Ã  essayÃ© de se connecter et nous ne pouvons pas trouver sa clÃ© de session dans la base de donnÃ©es.", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str());
         socket().shutdown();
         return false;
     }
@@ -863,7 +863,7 @@ bool AuthSocket::_HandleReconnectProof()
     }
     else
     {
-        TC_LOG_ERROR("serveur.authentification", "'%s:%d' [ERROR] L'utilisateur %s a essayé de se connecter, mais la session est invalide.", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str());
+        TC_LOG_ERROR("serveur.authentification", "'%s:%d' [ERROR] L'utilisateur %s a essayÃ© de se connecter, mais la session est invalide.", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str());
         socket().shutdown();
         return false;
     }
@@ -907,7 +907,7 @@ bool AuthSocket::_HandleRealmList()
     PreparedQueryResult result = LoginDatabase.Query(stmt);
     if (!result)
     {
-        TC_LOG_ERROR("serveur.authentification", "'%s:%d' [ERROR] L'utilisateur %s à essayé de se connecter mais nous ne pouvons pas le trouver dans la base de données.", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str());
+        TC_LOG_ERROR("serveur.authentification", "'%s:%d' [ERROR] L'utilisateur %s Ã  essayÃ© de se connecter mais nous ne pouvons pas le trouver dans la base de donnÃ©es.", socket().getRemoteAddress().c_str(), socket().getRemotePort(), _login.c_str());
         socket().shutdown();
         return false;
     }

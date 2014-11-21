@@ -1,6 +1,6 @@
 /*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+
  * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -186,7 +186,7 @@ class go_tablet_of_the_seven : public GameObjectScript
 public:
     go_tablet_of_the_seven() : GameObjectScript("go_tablet_of_the_seven") { }
 
-    /// @todo use gossip option ("Transcript the Tablet") instead, if Trinity adds support.
+    /// @todo use gossip option ("Transcript the Tablet") instead, if TRINITY adds support.
     bool OnGossipHello(Player* player, GameObject* go) OVERRIDE
     {
         if (go->GetGoType() != GAMEOBJECT_TYPE_QUESTGIVER)

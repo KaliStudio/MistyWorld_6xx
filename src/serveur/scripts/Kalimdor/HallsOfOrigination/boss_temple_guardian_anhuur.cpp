@@ -1,6 +1,6 @@
 /*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+
  * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
  * Copyright (C) 2006-2014 ScriptDev2 <https://github.com/scriptdev2/scriptdev2/>
  *
@@ -132,7 +132,7 @@ public:
                 GameObject* door = ObjectAccessor::GetGameObject(*me, instance->GetData64(DATA_ANHUUR_DOOR));
                 GetCreatureListWithEntryInGrid(stalkers, me, NPC_CAVE_IN_STALKER, 100.0f);
 
-                stalkers.remove_if(Trinity::HeightDifferenceCheck(door, 0.0f, false)); // Target only the bottom ones
+                stalkers.remove_if(TRINITY::HeightDifferenceCheck(door, 0.0f, false)); // Target only the bottom ones
                 for (std::list<Creature*>::iterator itr = stalkers.begin(); itr != stalkers.end(); ++itr)
                 {
                     if ((*itr)->GetPositionX() > door->GetPositionX())
@@ -231,17 +231,17 @@ public:
 
                         std::list<Creature*> stalkers;
                         GetCreatureListWithEntryInGrid(stalkers, me, NPC_CAVE_IN_STALKER, 100.0f);
-                        stalkers.remove_if(Trinity::HeightDifferenceCheck(ObjectAccessor::GetGameObject(*me, instance->GetData64(DATA_ANHUUR_DOOR)), 5.0f, true));
+                        stalkers.remove_if(TRINITY::HeightDifferenceCheck(ObjectAccessor::GetGameObject(*me, instance->GetData64(DATA_ANHUUR_DOOR)), 5.0f, true));
 
                         if (stalkers.empty())
                             break;
 
-                        stalkers.sort(Trinity::ObjectDistanceOrderPred(target));
+                        stalkers.sort(TRINITY::ObjectDistanceOrderPred(target));
 
                         // Get the closest statue face (any of its eyes)
                         Creature* eye1 = stalkers.front();
                         stalkers.remove(eye1); // Remove the eye.
-                        stalkers.sort(Trinity::ObjectDistanceOrderPred(eye1)); // Find the second eye.
+                        stalkers.sort(TRINITY::ObjectDistanceOrderPred(eye1)); // Find the second eye.
                         Creature* eye2 = stalkers.front();
 
                         eye1->CastSpell(eye1, SPELL_SEARING_LIGHT, true);
@@ -283,9 +283,9 @@ class spell_anhuur_shield_of_light : public SpellScriptLoader
                     {
                         if (GameObject* go = ObjectAccessor::GetGameObject(*GetCaster(), script->GetData64(DATA_ANHUUR_DOOR)))
                         {
-                            targets.remove_if(Trinity::HeightDifferenceCheck(go, 5.0f, false));
+                            targets.remove_if(TRINITY::HeightDifferenceCheck(go, 5.0f, false));
                             targets.remove(GetCaster());
-                            targets.sort(Trinity::ObjectDistanceOrderPred(GetCaster()));
+                            targets.sort(TRINITY::ObjectDistanceOrderPred(GetCaster()));
                             targets.resize(2);
                         }
                     }

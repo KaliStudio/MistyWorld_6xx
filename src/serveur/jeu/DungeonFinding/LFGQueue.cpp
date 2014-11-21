@@ -1,6 +1,6 @@
 /*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+
  * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -501,7 +501,7 @@ LfgCompatibility LFGQueue::CheckCompatibility(LfgGuidList check)
     proposal.cancelTime = time(NULL) + LFG_TIME_PROPOSAL;
     proposal.state = LFG_PROPOSAL_INITIATING;
     proposal.leader = 0;
-    proposal.dungeonId = Trinity::Containers::SelectRandomContainerElement(proposalDungeons);
+    proposal.dungeonId = TRINITY::Containers::SelectRandomContainerElement(proposalDungeons);
 
     bool leader = false;
     for (LfgRolesMap::const_iterator itRoles = proposalRoles.begin(); itRoles != proposalRoles.end(); ++itRoles)

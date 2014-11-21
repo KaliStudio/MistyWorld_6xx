@@ -41,7 +41,7 @@ bool stopEvent = false;                                     // Setting it to tru
 LoginDatabaseWorkerPool LoginDatabase;                      // Accessor to the authentification database
 
 /// Handle authentification's termination signals
-class AuthServerSignalHandler : public Trinity::SignalHandler
+class AuthServerSignalHandler : public TRINITY::SignalHandler
 {
 public:
     virtual void HandleSignal(int sigNum)
@@ -76,7 +76,7 @@ extern int main(int argc, char** argv)
         {
             if (++count >= argc)
             {
-                printf("Runtime-Error: -c option nécessite un argument d'entrée\n");
+                printf("Runtime-Error: -c option nÃ©cessite un argument d'entrÃ©e\n");
                 usage(argv[0]);
                 return 1;
             }
@@ -89,7 +89,7 @@ extern int main(int argc, char** argv)
     if (!sConfigMgr->LoadInitial(configFile))
     {
         printf("Fichier de configuration incorrect ou manquant : %s\n", configFile);
-        printf("Vérifiez que le fichier existe et a \'[authentification]\' écrite dans la partie supérieure du dossier!\n");
+        printf("VÃ©rifiez que le fichier existe et a \'[authentification]\' Ã©crite dans la partie supÃ©rieure du dossier!\n");
         return 1;
     }
 
@@ -124,7 +124,7 @@ extern int main(int argc, char** argv)
             TC_LOG_INFO("serveur.authentification", "Daemon PID: %u\n", pid);
         else
         {
-            TC_LOG_ERROR("serveur.authentification", "Vous ne pouvez pas de créer le fichier PID %s.\n", pidFile.c_str());
+            TC_LOG_ERROR("serveur.authentification", "Vous ne pouvez pas de crÃ©er le fichier PID %s.\n", pidFile.c_str());
             return 1;
         }
     }
@@ -134,20 +134,20 @@ extern int main(int argc, char** argv)
         return 1;
 
     // Get the list of realms for the serveur
-    sRealmList->Initialize(sConfigMgr->GetIntDefault("RealmsStateUpdateDelay", 20));
+    sRealmList->Initialize(sConfigMgr->GetIntDefault("DelaiDeMiseAJourDuStatusDuRoyaume", 20));
     if (sRealmList->size() == 0)
     {
-        TC_LOG_ERROR("serveur.authentification", "Pas de royaumes valides spécifiés.");
+        TC_LOG_ERROR("serveur.authentification", "Pas de royaumes valides spÃ©cifiÃ©s.");
         return 1;
     }
 
     // Launch the listening network socket
     RealmAcceptor acceptor;
 
-    int32 rmport = sConfigMgr->GetIntDefault("RealmServerPort", 3724);
+    int32 rmport = sConfigMgr->GetIntDefault("PortDuServeurRoyaume", 3724);
     if (rmport < 0 || rmport > 0xFFFF)
     {
-        TC_LOG_ERROR("serveur.authentification", "Port spécifié sur la plage autorisée (1-65535)");
+        TC_LOG_ERROR("serveur.authentification", "Port spÃ©cifiÃ© sur la plage autorisÃ©e (1-65535)");
         return 1;
     }
 
@@ -157,7 +157,7 @@ extern int main(int argc, char** argv)
 
     if (acceptor.open(bind_addr, ACE_Reactor::instance(), ACE_NONBLOCK) == -1)
     {
-        TC_LOG_ERROR("serveur.authentification", "Le serveur d`authentification ne peut pas se lier à %s:%d", bind_ip.c_str(), rmport);
+        TC_LOG_ERROR("serveur.authentification", "Le serveur d`authentification ne peut pas se lier Ã  %s:%d", bind_ip.c_str(), rmport);
         return 1;
     }
 
@@ -170,8 +170,8 @@ extern int main(int argc, char** argv)
     Handler.register_handler(SIGTERM, &SignalTERM);
 
     ///- Handle affinity for multiple processors and process priority
-    uint32 affinity = sConfigMgr->GetIntDefault("UseProcessors", 0);
-    bool highPriority = sConfigMgr->GetBoolDefault("ProcessPriority", false);
+    uint32 affinity = sConfigMgr->GetIntDefault("UtiliserProcesseurs", 0);
+    bool highPriority = sConfigMgr->GetBoolDefault("PrioriteDuProcessus", false);
 
 #ifdef _WIN32 // Windows
     {
@@ -187,20 +187,20 @@ extern int main(int argc, char** argv)
                 ULONG_PTR currentAffinity = affinity & appAff;            // remove non accessible processors
 
                 if (!currentAffinity)
-                    TC_LOG_ERROR("serveur.authentification", "Les processeurs marqués dans UseProcessors bitmask (hex) %x ne sont pas accessibles pour l'authentification. Processeurs accessibles bitmask (hex): %x", affinity, appAff);
+                    TC_LOG_ERROR("serveur.authentification", "Les processeurs marquÃ©s dans UseProcessors bitmask (hex) %x ne sont pas accessibles pour l'authentification. Processeurs accessibles bitmask (hex): %x", affinity, appAff);
                 else if (SetProcessAffinityMask(hProcess, currentAffinity))
                     TC_LOG_INFO("serveur.authentification", "Utilisation des processeurs (bitmask, hex): %x", currentAffinity);
                 else
-                    TC_LOG_ERROR("serveur.authentification", "Impossible de définir les processeurs utilisés (hex): %x", currentAffinity);
+                    TC_LOG_ERROR("serveur.authentification", "Impossible de dÃ©finir les processeurs utilisÃ©s (hex): %x", currentAffinity);
             }
         }
 
         if (highPriority)
         {
             if (SetPriorityClass(hProcess, HIGH_PRIORITY_CLASS))
-                TC_LOG_INFO("serveur.authentification", "processus d'authentification niveau de priorité passe en niveau HAUT");
+                TC_LOG_INFO("serveur.authentification", "Niveau de prioritÃ© du processus d'authentification passe en niveau HAUT");
             else
-                TC_LOG_ERROR("serveur.authentification", "Impossible de définir les le processus d'authentification niveau de priorité.");
+                TC_LOG_ERROR("serveur.authentification", "Impossible de dÃ©finir le  niveau de prioritÃ© du processus d'authentification.");
         }
     }
 #elif __linux__ // Linux
@@ -215,12 +215,12 @@ extern int main(int argc, char** argv)
                 CPU_SET(i, &mask);
 
         if (sched_setaffinity(0, sizeof(mask), &mask))
-            TC_LOG_ERROR("serveur.authentification", "Can't set used processors (hex): %x, error: %s", affinity, strerror(errno));
+			TC_LOG_ERROR("serveur.authentification", "Vous ne pouvez pas dÃ©finir le processeurs utilisÃ©s (hex):%x, erreur:%s", affinity, strerror(errno));
         else
         {
             CPU_ZERO(&mask);
             sched_getaffinity(0, sizeof(mask), &mask);
-            TC_LOG_INFO("serveur.authentification", "Using processors (bitmask, hex): %x", *(uint32*)(&mask));
+            TC_LOG_INFO("serveur.authentification", "Utilisation des processeurs (bitmask, hex): %x", *(uint32*)(&mask));
         }
     }
 
@@ -229,13 +229,13 @@ extern int main(int argc, char** argv)
         if (setpriority(PRIO_PROCESS, 0, PROCESS_HIGH_PRIORITY))
             TC_LOG_ERROR("serveur.authentification", "Can't set authentification process priority class, error: %s", strerror(errno));
         else
-            TC_LOG_INFO("serveur.authentification", "authentification process priority class set to %i", getpriority(PRIO_PROCESS, 0));
+            TC_LOG_INFO("serveur.authentification", "Niveau de prioritÃ© du processus d'authentification dÃ©finie Ã  %i", getpriority(PRIO_PROCESS, 0));
     }
 
 #endif
 
     // maximum counter for next ping
-    uint32 numLoops = (sConfigMgr->GetIntDefault("MaxPingTime", 30) * (MINUTE * 1000000 / 100000));
+    uint32 numLoops = (sConfigMgr->GetIntDefault("DureeMaxPing", 30) * (MINUTE * 1000000 / 100000));
     uint32 loopCounter = 0;
 
     // Wait for termination signal
@@ -258,7 +258,7 @@ extern int main(int argc, char** argv)
     // Close the Database Pool and library
     StopDB();
 
-    TC_LOG_INFO("serveur.authentification", "Arrêt du processus...");
+    TC_LOG_INFO("serveur.authentification", "ArrÃªt du processus...");
     return 0;
 }
 
@@ -267,35 +267,35 @@ bool StartDB()
 {
     MySQL::Library_Init();
 
-    std::string dbstring = sConfigMgr->GetStringDefault("LoginDatabaseInfo", "");
+    std::string dbstring = sConfigMgr->GetStringDefault("InfoBaseDeDonneesConnexion", "");
     if (dbstring.empty())
     {
-        TC_LOG_ERROR("serveur.authentification", "Base de données non spécifiée");
+        TC_LOG_ERROR("serveur.authentification", "Base de donnÃ©es non spÃ©cifiÃ©e");
         return false;
     }
 
-    int32 worker_threads = sConfigMgr->GetIntDefault("LoginDatabase.WorkerThreads", 1);
+    int32 worker_threads = sConfigMgr->GetIntDefault("BaseDeDonneesConnexion.FilDeProduction", 1);
     if (worker_threads < 1 || worker_threads > 32)
     {
-        TC_LOG_ERROR("serveur.authentification", "Valeur incorrecte spécifiée pour la base de données de connexion.Fils de travail, par défaut à 1.");
+        TC_LOG_ERROR("serveur.authentification", "Valeur incorrecte spÃ©cifiÃ©e pour la base de donnÃ©es de connexion.Fils de travail, par dÃ©faut Ã  1.");
         worker_threads = 1;
     }
 
     int32 synch_threads = sConfigMgr->GetIntDefault("LoginDatabase.SynchThreads", 1);
     if (synch_threads < 1 || synch_threads > 32)
     {
-        TC_LOG_ERROR("serveur.authentification", "Valeur incorrecte spécifiée pour la base de données de connexion. Synchronisation du fils, par défaut à 1.");
+        TC_LOG_ERROR("serveur.authentification", "Valeur incorrecte spÃ©cifiÃ©e pour la base de donnÃ©es de connexion. Synchronisation du fils, par dÃ©faut Ã  1.");
         synch_threads = 1;
     }
  
     // NOTE: While authentification is singlethreaded you should keep synch_threads == 1. Increasing it is just silly since only 1 will be used ever.
     if (!LoginDatabase.Open(dbstring, uint8(worker_threads), uint8(synch_threads)))
     {
-        TC_LOG_ERROR("serveur.authentification", "Impossible de se connecter à la base de données");
+        TC_LOG_ERROR("serveur.authentification", "Impossible de se connecter Ã  la base de donnÃ©es");
         return false;
     }
 
-    TC_LOG_INFO("serveur.authentification", "Regroupement de connexion de base de données d'authentification commencé.");
+    TC_LOG_INFO("serveur.authentification", "Regroupement de connexion de base de donnÃ©es d'authentification commencÃ©.");
     sLog->SetRealmId(0); // Enables DB appenders when realm is set.
     return true;
 }

@@ -1,6 +1,6 @@
 /*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+
  * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -1039,8 +1039,8 @@ bool BfCapturePoint::Update(uint32 diff)
         }
 
         std::list<Player*> players;
-        Trinity::AnyPlayerInObjectRangeCheck checker(capturePoint, radius);
-        Trinity::PlayerListSearcher<Trinity::AnyPlayerInObjectRangeCheck> searcher(capturePoint, players, checker);
+        TRINITY::AnyPlayerInObjectRangeCheck checker(capturePoint, radius);
+        TRINITY::PlayerListSearcher<TRINITY::AnyPlayerInObjectRangeCheck> searcher(capturePoint, players, checker);
         capturePoint->VisitNearbyWorldObject(radius, searcher);
 
         for (std::list<Player*>::iterator itr = players.begin(); itr != players.end(); ++itr)

@@ -1,6 +1,6 @@
 /*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+
  * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
  * Copyright (C) 2006-2014 ScriptDev2 <https://github.com/scriptdev2/scriptdev2/>
  *
@@ -301,7 +301,7 @@ class boss_general_vezax : public CreatureScript
                     if (size < playersMin)
                         return NULL;
 
-                    return Trinity::Containers::SelectRandomContainerElement(PlayerList);
+                    return TRINITY::Containers::SelectRandomContainerElement(PlayerList);
                 }
 
                 return NULL;

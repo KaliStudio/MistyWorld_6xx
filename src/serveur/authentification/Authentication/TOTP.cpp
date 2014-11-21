@@ -1,5 +1,4 @@
 
-
 #include "TOTP.h"
 #include <cstring>
 

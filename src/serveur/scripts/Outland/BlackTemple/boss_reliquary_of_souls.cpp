@@ -1,6 +1,6 @@
 /*
 
- * Copyright (C) 2008-2014 TrinityCore <http://www.trinitycore.org/>
+
  * Copyright (C) 2005-2014 MaNGOS <http://getmangos.com/>
  * Copyright (C) 2006-2014 ScriptDev2 <https://github.com/scriptdev2/scriptdev2/>
  *
@@ -459,7 +459,7 @@ public:
             }
             if (targets.empty())
                 return; // No targets added for some reason. No point continuing.
-            targets.sort(Trinity::ObjectDistanceOrderPred(me)); // Sort players by distance.
+            targets.sort(TRINITY::ObjectDistanceOrderPred(me)); // Sort players by distance.
             targets.resize(1); // Only need closest target.
             Unit* target = targets.front(); // Get the first target.
             if (target)
