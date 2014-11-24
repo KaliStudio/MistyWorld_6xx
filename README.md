@@ -7,6 +7,8 @@ MistyWorld
 
 Misty world est un émulateur très complet de World of Warcraft: Warlords of Draenor émulateur écrit en C++
 
+Il est dérivé de TrinityCore et MaNGOS.
+
 Ici seras présenté le code source complet pour ce qui souhaiterez contribuer
 
 ## Requis
