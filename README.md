@@ -25,6 +25,4 @@ Ici seras présenté le code source complet pour ce qui souhaiterez contribuer
 ## Liens
 
 
-Wiki [http://misty-world.servegame.com/wiki/](http://misty-world.servegame.com/wiki/)
 
-Forum [http://misty-world.servegame.com/forum](http://misty-world.servegame.com/forum/)
